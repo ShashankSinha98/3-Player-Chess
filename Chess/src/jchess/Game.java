@@ -259,7 +259,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         //dirty hacks starts over here :) 
         //to fix rendering artefacts on first run
         Game activeGame = JChessApp.jcv.getActiveTabGame();
-        if( activeGame != null && JChessApp.jcv.getNumberOfOpenedTabs() == 0 )
+        if( activeGame != null )
         {
             activeGame.chessboard.resizeChessboard(activeGame.chessboard.get_height(false));
             activeGame.chessboard.repaint();

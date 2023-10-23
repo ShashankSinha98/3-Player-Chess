@@ -119,14 +119,18 @@ public class GUI
             }
             catch (java.io.IOException exc)
             {
+                System.out.println("Error creating a new config file: " + exc);
+                exc.printStackTrace();
             }
         }
         try
         {   
-            confFile.load(new FileInputStream("config.txt"));
+            confFile.load(new FileInputStream(outFile.getAbsolutePath()));
         }
         catch (java.io.IOException exc)
         {
+            System.out.println("Error accessing existing file: " + exc);
+            exc.printStackTrace();
         }
         return confFile;
     }
