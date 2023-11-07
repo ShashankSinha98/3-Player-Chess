@@ -102,7 +102,7 @@ public class GUI
     {
         Properties defConfFile = new Properties();
         Properties confFile = new Properties();
-        File outFile = new File(GUI.getJarPath() + File.separator + "config.txt");
+        // File outFile = new File(GUI.getJarPath() + File.separator + "config.txt");
         try
         {
             defConfFile.load(GUI.class.getResourceAsStream("/config.txt"));
@@ -112,27 +112,27 @@ public class GUI
             System.out.println("some error loading image! what goes: " + exc);
             exc.printStackTrace();
         }
-        if (!outFile.exists())
-        {
-            try
-            {
-                defConfFile.store(new FileOutputStream(outFile), null);
-            }
-            catch (java.io.IOException exc)
-            {
-                System.out.println("Error creating a new config file: " + exc);
-                exc.printStackTrace();
-            }
-        }
-        try
-        {   
-            confFile.load(new FileInputStream(outFile.getAbsolutePath()));
-        }
-        catch (java.io.IOException exc)
-        {
-            System.out.println("Error accessing existing file: " + exc);
-            exc.printStackTrace();
-        }
-        return confFile;
+        // if (!outFile.exists())
+        // {
+        //     try
+        //     {
+        //         defConfFile.store(new FileOutputStream(outFile), null);
+        //     }
+        //     catch (java.io.IOException exc)
+        //     {
+        //         System.out.println("Error creating a new config file: " + exc);
+        //         exc.printStackTrace();
+        //     }
+        // }
+        // try
+        // {   
+        //     confFile.load(new FileInputStream(outFile.getAbsolutePath()));
+        // }
+        // catch (java.io.IOException exc)
+        // {
+        //     System.out.println("Error accessing existing file: " + exc);
+        //     exc.printStackTrace();
+        // }
+        return defConfFile;
     }
 }
