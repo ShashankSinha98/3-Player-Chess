@@ -46,7 +46,7 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
     {
         super(parent);
 
-        File dir = new File(GUI.getJarPath() + File.separator + "theme"+File.separator);
+        File dir = new File(GUI.getJarPath()+ "jchess" + File.separator + "theme"+File.separator);
 
         System.out.println("Theme path: "+dir.getPath());
 
@@ -109,7 +109,12 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
     public void valueChanged(ListSelectionEvent event)
     {
         String element = this.themesList.getModel().getElementAt(this.themesList.getSelectedIndex()).toString();
-        String path = GUI.getJarPath() + File.separator + "theme/";
+        File dir = new File(GUI.getJarPath()+ "jchess" + File.separator + "theme");
+
+        String path = dir.getPath() + File.separator;
+        System.out.println("New Theme path: "+path);
+
+//        String path = GUI.getJarPath() + File.separator + "theme/";
         //String path  = JChessApp.class.getResource("theme/").getPath().toString();
         System.out.println(path + element + "/images/Preview.png");
         this.themePreview = new ImageIcon(path + element + "/images/Preview.png");
