@@ -137,13 +137,15 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
                 try
                 {
                     //FileOutputStream fOutStr = new FileOutputStream(ThemeChooseWindow.class.getResource("config.txt").getFile());
-                    FileOutputStream fOutStr = new FileOutputStream("config.txt");
+                    FileOutputStream fOutStr = new FileOutputStream(GUI.getJarPath() + "config.txt");
+                    System.out.println("******************************" + GUI.getJarPath() + "config.txt");
                     prp.store(fOutStr, null);
                     fOutStr.flush();
                     fOutStr.close();
                 }
                 catch (java.io.IOException exc)
                 {
+                	System.out.print("TEST Execution*************************************************");
                 }
                 JOptionPane.showMessageDialog(this, Settings.lang("changes_visible_after_restart"));
                 this.setVisible(false);
