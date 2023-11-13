@@ -9,7 +9,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'java'
-    id "com.github.johnrengelman.shadow" version "8.1.1"
+//    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 repositories {
@@ -45,13 +45,16 @@ jar {
   manifest {
     attributes 'Main-Class': application.mainClass
   }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
-shadowJar {
-   archiveBaseName.set('jchess')
-   archiveClassifier.set('')
-   archiveVersion.set('0.1.0')
-}
+//shadowJar {
+//   archiveBaseName.set('jchess')
+//   archiveClassifier.set('')
+//   archiveVersion.set('0.1.0')
+//}
 
 
 
