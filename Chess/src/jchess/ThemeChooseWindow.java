@@ -112,11 +112,7 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
         File dir = new File(GUI.getJarPath()+ "jchess" + File.separator + "theme");
 
         String path = dir.getPath() + File.separator;
-        System.out.println("New Theme path: "+path);
-
-//        String path = GUI.getJarPath() + File.separator + "theme/";
-        //String path  = JChessApp.class.getResource("theme/").getPath().toString();
-        System.out.println(path + element + "/images/Preview.png");
+        System.out.println("New Theme path: " + path + element + "/images/Preview.png");
         this.themePreview = new ImageIcon(path + element + "/images/Preview.png");
         this.themePreviewButton.setIcon(this.themePreview);
     }
@@ -138,14 +134,12 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
                 {
                     //FileOutputStream fOutStr = new FileOutputStream(ThemeChooseWindow.class.getResource("config.txt").getFile());
                     FileOutputStream fOutStr = new FileOutputStream(GUI.getJarPath() + "config.txt");
-                    System.out.println("******************************" + GUI.getJarPath() + "config.txt");
                     prp.store(fOutStr, null);
                     fOutStr.flush();
                     fOutStr.close();
                 }
                 catch (java.io.IOException exc)
                 {
-                	System.out.print("TEST Execution*************************************************");
                 }
                 JOptionPane.showMessageDialog(this, Settings.lang("changes_visible_after_restart"));
                 this.setVisible(false);
