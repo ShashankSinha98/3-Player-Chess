@@ -80,20 +80,7 @@ public class Bishop extends Piece
         {
             if (this.checkPiece(h, i)) //if on this sqhuare isn't piece
             {
-                if (this.player.color == Player.colors.white) //white
-                {
-                    if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[h][i]))
-                    {
-                        list.add(chessboard.squares[h][i]);
-                    }
-                }
-                else //or black
-                {
-                    if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[h][i]))
-                    {
-                        list.add(chessboard.squares[h][i]);
-                    }
-                }
+                addSquareWhenKingWillBeSafe(list, chessboard.squares[h][i]);
 
                 if (this.otherOwner(h, i))
                 {
@@ -110,20 +97,7 @@ public class Bishop extends Piece
         {
             if (this.checkPiece(h, i)) //if on this sqhuare isn't piece
             {
-                if (this.player.color == Player.colors.white) //white
-                {
-                    if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[h][i]))
-                    {
-                        list.add(chessboard.squares[h][i]);
-                    }
-                }
-                else //or black
-                {
-                    if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[h][i]))
-                    {
-                        list.add(chessboard.squares[h][i]);
-                    }
-                }
+                addSquareWhenKingWillBeSafe(list, chessboard.squares[h][i]);
 
                 if (this.otherOwner(h, i))
                 {
@@ -140,20 +114,7 @@ public class Bishop extends Piece
         {
             if (this.checkPiece(h, i)) //if on this sqhuare isn't piece
             {
-                if (this.player.color == Player.colors.white) //white
-                {
-                    if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[h][i]))
-                    {
-                        list.add(chessboard.squares[h][i]);
-                    }
-                }
-                else //or black
-                {
-                    if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[h][i]))
-                    {
-                        list.add(chessboard.squares[h][i]);
-                    }
-                }
+                addSquareWhenKingWillBeSafe(list, chessboard.squares[h][i]);
 
                 if (this.otherOwner(h, i))
                 {
@@ -170,20 +131,7 @@ public class Bishop extends Piece
         {
             if (this.checkPiece(h, i)) //if on this sqhuare isn't piece
             {
-                if (this.player.color == Player.colors.white) //white
-                {
-                    if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[h][i]))
-                    {
-                        list.add(chessboard.squares[h][i]);
-                    }
-                }
-                else //or black
-                {
-                    if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[h][i]))
-                    {
-                        list.add(chessboard.squares[h][i]);
-                    }
-                }
+                addSquareWhenKingWillBeSafe(list, chessboard.squares[h][i]);
 
                 if (this.otherOwner(h, i))
                 {
@@ -197,5 +145,13 @@ public class Bishop extends Piece
         }
 
         return list;
+    }
+
+    private void addSquareWhenKingWillBeSafe(ArrayList<Square> list, Square dst){
+        boolean isWhitePiece = this.player.color == Player.colors.white;
+        if(this.chessboard.willKingBeSafeWhenMoveOtherPiece(isWhitePiece, this.square, dst)) {
+            list.add(dst);
+        }
+
     }
 }

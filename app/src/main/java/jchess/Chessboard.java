@@ -861,4 +861,12 @@ public class Chessboard extends JPanel
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public boolean willKingBeSafeWhenMoveOtherPiece(boolean whiteKing, Square sqIsHere, Square sqWillBeThere) {
+        if(whiteKing){
+             return this.kingWhite.willBeSafeWhenMoveOtherPiece(sqIsHere, sqWillBeThere);
+        } else{
+            return this.kingBlack.willBeSafeWhenMoveOtherPiece(sqIsHere, sqWillBeThere);
+        }
+    }
 }
