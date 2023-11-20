@@ -56,7 +56,7 @@ public class Bishop extends Piece
     @Override
     void setImage()
     {
-        if (this.player.color == this.player.color.black)
+        if (this.player.color == Player.colors.black)
         {
             image = imageBlack;
         }
@@ -72,9 +72,9 @@ public class Bishop extends Piece
      * @return  ArrayList with new possition of piece
      */
     @Override
-    public ArrayList allMoves()
+    public ArrayList<Square> allMoves()
     {
-        ArrayList list = new ArrayList();
+        ArrayList<Square> list = new ArrayList<>();
 
         for (int h = this.square.pozX - 1, i = this.square.pozY + 1; !isout(h, i); --h, ++i) //left-up
         {

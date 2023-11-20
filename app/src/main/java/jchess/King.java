@@ -77,9 +77,9 @@ public class King extends Piece
      * @return  ArrayList with new possition of piece
      */
     @Override
-    public ArrayList allMoves()
+    public ArrayList<Square> allMoves()
     {
-        ArrayList list = new ArrayList();
+        ArrayList<Square> list = new ArrayList<>();
         Square sq;
         Square sq1;
         for (int i = this.square.pozX - 1; i <= this.square.pozX + 1; i++)

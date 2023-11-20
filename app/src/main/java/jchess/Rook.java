@@ -75,9 +75,9 @@ public class Rook extends Piece
      * @return  ArrayList with new possition of piece
      */
     @Override
-    public ArrayList allMoves()
+    public ArrayList<Square> allMoves()
     {
-        ArrayList list = new ArrayList();
+        ArrayList<Square> list = new ArrayList<>();
 
         for (int i = this.square.pozY + 1; i <= 7; ++i)
         {//up

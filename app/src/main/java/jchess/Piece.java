@@ -149,7 +149,7 @@ public abstract class Piece
     //     }
     //  }/*--endOf-setImages(String white, String black)--*/
 
-    abstract public ArrayList allMoves();
+    abstract public ArrayList<Square> allMoves();
 
     /** Method is useful for out of bounds protection
      * @param x  x position on chessboard

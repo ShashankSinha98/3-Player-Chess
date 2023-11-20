@@ -61,9 +61,9 @@ public class Knight extends Piece
      * @return  ArrayList with new possition of pawn
      */
     @Override
-    public ArrayList allMoves()
+    public ArrayList<Square> allMoves()
     {
-        ArrayList list = new ArrayList();
+        ArrayList<Square> list = new ArrayList<>();
 
         // knight all moves
         //  _______________ Y:
