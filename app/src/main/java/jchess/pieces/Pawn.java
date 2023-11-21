@@ -18,10 +18,14 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package jchess;
+package jchess.pieces;
+
+import jchess.Chessboard;
+import jchess.GUI;
+import jchess.Player;
+import jchess.Square;
 
 import java.util.ArrayList;
-import java.awt.Graphics;
 import java.awt.Image;
 
 /**
@@ -70,7 +74,7 @@ public class Pawn extends Piece
     protected static final Image imageBlack = GUI.loadImage("Pawn-B.png");
     public static short value = 1;
 
-    Pawn(Chessboard chessboard, Player player)
+    public Pawn(Chessboard chessboard, Player player)
     {
         super(chessboard, player);
         //this.setImages("Pawn-W.png", "Pawn-B.png");

@@ -23,12 +23,12 @@ package jchess;
 import java.awt.*;
 import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JPanel;
 import jchess.Moves.castling;
+import jchess.pieces.*;
 
 /** Class to represent chessboard. Chessboard is made from squares.
  * It is setting the squers of chessboard and sets the pieces(pawns)
@@ -315,7 +315,7 @@ public class Chessboard extends JPanel
     }/*--endOf-get_height--*/
 
 
-    int get_square_height()
+    public int get_square_height()
     {
         int result = (int) this.square_height;
         return result;

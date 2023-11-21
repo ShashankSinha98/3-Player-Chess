@@ -31,12 +31,12 @@ public class Player implements Serializable
 
     String name;
 
-    enum colors
+    public enum colors
     {
 
         white, black
     }
-    colors color;
+    public colors color;
 
     public enum playerTypes
     {
@@ -44,7 +44,7 @@ public class Player implements Serializable
         localUser, networkUser, computer
     }
     public playerTypes playerType;
-    boolean goDown;
+    public boolean goDown;
 
     public Player()
     {

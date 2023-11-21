@@ -20,9 +20,10 @@
  */
 package jchess;
 
+import jchess.pieces.Piece;
+
 import java.util.ArrayList;
 import java.util.Stack;
-import java.awt.Point;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.*;

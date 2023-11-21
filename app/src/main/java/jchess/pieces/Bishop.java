@@ -18,10 +18,14 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package jchess;
+package jchess.pieces;
+
+import jchess.Chessboard;
+import jchess.GUI;
+import jchess.Player;
+import jchess.Square;
 
 import java.util.ArrayList;
-import java.awt.Graphics;
 import java.awt.Image;
 
 /**
@@ -45,7 +49,7 @@ public class Bishop extends Piece
     protected static final Image imageWhite = GUI.loadImage("Bishop-W.png");
     protected static final Image imageBlack = GUI.loadImage("Bishop-B.png");
 
-    Bishop(Chessboard chessboard, Player player)
+    public Bishop(Chessboard chessboard, Player player)
     {
         super(chessboard, player);      //call initializer of super type: Piece
         //this.setImages("Bishop-W.png", "Bishop-B.png");
