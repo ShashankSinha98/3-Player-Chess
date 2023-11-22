@@ -20,10 +20,7 @@
  */
 package jchess.pieces;
 
-import jchess.Chessboard;
-import jchess.GUI;
-import jchess.Player;
-import jchess.Square;
+import jchess.*;
 
 import java.util.ArrayList;
 import java.awt.Image;
@@ -85,7 +82,7 @@ public class Pawn extends Piece
     @Override
     void setImage()
     {
-        if (this.player.color == this.player.color.black)
+        if (this.player.getColor() == Colors.BLACK)
         {
             image = imageBlack;
         }
@@ -119,13 +116,13 @@ public class Pawn extends Piece
             return list;//return empty list
         }
         sq = chessboard.squares[this.square.pozX][first];
-        if (sq.piece == null)
+        if (sq.getPiece() == null)
         {//if next is free
             //list.add(sq);//add
-            if (this.player.color == Player.colors.white)
+            if (this.player.getColor() == Colors.WHITE)
             {//white
 
-                if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX][first]))
+                if (this.chessboard.getKingWhite().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX][first]))
                 {
                     list.add(chessboard.squares[this.square.pozX][first]);
                 }
@@ -133,7 +130,7 @@ public class Pawn extends Piece
             else
             {//or black
 
-                if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX][first]))
+                if (this.chessboard.getKingBlack().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX][first]))
                 {
                     list.add(chessboard.squares[this.square.pozX][first]);
                 }
@@ -142,13 +139,13 @@ public class Pawn extends Piece
             if ((player.goDown && this.square.pozY == 1) || (!player.goDown && this.square.pozY == 6))
             {
                 sq1 = chessboard.squares[this.square.pozX][second];
-                if (sq1.piece == null)
+                if (sq1.getPiece() == null)
                 {
                     //list.add(sq1);//only in first move
-                    if (this.player.color == Player.colors.white)
+                    if (this.player.getColor() == Colors.WHITE)
                     {//white
 
-                        if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX][second]))
+                        if (this.chessboard.getKingWhite().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX][second]))
                         {
                             list.add(chessboard.squares[this.square.pozX][second]);
                         }
@@ -156,7 +153,7 @@ public class Pawn extends Piece
                     else
                     {//or black
 
-                        if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX][second]))
+                        if (this.chessboard.getKingBlack().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX][second]))
                         {
                             list.add(chessboard.squares[this.square.pozX][second]);
                         }
@@ -168,15 +165,15 @@ public class Pawn extends Piece
         {
             //capture
             sq = chessboard.squares[this.square.pozX - 1][first];
-            if (sq.piece != null)
+            if (sq.getPiece() != null)
             {//check if can hit left
-                if (this.player != sq.piece.player && !sq.piece.name.equals("King"))
+                if (this.player != sq.getPiece().player && !sq.getPiece().name.equals("King"))
                 {
                     //list.add(sq);
-                    if (this.player.color == Player.colors.white)
+                    if (this.player.getColor() == Colors.WHITE)
                     {//white
 
-                        if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX - 1][first]))
+                        if (this.chessboard.getKingWhite().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX - 1][first]))
                         {
                             list.add(chessboard.squares[this.square.pozX - 1][first]);
                         }
@@ -184,7 +181,7 @@ public class Pawn extends Piece
                     else
                     {//or black
 
-                        if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX - 1][first]))
+                        if (this.chessboard.getKingBlack().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX - 1][first]))
                         {
                             list.add(chessboard.squares[this.square.pozX - 1][first]);
                         }
@@ -194,18 +191,18 @@ public class Pawn extends Piece
 
             //En passant
             sq = chessboard.squares[this.square.pozX - 1][this.square.pozY];
-            if (sq.piece != null
+            if (sq.getPiece() != null
                     && this.chessboard.twoSquareMovedPawn != null
                     && sq == this.chessboard.twoSquareMovedPawn.square)
             {//check if can hit left
-                if (this.player != sq.piece.player && !sq.piece.name.equals("King"))
+                if (this.player != sq.getPiece().player && !sq.getPiece().name.equals("King"))
                 {// unnecessary
 
                     //list.add(sq);
-                    if (this.player.color == Player.colors.white)
+                    if (this.player.getColor() == Colors.WHITE)
                     {//white
 
-                        if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX - 1][first]))
+                        if (this.chessboard.getKingWhite().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX - 1][first]))
                         {
                             list.add(chessboard.squares[this.square.pozX - 1][first]);
                         }
@@ -213,7 +210,7 @@ public class Pawn extends Piece
                     else
                     {//or black
 
-                        if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX - 1][first]))
+                        if (this.chessboard.getKingBlack().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX - 1][first]))
                         {
                             list.add(chessboard.squares[this.square.pozX - 1][first]);
                         }
@@ -226,15 +223,15 @@ public class Pawn extends Piece
 
             //capture
             sq = chessboard.squares[this.square.pozX + 1][first];
-            if (sq.piece != null)
+            if (sq.getPiece() != null)
             {//check if can hit right
-                if (this.player != sq.piece.player && !sq.piece.name.equals("King"))
+                if (this.player != sq.getPiece().player && !sq.getPiece().name.equals("King"))
                 {
                     //list.add(sq);
-                    if (this.player.color == Player.colors.white)
+                    if (this.player.getColor() == Colors.WHITE)
                     { //white
 
-                        if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX + 1][first]))
+                        if (this.chessboard.getKingWhite().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX + 1][first]))
                         {
                             list.add(chessboard.squares[this.square.pozX + 1][first]);
                         }
@@ -242,7 +239,7 @@ public class Pawn extends Piece
                     else
                     {//or black
 
-                        if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX + 1][first]))
+                        if (this.chessboard.getKingBlack().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX + 1][first]))
                         {
                             list.add(chessboard.squares[this.square.pozX + 1][first]);
                         }
@@ -252,18 +249,18 @@ public class Pawn extends Piece
 
             //En passant
             sq = chessboard.squares[this.square.pozX + 1][this.square.pozY];
-            if (sq.piece != null
+            if (sq.getPiece() != null
                     && this.chessboard.twoSquareMovedPawn != null
                     && sq == this.chessboard.twoSquareMovedPawn.square)
             {//check if can hit left
-                if (this.player != sq.piece.player && !sq.piece.name.equals("King"))
+                if (this.player != sq.getPiece().player && !sq.getPiece().name.equals("King"))
                 {// unnecessary
 
                     //list.add(sq);
-                    if (this.player.color == Player.colors.white)
+                    if (this.player.getColor() == Colors.WHITE)
                     {//white
 
-                        if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX + 1][first]))
+                        if (this.chessboard.getKingWhite().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX + 1][first]))
                         {
                             list.add(chessboard.squares[this.square.pozX + 1][first]);
                         }
@@ -271,7 +268,7 @@ public class Pawn extends Piece
                     else
                     {//or black
 
-                        if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX + 1][first]))
+                        if (this.chessboard.getKingBlack().willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[this.square.pozX + 1][first]))
                         {
                             list.add(chessboard.squares[this.square.pozX + 1][first]);
                         }

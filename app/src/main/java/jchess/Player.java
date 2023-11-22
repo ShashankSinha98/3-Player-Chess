@@ -31,12 +31,16 @@ public class Player implements Serializable
 
     String name;
 
-    public enum colors
-    {
 
-        white, black
+    private Colors color;
+
+    public Colors getColor() {
+        return color;
     }
-    public colors color;
+
+    public void setColor(Colors color) {
+        this.color = color;
+    }
 
     public enum playerTypes
     {
@@ -49,11 +53,11 @@ public class Player implements Serializable
     public Player()
     {
     }
-
+    //TODO
     public Player(String name, String color)
     {
         this.name = name;
-        this.color = colors.valueOf(color);
+        this.color = Colors.valueOf(color.toUpperCase());
         this.goDown = false;
     }
 

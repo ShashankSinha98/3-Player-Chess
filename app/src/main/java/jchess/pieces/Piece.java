@@ -22,6 +22,7 @@ package jchess.pieces;
 
 
 import jchess.Chessboard;
+import jchess.Colors;
 import jchess.Player;
 import jchess.Square;
 
@@ -40,9 +41,9 @@ Class to represent a piece (any kind) - this class should be extended to represe
 public abstract class Piece
 {
 
-    public Chessboard chessboard; // <-- this relations isn't in class diagram, but it's necessary :/
-    public Square square;
-    public Player player;
+    protected Chessboard chessboard; // <-- this relations isn't in class diagram, but it's necessary :/
+    protected Square square;
+    protected Player player;
     public String name;
     public String symbol;
     protected static Image imageBlack;// = null;
@@ -53,9 +54,9 @@ public abstract class Piece
 
     Piece(Chessboard chessboard, Player player)
     {
-        this.chessboard = chessboard;
-        this.player = player;
-        if (player.color == player.color.black)
+        this.setChessboard(chessboard);
+        this.setPlayer(player);
+        if (player.getColor() == Colors.BLACK)
         {
             image = imageBlack;
         }
@@ -76,10 +77,10 @@ public abstract class Piece
         {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            Point topLeft = this.chessboard.getTopLeftPoint();
-            int height = this.chessboard.get_square_height();
-            int x = (this.square.pozX * height) + topLeft.x;
-            int y = (this.square.pozY * height) + topLeft.y;
+            Point topLeft = this.getChessboard().getTopLeftPoint();
+            int height = this.getChessboard().get_square_height();
+            int x = (this.getSquare().pozX * height) + topLeft.x;
+            int y = (this.getSquare().pozY * height) + topLeft.y;
             float addX = (height - image.getWidth(null)) / 2;
             float addY = (height - image.getHeight(null)) / 2;
             if (image != null && g != null)
@@ -130,7 +131,7 @@ public abstract class Piece
 
     void setImage()
     {
-        if (this.player.color == this.player.color.black)
+        if (this.getPlayer().getColor() == Colors.BLACK)
         {
             image = imageBlack;
         }
@@ -176,12 +177,12 @@ public abstract class Piece
      * */
     protected boolean checkPiece(int x, int y)
     {
-        if (chessboard.squares[x][y].piece != null
-                && chessboard.squares[x][y].piece.name.equals("King"))
+        if (chessboard.squares[x][y].getPiece() != null
+                && chessboard.squares[x][y].getPiece().name.equals("King"))
         {
             return false;
         }
-        Piece piece = chessboard.squares[x][y].piece;
+        Piece piece = chessboard.squares[x][y].getPiece();
         if (piece == null || //if this sqhuare is empty
                 piece.player != this.player) //or piece is another player
         {
@@ -198,11 +199,11 @@ public abstract class Piece
     protected boolean otherOwner(int x, int y)
     {
         Square sq = chessboard.squares[x][y];
-        if (sq.piece == null)
+        if (sq.getPiece() == null)
         {
             return false;
         }
-        if (this.player != sq.piece.player)
+        if (this.player != sq.getPiece().getPlayer())
         {
             return true;
         }
@@ -212,5 +213,29 @@ public abstract class Piece
     public String getSymbol()
     {
         return this.symbol;
+    }
+
+    public Chessboard getChessboard() {
+        return chessboard;
+    }
+
+    public void setChessboard(Chessboard chessboard) {
+        this.chessboard = chessboard;
+    }
+
+    public Square getSquare() {
+        return square;
+    }
+
+    public void setSquare(Square square) {
+        this.square = square;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

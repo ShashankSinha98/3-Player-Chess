@@ -30,7 +30,7 @@ public class Square
 
     public int pozX; // 0-7, becouse 8 squares for row/column
     public int pozY; // 0-7, becouse 8 squares for row/column
-    public Piece piece = null;//object Piece on square (and extending Piecie)
+    private Piece piece = null;//object Piece on square (and extending Piecie)
 
     Square(int pozX, int pozY, Piece piece)
     {
@@ -52,9 +52,15 @@ public class Square
         return new Square(square);
     }
 
-    void setPiece(Piece piece)
+    public void setPiece(Piece piece)
     {
         this.piece = piece;
-        this.piece.square = this;
+        if (piece != null) {
+            this.piece.setSquare(this);
+        }
+    }
+
+    public Piece getPiece() {
+        return piece;
     }
 }

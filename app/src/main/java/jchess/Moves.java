@@ -173,7 +173,7 @@ public class Moves extends AbstractTableModel
     public void addMove(Square begin, Square end, boolean registerInHistory, castling castlingMove, boolean wasEnPassant, Piece promotedPiece)
     {
         boolean wasCastling = castlingMove != castling.none;
-        String locMove = new String(begin.piece.symbol);
+        String locMove = new String(begin.getPiece().symbol);
         
         if( game.settings.upsideDown )
         {
@@ -186,7 +186,7 @@ public class Moves extends AbstractTableModel
             locMove += Integer.toString(8 - begin.pozY);//add number of Square from which move was made
         }
         
-        if (end.piece != null)
+        if (end.getPiece() != null)
         {
             locMove += "x";//take down opponent piece
         }
@@ -206,17 +206,17 @@ public class Moves extends AbstractTableModel
             locMove += Integer.toString(8 - end.pozY);//add number of Square to which move was made
         }
         
-        if (begin.piece.symbol.equals("") && begin.pozX - end.pozX != 0 && end.piece == null)
+        if (begin.getPiece().symbol.equals("") && begin.pozX - end.pozX != 0 && end.getPiece() == null)
         {
             locMove += "(e.p)";//pawn take down opponent en passant
             wasEnPassant = true;
         }
-        if ((!this.enterBlack && this.game.chessboard.kingBlack.isChecked())
-                || (this.enterBlack && this.game.chessboard.kingWhite.isChecked()))
+        if ((!this.enterBlack && this.game.chessboard.getKingBlack().isChecked())
+                || (this.enterBlack && this.game.chessboard.getKingWhite().isChecked()))
         {//if checked
 
-            if ((!this.enterBlack && this.game.chessboard.kingBlack.isCheckmatedOrStalemated() == 1)
-                    || (this.enterBlack && this.game.chessboard.kingWhite.isCheckmatedOrStalemated() == 1))
+            if ((!this.enterBlack && this.game.chessboard.getKingBlack().isCheckmatedOrStalemated() == 1)
+                    || (this.enterBlack && this.game.chessboard.getKingWhite().isCheckmatedOrStalemated() == 1))
             {//check if checkmated
                 locMove += "#";//check mate
             }
@@ -242,7 +242,7 @@ public class Moves extends AbstractTableModel
 
         if (registerInHistory)
         {
-            this.moveBackStack.add(new Move(new Square(begin), new Square(end), begin.piece, end.piece, castlingMove, wasEnPassant, promotedPiece));
+            this.moveBackStack.add(new Move(new Square(begin), new Square(end), begin.getPiece(), end.getPiece(), castlingMove, wasEnPassant, promotedPiece));
         }
     }
 
@@ -504,7 +504,7 @@ public class Moves extends AbstractTableModel
                 int[] values = new int[4];
                 if (locMove.equals("O-O-O"))
                 {
-                    if (this.game.getActivePlayer().color == Player.colors.black) //if black turn
+                    if (this.game.getActivePlayer().getColor() == Colors.BLACK) //if black turn
                     { 
                         values = new int[]
                         {
@@ -521,7 +521,7 @@ public class Moves extends AbstractTableModel
                 }
                 else if (locMove.equals("O-O")) //if short castling
                 { 
-                    if (this.game.getActivePlayer().color == Player.colors.black) //if black turn
+                    if (this.game.getActivePlayer().getColor() == Colors.BLACK) //if black turn
                     {
                         values = new int[]
                         {
@@ -565,18 +565,18 @@ public class Moves extends AbstractTableModel
                 {
                     for(int j=0; j<squares[i].length && !pieceFound; j++)
                     {
-                        if(squares[i][j].piece == null || this.game.getActivePlayer().color != squares[i][j].piece.player.color)
+                        if(squares[i][j].getPiece() == null || this.game.getActivePlayer().getColor() != squares[i][j].getPiece().getPlayer().getColor())
                         {
                             continue;
                         }
-                        ArrayList pieceMoves = squares[i][j].piece.allMoves();
+                        ArrayList pieceMoves = squares[i][j].getPiece().allMoves();
                         for(Object square : pieceMoves)
                         {
                             Square currSquare = (Square)square;
                             if(currSquare.pozX == xTo && currSquare.pozY == yTo)
                             {
-                                xFrom = squares[i][j].piece.square.pozX;
-                                yFrom = squares[i][j].piece.square.pozY;
+                                xFrom = squares[i][j].getPiece().getSquare().pozX;
+                                yFrom = squares[i][j].getPiece().getSquare().pozY;
                                 pieceFound = true;
                             }
                         }

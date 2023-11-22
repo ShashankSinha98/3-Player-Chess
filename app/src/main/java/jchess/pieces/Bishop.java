@@ -20,11 +20,7 @@
  */
 package jchess.pieces;
 
-import jchess.Chessboard;
-import jchess.GUI;
-import jchess.Player;
-import jchess.Square;
-
+import jchess.*;
 import java.util.ArrayList;
 import java.awt.Image;
 
@@ -60,7 +56,7 @@ public class Bishop extends Piece
     @Override
     void setImage()
     {
-        if (this.player.color == Player.colors.black)
+        if (this.player.getColor() == Colors.BLACK)
         {
             image = imageBlack;
         }
@@ -152,7 +148,7 @@ public class Bishop extends Piece
     }
 
     private void addSquareWhenKingWillBeSafe(ArrayList<Square> list, Square dst){
-        boolean isWhitePiece = this.player.color == Player.colors.white;
+        boolean isWhitePiece = this.player.getColor() == Colors.WHITE;
         if(this.chessboard.willKingBeSafeWhenMoveOtherPiece(isWhitePiece, this.square, dst)) {
             list.add(dst);
         }
