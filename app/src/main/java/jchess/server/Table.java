@@ -22,8 +22,8 @@ package jchess.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import jchess.Player;
-import jchess.Settings;
+import jchess.model.Player;
+import jchess.view.Settings;
 
 public class Table
 {//Table: {two player, one chessboard and x observers}

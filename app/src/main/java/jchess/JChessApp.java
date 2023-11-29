@@ -18,6 +18,8 @@ package jchess;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
+import jchess.view.JChessView;
+
 /**
  * The main class of the application.
  */
@@ -47,6 +49,9 @@ public class JChessApp extends SingleFrameApplication {
         return Application.getInstance(JChessApp.class);
     }
 
+    public static JChessView getJChessView() {
+        return jcv;
+    }
     /**
      * Main method launching the application.
      */
