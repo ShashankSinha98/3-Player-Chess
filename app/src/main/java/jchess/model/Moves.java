@@ -176,7 +176,7 @@ public class Moves extends AbstractTableModel
         boolean wasCastling = castlingMove != castling.none;
         String locMove = new String(begin.getPiece().symbol);
         
-        if( game.settings.upsideDown )
+        if( game.settings.isUpsideDown() )
         {
             locMove += Character.toString((char) ( ( Chessboard.bottom - begin.pozX) + 97));//add letter of Square from which move was made
             locMove += Integer.toString( begin.pozY + 1 );//add number of Square from which move was made
@@ -196,7 +196,7 @@ public class Moves extends AbstractTableModel
             locMove += "-";//normal move
         }
         
-        if ( game.settings.upsideDown )
+        if ( game.settings.isUpsideDown() )
         {
             locMove += Character.toString((char) (( Chessboard.bottom - end.pozX) +  97));//add letter of Square to which move was made
             locMove += Integer.toString( end.pozY + 1 );//add number of Square to which move was made
@@ -296,7 +296,7 @@ public class Moves extends AbstractTableModel
             Move last = this.moveBackStack.pop();
             if (last != null)
             {
-                if( this.game.settings.gameType == Settings.gameTypes.local ) //moveForward / redo available only for local game
+                if( this.game.settings.getGameType() == Settings.gameTypes.local ) //moveForward / redo available only for local game
                 {
                     this.moveForwardStack.push(last);
                 }
@@ -337,7 +337,7 @@ public class Moves extends AbstractTableModel
     {
         try
         {
-            if( this.game.settings.gameType == Settings.gameTypes.local)
+            if( this.game.settings.getGameType() == Settings.gameTypes.local)
             {
                 Move first = this.moveForwardStack.pop();
                 this.moveBackStack.push(first);

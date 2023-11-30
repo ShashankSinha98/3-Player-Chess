@@ -109,7 +109,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         Calendar cal = Calendar.getInstance();
         String str = new String("");
         String info = new String("[Event \"Game\"]\n[Date \"" + cal.get(cal.YEAR) + "." + (cal.get(cal.MONTH) + 1) + "." + cal.get(cal.DAY_OF_MONTH) + "\"]\n"
-                + "[White \"" + this.settings.playerWhite.name + "\"]\n[Black \"" + this.settings.playerBlack.name + "\"]\n\n");
+                + "[White \"" + this.settings.getPlayerWhite().name + "\"]\n[Black \"" + this.settings.getPlayerBlack().name + "\"]\n\n");
         str += info;
         str += this.moves.getMovesInString();
         try
@@ -174,12 +174,12 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         }
         Game newGUI = JChessApp.getJChessView().addNewTab(whiteName + " vs. " + blackName);
         Settings locSetts = newGUI.settings;
-        locSetts.playerBlack.name = blackName;
-        locSetts.playerWhite.name = whiteName;
-        locSetts.playerBlack.setType(Player.playerTypes.localUser);
-        locSetts.playerWhite.setType(Player.playerTypes.localUser);
-        locSetts.gameMode = Settings.gameModes.loadGame;
-        locSetts.gameType = Settings.gameTypes.local;
+        locSetts.getPlayerBlack().name = blackName;
+        locSetts.getPlayerWhite().name = whiteName;
+        locSetts.getPlayerBlack().setType(Player.playerTypes.localUser);
+        locSetts.getPlayerWhite().setType(Player.playerTypes.localUser);
+        locSetts.setGameMode(Settings.gameModes.loadGame);
+        locSetts.setGameType(Settings.gameTypes.local);
 
         newGUI.newGame();
         newGUI.blockedChessboard = true;
@@ -252,11 +252,11 @@ public class Game extends JPanel implements MouseListener, ComponentListener
      */
     public void newGame()
     {
-        chessboard.setPieces("", settings.playerWhite, settings.playerBlack);
+        chessboard.setPieces("", settings.getPlayerWhite(), settings.getPlayerBlack());
 
         //System.out.println("new game, game type: "+settings.gameType.name());
 
-        activePlayer = settings.playerWhite;
+        activePlayer = settings.getPlayerWhite();
         if (activePlayer.playerType != Player.playerTypes.localUser)
         {
             this.blockedChessboard = true;
@@ -289,13 +289,13 @@ public class Game extends JPanel implements MouseListener, ComponentListener
      */
     public void switchActive()
     {
-        if (activePlayer == settings.playerWhite)
+        if (activePlayer == settings.getPlayerWhite())
         {
-            activePlayer = settings.playerBlack;
+            activePlayer = settings.getPlayerBlack();
         }
         else
         {
-            activePlayer = settings.playerWhite;
+            activePlayer = settings.getPlayerWhite();
         }
 
         this.gameClock.switch_clocks();
@@ -382,7 +382,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     {
         boolean status = false;
         
-        if( this.settings.gameType == Settings.gameTypes.local )
+        if( this.settings.getGameType() == Settings.gameTypes.local )
         {
             status = chessboard.undo();
             if( status )
@@ -394,7 +394,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                 chessboard.repaint();//repaint for sure
             }
         }
-        else if( this.settings.gameType == Settings.gameTypes.network )
+        else if( this.settings.getGameType() == Settings.gameTypes.network )
         {
             this.client.sendUndoAsk();
             status = true;
@@ -406,7 +406,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     {
         boolean result = false;
         
-        if( this.settings.gameType == Settings.gameTypes.local )
+        if( this.settings.getGameType() == Settings.gameTypes.local )
         {
             while( chessboard.undo() )
             {
@@ -425,7 +425,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     {
         boolean result = false;
         
-        if( this.settings.gameType == Settings.gameTypes.local )
+        if( this.settings.getGameType() == Settings.gameTypes.local )
         {
             while( chessboard.redo() )
             {
@@ -443,7 +443,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
     public boolean redo()
     {
         boolean status = chessboard.redo();
-        if( this.settings.gameType == Settings.gameTypes.local )
+        if( this.settings.getGameType() == Settings.gameTypes.local )
         {
             if ( status )
             {
@@ -469,7 +469,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         {
             this.undo();
         }
-        else if (event.getButton() == MouseEvent.BUTTON2 && settings.gameType == Settings.gameTypes.local)
+        else if (event.getButton() == MouseEvent.BUTTON2 && settings.getGameType() == Settings.gameTypes.local)
         {
             this.redo();
         }
@@ -502,11 +502,11 @@ public class Game extends JPanel implements MouseListener, ComponentListener
                     else if (chessboard.activeSquare != null && chessboard.activeSquare.getPiece() != null
                             && chessboard.activeSquare.getPiece().allMoves().indexOf(sq) != -1) //move
                     {
-                        if (settings.gameType == Settings.gameTypes.local)
+                        if (settings.getGameType() == Settings.gameTypes.local)
                         {
                             chessboard.move(chessboard.activeSquare, sq);
                         }
-                        else if (settings.gameType == Settings.gameTypes.network)
+                        else if (settings.getGameType() == Settings.gameTypes.network)
                         {
                             client.sendMove(chessboard.activeSquare.pozX, chessboard.activeSquare.pozY, sq.pozX, sq.pozY);
                             chessboard.move(chessboard.activeSquare, sq);
@@ -519,7 +519,7 @@ public class Game extends JPanel implements MouseListener, ComponentListener
 
                         //checkmate or stalemate
                         King king;
-                        if (this.activePlayer == settings.playerWhite)
+                        if (this.activePlayer == settings.getPlayerWhite())
                         {
                             king = chessboard.getKingWhite();
                         }

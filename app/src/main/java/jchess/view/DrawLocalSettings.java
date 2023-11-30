@@ -142,9 +142,9 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
             }
             Game newGUI = JChessApp.getJChessView().addNewTab(this.firstName.getText() + " vs " + this.secondName.getText());
             Settings sett = newGUI.settings;//sett local settings variable
-            Player pl1 = sett.playerWhite;//set local player variable
-            Player pl2 = sett.playerBlack;//set local player variable
-            sett.gameMode = Settings.gameModes.newGame;
+            Player pl1 = sett.getPlayerWhite();//set local player variable
+            Player pl2 = sett.getPlayerBlack();//set local player variable
+            sett.setGameMode(Settings.gameModes.newGame);
             //if(this.firstName.getText().length() >9 ) this.firstName.setText(this.firstName.getText(0,8));
             if (this.color.getActionCommand().equals("biały")) //if first player is white
             {
@@ -158,33 +158,32 @@ public class DrawLocalSettings extends JPanel implements ActionListener, TextLis
             }
             pl1.setType(Player.playerTypes.localUser);//set type of player
             pl2.setType(Player.playerTypes.localUser);//set type of player
-            sett.gameType = Settings.gameTypes.local;
+            sett.setGameType(Settings.gameTypes.local);
             if (this.oponentComp.isSelected()) //if computer oponent is checked
             {
                 pl2.setType(Player.playerTypes.computer);
             }
             if (this.upsideDown.isSelected()) //if upsideDown is checked
             { 
-                sett.upsideDown = true;
+                sett.setUpsideDown(true);
             }
             else
             {
-                sett.upsideDown = false;
+                sett.setUpsideDown(false);
             }
             if (this.timeGame.isSelected()) //if timeGame is checked
             {
                 String value = this.times[this.time4Game.getSelectedIndex()];//set time for game
                 Integer val = new Integer(value);
-                sett.timeLimitSet = true;
-                sett.timeForGame = (int) val * 60;//set time for game and mult it to seconds
-                newGUI.gameClock.setTimes(sett.timeForGame, sett.timeForGame);
+                sett.setTimeForGame((int) val * 60);//set time for game and mult it to seconds
+                newGUI.gameClock.setTimes(sett.getTimeForGame(), sett.getTimeForGame());
                 newGUI.gameClock.start();
             }
             System.out.println(this.time4Game.getActionCommand());
             //this.time4Game.getComponent(this.time4Game.getSelectedIndex());
             System.out.println("****************\nStarting new game: " + pl1.getName() + " vs. " + pl2.getName()
-                    + "\ntime 4 game: " + sett.timeForGame + "\ntime limit set: " + sett.timeLimitSet
-                    + "\nwhite on top?: " + sett.upsideDown + "\n****************");//4test
+                    + "\ntime 4 game: " + sett.getTimeForGame() + "\ntime limit set: " + sett.isTimeLimitSet()
+                    + "\nwhite on top?: " + sett.isUpsideDown() + "\n****************");//4test
             newGUI.newGame();//start new Game
             this.parent.setVisible(false);//hide parent
             newGUI.chessboard.repaint();

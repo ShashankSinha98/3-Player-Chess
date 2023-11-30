@@ -23,13 +23,14 @@ package jchess.server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import jchess.model.MD5;
 
 public class Server implements Runnable
 {
@@ -113,9 +114,9 @@ public class Server implements Runnable
                 }
                 Table table = tables.get(tableID);
 
-                if (!jchess.model.MD5.encrypt(table.password).equals(password))
+                if (!MD5.encrypt(table.password).equals(password))
                 {
-                    print("bad password: " + jchess.model.MD5.encrypt(table.password) + " != " + password);
+                    print("bad password: " + MD5.encrypt(table.password) + " != " + password);
                     output.writeInt(Connection_info.err_bad_password.getValue());
                     output.flush();
                     continue;

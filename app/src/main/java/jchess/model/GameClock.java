@@ -56,10 +56,10 @@ public class GameClock extends JPanel implements Runnable
         int time = this.settings.getTimeForGame();
 
         this.setTimes(time, time);
-        this.setPlayers(this.settings.playerBlack, this.settings.playerWhite);
+        this.setPlayers(this.settings.getPlayerBlack(), this.settings.getPlayerWhite());
 
         this.thread = new Thread(this);
-        if (this.settings.timeLimitSet)
+        if (this.settings.isTimeLimitSet())
         {
             thread.start();
         }
@@ -114,9 +114,9 @@ public class GameClock extends JPanel implements Runnable
         g2d.drawRect(5, 60, 170, 30);
         g2d.drawLine(85, 30, 85, 90);
         font = new Font("Serif", Font.ITALIC, 16);
-        g2d.drawString(settings.playerWhite.getName(), 10, 50);
+        g2d.drawString(settings.getPlayerWhite().getName(), 10, 50);
         g2d.setColor(Color.WHITE);
-        g2d.drawString(settings.playerBlack.getName(), 100, 50);
+        g2d.drawString(settings.getPlayerBlack().getName(), 100, 50);
         this.bufferedGraphics = this.background.getGraphics();
     }
 
@@ -149,9 +149,9 @@ public class GameClock extends JPanel implements Runnable
         font = new Font("Serif", Font.ITALIC, 14);
         g2d.drawImage(this.background, 0, 0, this);
         g2d.setFont(font);
-        g.drawString(settings.playerWhite.getName(), 10, 50);
+        g.drawString(settings.getPlayerWhite().getName(), 10, 50);
         g.setColor(Color.WHITE);
-        g.drawString(settings.playerBlack.getName(), 100, 50);
+        g.drawString(settings.getPlayerBlack().getName(), 100, 50);
         g2d.setFont(font);
         g.setColor(Color.BLACK);
         g2d.drawString(white_clock, 10, 80);

@@ -28,7 +28,6 @@ import jchess.model.MD5;
 
 public class Console
 {
-
     public static void main(String[] args)
     {
         System.out.println("JChess Server Start!");
@@ -40,25 +39,25 @@ public class Console
         while (isOK)
         {
             System.out.println("--------------------");
-            System.out.println("[1] Nowy stół");
-            System.out.println("[2] Lista aktywnych stołów");
-            System.out.println("[3] Włącz/wyłącz komunikaty serwera");
-            System.out.println("[4] Wyłącz serwer");
+            System.out.println("[1] New table");
+            System.out.println("[2] List of active tables");
+            System.out.println("[3] Turn on/off server messages");
+            System.out.println("[4] Turn off server");
             System.out.print("-> ");
             String str = readString();
 
             if (str.equals("1")) //new table
             {
-                System.out.print("ID gry: ");
+                System.out.print("ID of game: ");
                 int gameID = Integer.parseInt(readString());
 
-                System.out.print("Hasło: ");
+                System.out.print("Password: ");
                 String pass = MD5.encrypt(readString());
 
                 String observer;
                 do
                 {
-                    System.out.print("Gra z obserwatorami[t/n]: ");
+                    System.out.print("Game with observers?[t/n] (t=YES, n=NO): ");
                     observer = readString();
                 }
                 while (!observer.equalsIgnoreCase("t") && !observer.equalsIgnoreCase("n"));
@@ -102,12 +101,12 @@ public class Console
                 if (server.isPrintEnable == false)
                 {
                     server.isPrintEnable = true;
-                    System.out.println("Komunikaty serwera zostały włączone");
+                    System.out.println("Messages of server has been turned on");
                 }
                 else
                 {
                     server.isPrintEnable = false;
-                    System.out.println("Komunikaty serwera zostały wyłączone");
+                    System.out.println("Messages of server has been turned off");
                 }
             }
             else if (str.equals("4")) //exit
@@ -116,7 +115,7 @@ public class Console
             }
             else //bad commant
             {
-                System.out.println("Nierozpoznane polecenie");
+                System.out.println("Unrecognized command");
             }
         }
         System.exit(0);
