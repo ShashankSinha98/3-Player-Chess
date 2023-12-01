@@ -1,4 +1,4 @@
-package jchess.model;
+package jchess.core;
 
 // public enum Colors {
 //     WHITE, BLACK

@@ -26,8 +26,8 @@ import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-import jchess.model.Colors;
-import jchess.model.Player;
+import jchess.core.Colors;
+import jchess.core.Player;
 
 /** Class representings game settings available for the current player
  */

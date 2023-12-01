@@ -28,8 +28,8 @@ import java.awt.*;
 import javax.swing.text.BadLocationException;
 
 import jchess.JChessApp;
-import jchess.model.Game;
-import jchess.model.Player;
+import jchess.core.Game;
+import jchess.core.Player;
 
 /**
  * Class responsible for drawing the fold with local game settings

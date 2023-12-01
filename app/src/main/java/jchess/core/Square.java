@@ -18,9 +18,9 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package jchess.model;
+package jchess.core;
 
-import jchess.model.pieces.Piece;
+import jchess.core.pieces.Piece;
 
 /**
  * Class to represent a chessboard square

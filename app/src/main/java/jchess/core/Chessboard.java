@@ -18,7 +18,7 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package jchess.model;
+package jchess.core;
 
 import java.awt.*;
 import java.awt.Graphics;
@@ -29,8 +29,8 @@ import java.util.Iterator;
 import javax.swing.JPanel;
 
 import jchess.JChessApp;
-import jchess.model.Moves.castling;
-import jchess.model.pieces.*;
+import jchess.core.Moves.castling;
+import jchess.core.pieces.*;
 import jchess.view.*;
 
 /** Class to represent chessboard. Chessboard is made from squares.

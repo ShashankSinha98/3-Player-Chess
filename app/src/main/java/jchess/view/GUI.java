@@ -28,7 +28,7 @@ import javax.swing.*;
 import javax.swing.JPanel;
 
 import jchess.JChessApp;
-import jchess.model.Game;
+import jchess.core.Game;
 
 import java.io.IOException;
 import java.util.Properties;

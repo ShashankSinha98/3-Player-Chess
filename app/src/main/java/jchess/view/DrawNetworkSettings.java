@@ -38,9 +38,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import jchess.JChessApp;
-import jchess.model.Client;
-import jchess.model.Game;
-import jchess.model.MD5;
+import jchess.core.Client;
+import jchess.core.Game;
+import jchess.core.MD5;
 import jchess.server.Server;
 
 /**

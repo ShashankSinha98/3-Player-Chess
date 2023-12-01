@@ -22,7 +22,7 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 
 import jchess.JChessApp;
-import jchess.model.Game;
+import jchess.core.Game;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

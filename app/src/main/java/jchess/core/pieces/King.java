@@ -18,7 +18,7 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package jchess.model.pieces;
+package jchess.core.pieces;
 
 /**
  * Class to represent a chess pawn king. King is the most important
@@ -37,7 +37,7 @@ package jchess.model.pieces;
         |_|_|_|_|_|_|_|_|0
         0 1 2 3 4 5 6 7
  */
-import jchess.model.*;
+import jchess.core.*;
 import jchess.view.GUI;
 
 import java.util.ArrayList;

@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import jchess.model.Client;
+import jchess.core.Client;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;

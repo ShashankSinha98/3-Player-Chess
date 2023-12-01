@@ -22,7 +22,7 @@ package jchess.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import jchess.model.Player;
+import jchess.core.Player;
 import jchess.view.Settings;
 
 public class Table

@@ -13,7 +13,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jchess.model;
+package jchess.core;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jchess.model.Player.playerTypes;
+import jchess.core.Player.playerTypes;
 import jchess.view.Settings;
 
 /**
