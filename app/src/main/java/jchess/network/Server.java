@@ -13,7 +13,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jchess.core;
+package jchess.network;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

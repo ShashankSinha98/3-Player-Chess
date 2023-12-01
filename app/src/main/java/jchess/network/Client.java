@@ -18,7 +18,7 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package jchess.core;
+package jchess.network;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jchess.server.Connection_info;
 import jchess.view.Settings;
-
+import jchess.core.Game;
 /**
  * Class responsible for clients references:
  * for running game, for joing the game, adding moves
@@ -45,10 +45,11 @@ public class Client implements Runnable
     ObjectInputStream input;
     String ip;
     int port;
-    public Game game;
+    private Game game;
     Settings sett;
     boolean wait4undoAnswer = false;
     boolean isObserver = false;
+    private Chat gameChat;
 
     public Client(String ip, int port)
     {
@@ -58,6 +59,11 @@ public class Client implements Runnable
         this.port = port;
     }
 
+    public void setGame(Game game)
+    {
+        this.game = game;
+    }
+    
     /* Method responsible for joining to the server on 
      * witch the game was created
      */
@@ -149,7 +155,7 @@ public class Client implements Runnable
                 {
                     String str = input.readUTF();
 
-                    game.chat.addMessage(str);
+                    gameChat.addMessage(str);
                 }
                 else if (in.equals("#settings")) //getting settings from server
                 {
@@ -162,15 +168,16 @@ public class Client implements Runnable
                         Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                    game.settings = this.sett;
-                    game.client = this;
-                    game.chat.client = this;
+                    game.setSettings(this.sett);
+                    game.setClient(this);
+                    gameChat.setClient(this);
                     game.newGame();//start new Game
-                    game.chessboard.draw();
+                    // game.chessboard.draw();
+                    game.chessboard.repaint();
                 }
                 else if (in.equals("#errorConnection"))
                 {
-                    game.chat.addMessage("** "+Settings.lang("error_connecting_one_of_player")+" **");
+                    gameChat.addMessage("** "+Settings.lang("error_connecting_one_of_player")+" **");
                 }
                 else if(in.equals("#undoAsk") && !this.isObserver)
                 {
@@ -196,18 +203,18 @@ public class Client implements Runnable
                 {
                     this.wait4undoAnswer = false;
                     String lastMove = game.moves.getMoves().get( game.moves.getMoves().size() -1 );
-                    game.chat.addMessage("** "+Settings.lang("permision_ok_4_undo_move")+": "+lastMove+"**");
+                    gameChat.addMessage("** "+Settings.lang("permision_ok_4_undo_move")+": "+lastMove+"**");
                     game.chessboard.undo();
                 }
                 else if(in.equals("#undoAnswerNegative") && this.wait4undoAnswer)
                 {
-                    game.chat.addMessage( Settings.lang("no_permision_4_undo_move") );
+                    gameChat.addMessage( Settings.lang("no_permision_4_undo_move") );
                 }
             }
             catch (IOException ex)
             {
                 isOK = false;
-                game.chat.addMessage("** "+Settings.lang("error_connecting_to_server")+" **");
+                gameChat.addMessage("** "+Settings.lang("error_connecting_to_server")+" **");
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

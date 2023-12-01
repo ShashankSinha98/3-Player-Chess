@@ -22,8 +22,9 @@ package jchess.core;
 
 import jchess.JChessApp;
 import jchess.core.pieces.King;
-import jchess.view.Chat;
+import jchess.network.Chat;
 import jchess.view.Settings;
+import jchess.network.Client;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
@@ -47,12 +48,12 @@ import java.util.logging.Logger;
 public class Game extends JPanel implements MouseListener, ComponentListener
 {
 
-    public Settings settings;
+    private Settings settings;
     public boolean blockedChessboard;
     public Chessboard chessboard;
     private Player activePlayer;
     public GameClock gameClock;
-    public Client client;
+    private Client client;
     public Moves moves;
     public Chat chat;
 
@@ -309,6 +310,21 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         return this.activePlayer;
     }
 
+    /** Method for getting the current game settings
+     *  @return  settings of the current game
+     */
+    public Settings getSettings()
+    {
+        return this.settings;
+    }
+
+    /** Method for setting the current game settings
+     */
+    public void setSettings(Settings settings)
+    {
+        this.settings = settings;
+    }
+
     /** Method to go to next move (checks if game is local/network etc.)
      */
     public void nextMove()
@@ -461,7 +477,16 @@ public class Game extends JPanel implements MouseListener, ComponentListener
         return status;
     }
     
-    
+    public Client getClient()
+    {
+        return client;
+    }
+
+    public void setClient(Client client)
+    {
+        this.client = client;
+    }
+
 
     public void mousePressed(MouseEvent event)
     {

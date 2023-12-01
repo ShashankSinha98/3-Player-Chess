@@ -18,7 +18,7 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package jchess.view;
+package jchess.network;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,8 +27,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
-import jchess.core.Client;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -40,7 +38,8 @@ import javax.swing.JScrollPane;
 public class Chat extends JPanel implements ActionListener
 {
 
-    public Client client;
+    protected Client client;
+    
     private GridBagLayout gbl;
     private GridBagConstraints gbc;
     private JScrollPane scrollPane;
@@ -103,11 +102,29 @@ public class Chat extends JPanel implements ActionListener
         textOutput.setCaretPosition(textOutput.getDocument().getLength());
     }
 
+    
+    /**
+     * @return the client
+     */
+    public Client getClient()
+    {
+        return client;
+    }
+
+    /**
+     * @param client the client to set
+     */
+    public void setClient(Client client)
+    {
+        this.client = client;
+    }
+
     /** Sending message method
      */
     public void actionPerformed(ActionEvent arg0) //sending message
     {
-        this.client.sendMessage(textInput.getText());
+        client.sendMessage(textInput.getText());
         textInput.setText("");
+
     }
 }
