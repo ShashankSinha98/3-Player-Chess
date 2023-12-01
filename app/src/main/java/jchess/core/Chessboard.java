@@ -171,37 +171,37 @@ public class Chessboard extends JPanel
             player.goDown = true;
         }
 
-        this.squares[0][i].setPiece(new Rook(this, player));
-        this.squares[7][i].setPiece(new Rook(this, player));
-        this.squares[1][i].setPiece(new Knight(this, player));
-        this.squares[6][i].setPiece(new Knight(this, player));
-        this.squares[2][i].setPiece(new Bishop(this, player));
-        this.squares[5][i].setPiece(new Bishop(this, player));
+        this.squares[0][i].setPiece(PieceFactory.getPiece(this, "Rook", player));
+        this.squares[7][i].setPiece(PieceFactory.getPiece(this, "Rook", player));
+        this.squares[1][i].setPiece(PieceFactory.getPiece(this, "Knight", player));
+        this.squares[6][i].setPiece(PieceFactory.getPiece(this, "Knight", player));
+        this.squares[2][i].setPiece(PieceFactory.getPiece(this, "Bishop", player));
+        this.squares[5][i].setPiece(PieceFactory.getPiece(this, "Bishop", player));
         if (upsideDown)
         {
-            this.squares[4][i].setPiece(new Queen(this, player));
+            this.squares[4][i].setPiece(PieceFactory.getPiece(this, "Queen", player));
             if (player.getColor() == Colors.WHITE)
             {
-                kingWhite = new King(this, player);
+                kingWhite = (King)PieceFactory.getPiece(this, "King", player);
                 this.squares[3][i].setPiece(kingWhite);
             }
             else
             {
-                kingBlack = new King(this, player);
+                kingBlack = (King)PieceFactory.getPiece(this, "King", player);
                 this.squares[3][i].setPiece(kingBlack);
             }
         }
         else
         {
-            this.squares[3][i].setPiece(new Queen(this, player));
+            this.squares[3][i].setPiece(PieceFactory.getPiece(this, "Queen", player));
             if (player.getColor() == Colors.WHITE)
             {
-                kingWhite = new King(this, player);
+                kingWhite = (King)PieceFactory.getPiece(this, "King", player);
                 this.squares[4][i].setPiece(kingWhite);
             }
             else
             {
-                kingBlack = new King(this, player);
+                kingBlack = (King)PieceFactory.getPiece(this, "King", player);
                 this.squares[4][i].setPiece(kingBlack);
             }
         }
@@ -220,7 +220,7 @@ public class Chessboard extends JPanel
         }
         for (int x = 0; x < 8; x++)
         {
-            this.squares[x][i].setPiece(new Pawn(this, player));
+            this.squares[x][i].setPiece(PieceFactory.getPiece(this, "Pawn", player));
         }
     }
 
@@ -470,7 +470,7 @@ public class Chessboard extends JPanel
 
                     if (newPiece.equals("Queen")) // transform pawn to queen
                     {
-                        Queen queen = new Queen(this, end.getPiece().getPlayer());
+                        Queen queen = (Queen)PieceFactory.getPiece(this, "Queen", end.getPiece().getPlayer());
                         queen.setChessboard(end.getPiece().getChessboard());
                         queen.setPlayer(end.getPiece().getPlayer());
                         queen.setSquare(end.getPiece().getSquare());
@@ -478,7 +478,7 @@ public class Chessboard extends JPanel
                     }
                     else if (newPiece.equals("Rook")) // transform pawn to rook
                     {
-                        Rook rook = new Rook(this, end.getPiece().getPlayer());
+                        Rook rook = (Rook)PieceFactory.getPiece(this, "Rook", end.getPiece().getPlayer());
                         rook.setChessboard(end.getPiece().getChessboard());
                         rook.setPlayer(end.getPiece().getPlayer());
                         rook.setSquare(end.getPiece().getSquare());
@@ -486,7 +486,7 @@ public class Chessboard extends JPanel
                     }
                     else if (newPiece.equals("Bishop")) // transform pawn to bishop
                     {
-                        Bishop bishop = new Bishop(this, end.getPiece().getPlayer());
+                        Bishop bishop = (Bishop)PieceFactory.getPiece(this, "Bishop", end.getPiece().getPlayer()); 
                         bishop.setChessboard(end.getPiece().getChessboard());
                         bishop.setPlayer(end.getPiece().getPlayer());
                         bishop.setSquare(end.getPiece().getSquare());
@@ -494,7 +494,7 @@ public class Chessboard extends JPanel
                     }
                     else // transform pawn to knight
                     {
-                        Knight knight = new Knight(this, end.getPiece().getPlayer());
+                        Knight knight = (Knight)PieceFactory.getPiece(this, "Knight", end.getPiece().getPlayer()); 
                         knight.setChessboard(end.getPiece().getChessboard());
                         knight.setPlayer(end.getPiece().getPlayer());
                         knight.setSquare(end.getPiece().getSquare());

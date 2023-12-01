@@ -15,11 +15,6 @@
 package jchess.core.pieces;
 
 import jchess.core.Chessboard;
-// import jchess.core.Colors;
-// import jchess.core.pieces.Bishop;
-// import jchess.core.pieces.Knight;
-// import jchess.core.pieces.Queen;
-// import jchess.core.pieces.Rook;
 import jchess.core.Player;
 
 /**
@@ -27,12 +22,6 @@ import jchess.core.Player;
  */
 public class PieceFactory 
 {
-
-    // public static final Piece getPiece(Chessboard chessboard, Colors color, String pieceType, Player player) 
-    // {
-    //     return PieceFactory.getPiece(chessboard, color.getColorName(), pieceType, player);
-    // }
-    
     public static final Piece getPiece(Chessboard chessboard, String pieceType, Player player) 
     {
         Piece piece = null;
