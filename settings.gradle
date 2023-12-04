@@ -1,4 +1,5 @@
 rootProject.name = 'Coding-Ninjas-Chess'
 include('jchess')
 include 'webapp'
+include 'backend'
 
