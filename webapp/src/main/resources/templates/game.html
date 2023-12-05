@@ -12,18 +12,12 @@
             margin: 0;
         }
 
-        polygon:hover {
-            fill: orange;
+        .blue.light:hover, .blue.dark:hover, .red.light:hover, .red.dark:hover, .green.light:hover, .green.dark:hover {
+            fill: lightgrey;
         }
 
-<!--        polygon {-->
-<!--            fill: white;-->
-<!--            stroke: black-->
-<!--        }-->
-
         .blue.light {
-            fill:  #d6eaf8
-
+            fill:  #d6eaf8;
         }
 
         .blue.dark {
@@ -166,16 +160,13 @@
 
       polygons.forEach(function (polygon) {
         polygon.addEventListener('click', function () {
-          var classes = polygon.classList
-          console.log(classes)
-          var coordinates = classes[classes.length - 1];
-          console.log(coordinates)
+          var polygonId = polygon.id;
           fetch('/move', {
             method: 'POST',
             headers: {
               'Content-Type': 'text/plain',
             },
-            body: coordinates,
+            body: polygonId,
           })
           .then(response => response.json())
           .then(data => updateBoard(data))
