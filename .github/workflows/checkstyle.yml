@@ -27,3 +27,9 @@ jobs:
 
     - name: Run Checkstyle
       run: ./gradlew checkstyleMain
+
+    - name: Upload Checkstyle report
+      uses: actions/upload-artifact@v3
+      with:
+        name: checkstyle-report
+        path: app/build/reports/checkstyle/main.html
