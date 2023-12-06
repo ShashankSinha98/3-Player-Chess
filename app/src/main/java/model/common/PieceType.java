@@ -106,16 +106,16 @@ public enum PieceType{
    * Returns the unicode character corresponding to a 
    * black version of this piece.
    * **/
-//  public char getChar(){
-//    switch(this){
-//      case KING: return '\u265A';
-//      case QUEEN: return '\u265B';
-//      case ROOK: return '\u265C'; 
-//      case BISHOP: return '\u265D';
-//      case KNIGHT: return '\u265E';
-//      case PAWN: return '\u265F';
-//      default: return '?';           
-//    }
-//  }
+  public char getChar(){
+    switch(this){
+      case KING: return '\u265A';
+      case QUEEN: return '\u265B';
+      case ROOK: return '\u265C'; 
+      case BISHOP: return '\u265D';
+      case KNIGHT: return '\u265E';
+      case PAWN: return '\u265F';
+      default: return '?';           
+    }
+  }
 }
 

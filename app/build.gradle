@@ -36,7 +36,8 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'jchess.JChessApp'
+    // mainClass = 'jchess.JChessApp'
+    mainClass = 'ThreeChess'
 }
 
 jar {

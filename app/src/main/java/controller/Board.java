@@ -12,7 +12,7 @@ import model.utilities.ImpossiblePositionException;
  * as well as whose move it is, and which pieces have been 
  * captured by which player.
  * **/
-public class Board { // implements Cloneable, Serializable
+public class Board implements Cloneable { // implements Cloneable, Serializable
 	
 	private static Board mBoardInstance = null;
 	
@@ -325,6 +325,14 @@ public class Board { // implements Cloneable, Serializable
 	  }
 	  
 	  /**
+	   * Gets the player whose turn it currently is
+	   * @return the colour of the player whose turn it is.
+	   * **/
+	  public Colour getTurn(){
+	    return turn;
+	  }
+	  
+	  /**
 	   * Returns the number of moves made so far.
 	   * @return the number of moves made in the game.
 	   * **/
@@ -343,6 +351,13 @@ public class Board { // implements Cloneable, Serializable
 	      return history.get(index).clone();
 	    }
 	    else throw new ArrayIndexOutOfBoundsException("Index out of bounds.");
+	  }
+	  
+	  /** 
+	   * @return true if the game has ended
+	   * **/
+	  public boolean gameOver(){
+	    return gameOver;
 	  }
 	  
 	  
@@ -375,6 +390,22 @@ public class Board { // implements Cloneable, Serializable
 	      }
 	    }
 	    return null;
+	  }
+	  
+	  /**
+	   * Returns a deep clone of the board state, 
+	   * such that no operations will affect the original board instance.
+	   * @return a deep clone of the board state.
+	   * **/ 
+	  public Object clone() throws CloneNotSupportedException{
+	    Board clone = (Board) super.clone();
+	    clone.board = (HashMap<Position,Piece>)board.clone();
+	    clone.history = new ArrayList<Position[]>();
+	    for(Position[] move: history) clone.history.add(move.clone());
+	    // clone.timeLeft = (HashMap<Colour,Integer>) timeLeft.clone();
+	    clone.captured = new HashMap<Colour,ArrayList<Piece>>();
+	    for(Colour c: Colour.values()) clone.captured.put(c, (ArrayList<Piece>) captured.get(c).clone());
+	    return clone;
 	  }
 
 }
