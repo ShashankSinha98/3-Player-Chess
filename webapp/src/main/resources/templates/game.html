@@ -12,7 +12,11 @@
             margin: 0;
         }
 
-        .blue.light:hover, .blue.dark:hover, .red.light:hover, .red.dark:hover, .green.light:hover, .green.dark:hover {
+        /* .blue.light:hover, .blue.dark:hover, .red.light:hover, .red.dark:hover, .green.light:hover, .green.dark:hover {*/
+        /*    fill: lightgrey;*/
+        /*}*/
+
+        .red.light.highlight, .red.dark.highlight, .blue.light.highlight, .blue.dark.highlight, .green.light.highlight, .green.dark.highlight {
             fill: lightgrey;
         }
 
@@ -156,24 +160,62 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var polygons = document.querySelectorAll('polygon');
+        const polygons = document.querySelectorAll('polygon');
 
-      polygons.forEach(function (polygon) {
+        polygons.forEach(function (polygon) {
         polygon.addEventListener('click', function () {
-          var polygonId = polygon.id;
-          fetch('/move', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'text/plain',
-            },
-            body: polygonId,
-          })
-          .then(response => response.json())
-          .then(data => updateBoard(data))
-          .catch(error => console.error('Fehler beim Senden der Anfrage:', error));
+            const polygonId = polygon.id;
+            if(polygon.classList.contains('highlight')){
+                console.log('Clicked highlighted square');
+                polygons.forEach( polygon => polygon.classList.remove('highlight'));
+                fetch('/move', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                    body: polygonId,
+                }).then(response => response.json())
+                    .then(data => updateBoard(data))
+                    .catch(error => console.error('Fehler beim Senden der Anfrage:', error));
+            } else{
+                if(hasHighlighting()){
+                    removeHighlighting()
+                } else{
+                    fetch('/allMoves', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'text/plain',
+                        },
+                        body: polygonId,
+                    }).then(response => response.json())
+                        .then(data => displayPossibleMoves(data))
+                        //.then(response => response.json())
+                        //.then(data => updateBoard(data))
+                        .catch(error => console.error('Fehler beim Senden der Anfrage:', error));
+                }
+            }
+
         });
       });
     });
+
+    function displayPossibleMoves(data){
+        console.log(data);
+        data.forEach(function (squareId) {
+            const polygon = document.getElementById(squareId);
+            polygon.classList.add('highlight')
+        });
+    }
+
+    function removeHighlighting(){
+        const polygons = document.querySelectorAll('polygon');
+        polygons.forEach( polygon => polygon.classList.remove('highlight'));
+    }
+
+    function hasHighlighting(){
+        const polygons = document.querySelectorAll('polygon.highlight');
+        return polygons.length > 0;
+    }
 
     const pieceMap = {
         'R': '♖',
@@ -210,8 +252,20 @@
         let y = (punkte.getItem(0).y + punkte.getItem(2).y)/2;
 
         const textElement = getPieceText(x, y, pieceColor, pieceToken );
+        //textElement.onmouseover = function () {addHoverEffect(square)}
+        //textElement.onmouseout = function () {removeHoverEffect(square)}
         square.parentNode.insertBefore(textElement, square.nextSibling);
     }
+
+    /*function addHoverEffect(square){
+        console.log("Mouse over Event ");
+        square.classList.add('highlight');
+    }
+
+    function removeHoverEffect(square){
+        console.log("Mouse over Event ");
+        square.classList.remove('highlight');
+    }*/
 
 
 

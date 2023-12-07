@@ -19,7 +19,7 @@ public class Board {
         Square h1 = new Square(color, "h1");
 
         Piece rook2 = new Piece(PieceSymbol.R, color);
-        Square e4 = new Square(color, "e4");
+        Square a1 = new Square(color, "a1");
 
         Piece knight1 = new Piece(PieceSymbol.N, color);
         Square g1 = new Square(color, "g1");
@@ -39,7 +39,7 @@ public class Board {
         Piece queen = new Piece(PieceSymbol.Q, color);
         Square d1 = new Square(color, "d1");
 
-        chessboard.put(e4, rook1);
+        chessboard.put(a1, rook1);
         chessboard.put(b1, knight1);
         chessboard.put(c1, bishop1);
         chessboard.put(d1, queen);
