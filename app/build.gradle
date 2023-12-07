@@ -9,6 +9,8 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'java'
+    id 'checkstyle'
+
 //    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
@@ -57,7 +59,12 @@ jar {
 //}
 
 
-
+checkstyle {
+    toolVersion = "9.0"
+    configFile = file("${rootProject.projectDir}/config/checkstyle.xml")
+	ignoreFailures = true
+    showViolations = true
+}
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
