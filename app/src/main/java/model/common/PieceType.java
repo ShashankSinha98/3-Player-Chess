@@ -7,18 +7,13 @@ package model.common;
  * using the typical values, but 40 for the King.
  * **/
 public enum PieceType{
-//  PAWN(1),
-//  KNIGHT(3),
-//  BISHOP(3),
-//  ROOK(5),
-//  QUEEN(9),
-//  KING(40);//worth one more than all the other pieces combined.
-	PAWN,
-	KNIGHT,
-	BISHOP,
-	ROOK,
-	QUEEN,
-	KING;
+
+	PAWN, //P
+	KNIGHT, //N
+	BISHOP, //B
+	ROOK, //R
+	QUEEN, //Q
+	KING; //K
 
   /**the utility associated with taking this piece**/
   //private final int value;

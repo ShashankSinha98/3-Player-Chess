@@ -38,8 +38,6 @@ public class GUIAgent extends Agent {
 
   /** @return the Agent's name, for annotating game description. **/
   public String toString(){return name;}
-
-  /** Unused for the GUI agent. **/
-  public void finalBoard(Board finalBoard){}
+  
 }
 

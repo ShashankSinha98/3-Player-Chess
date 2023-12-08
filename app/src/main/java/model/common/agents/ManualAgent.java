@@ -55,6 +55,8 @@ public class ManualAgent extends Agent{
       }
       catch(IllegalArgumentException e){
         System.out.println("Invalid move format. Use style \"BA1 RA1\".");
+      } finally {
+        sc.close();
       }
     } 
   }
@@ -63,14 +65,6 @@ public class ManualAgent extends Agent{
    * @return the Agent's name, for annotating game description.
    * **/ 
   public String toString(){return name;}
-
-  /**
-   * Displays the final board position to the agent, 
-   * if required for learning purposes. 
-   * Other a default implementation may be given.
-   * @param finalBoard the end position of the board
-   * **/
-  public void finalBoard(Board finalBoard){}
 
 }
 

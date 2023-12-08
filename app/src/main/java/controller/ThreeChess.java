@@ -82,7 +82,7 @@ public class ThreeChess{
    * @param displayOn a boolean flag for whether the game should be graphically displayed
    * @param logFile a FileName to print the game logs to. If this can't be found, or is null, System.out will be used instead.
    * **/
-  public static void  tournament(Agent[] bots, int numGames, Boolean displayOn, String logFile){
+  public static void  tournament(Agent[] bots, int numGames, String logFile){
     HashMap<Agent, Statistics> scoreboard = new HashMap<Agent,Statistics>();
     PrintStream logger = System.out;
     try{
@@ -92,7 +92,7 @@ public class ThreeChess{
     for(Agent a: bots) scoreboard.put(a, new Statistics(a));
     
     // play a manual game
-    int[] res = play(bots[0],bots[1],bots[2], logger, displayOn);
+    int[] res = play(bots[0],bots[1],bots[2], logger);
     
     for(int o = 0; o<3;o++)scoreboard.get(bots[o]).update(res[o]);
     for(Agent a: bots)logger.println(scoreboard.get(a));
@@ -116,7 +116,7 @@ public class ThreeChess{
    * @param displayOn a boolean flag for whether the game should be graphically displayed
    * @return an array of three ints, the scores for blue, green and red, in that order.
    * **/
-  public static int[] play(Agent blue, Agent green, Agent red, PrintStream logger, boolean displayOn){
+  public static int[] play(Agent blue, Agent green, Agent red, PrintStream logger){
     // Board board = new Board(timeLimit>0?timeLimit*1000:1);
 	Board board = new Board();
     logger.println("======NEW GAME======");
@@ -124,10 +124,10 @@ public class ThreeChess{
     logger.println("GREEN: "+green.toString());
     logger.println("RED: "+red.toString());
     ThreeChessDisplay display = null;
-    if(displayOn) {
-      display = new ThreeChessDisplay(board, blue.toString(), green.toString(), red.toString());
-      GUIAgent.currentDisplay = display;
-    }
+    
+    display = new ThreeChessDisplay(board, blue.toString(), green.toString(), red.toString());
+    GUIAgent.currentDisplay = display;
+    
     while(!board.gameOver()){//note in an untimed game, this loop can run infinitely.
       Colour currentTurn = board.getTurn();
       Agent current = (currentTurn==Colour.BLUE?blue:(currentTurn==Colour.GREEN?green:red));
@@ -184,11 +184,11 @@ public class ThreeChess{
 	  
 	  if(args.length > 0 && args[0].equals("manual")){
 	      bots = new Agent[] {new ManualAgent(playerNames[0]), new ManualAgent(playerNames[1]), new ManualAgent(playerNames[2])};
-	      tournament(bots,0,true, null);
+	      tournament(bots,0, null);
 	    }
 	    else {
 	      bots = new Agent[] {new GUIAgent(playerNames[0]), new GUIAgent(playerNames[1]), new GUIAgent(playerNames[2])};
-	      tournament(bots,0,true, null);
+	      tournament(bots,0, null);
 	    }
   }
   

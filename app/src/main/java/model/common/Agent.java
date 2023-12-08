@@ -4,9 +4,6 @@ import controller.Board;
 
 public abstract class Agent { // implements Runnable{
 
-	  // private Board brd;
-	  // private Position[] mv;
-	  
 	  /**
 	   * 0 argument constructor. 
 	   * This is the constructor that will be used to create the agent in tournaments.
@@ -32,23 +29,6 @@ public abstract class Agent { // implements Runnable{
 	   * **/ 
 	  public abstract String toString();
 
-	  /**
-	   * Displays the final board position to the agent, 
-	   * if required for learning purposes. 
-	   * Other a default implementation may be given.
-	   * @param finalBoard the end position of the board
-	   * **/
-	  public abstract void finalBoard(Board finalBoard);
-
-	  /**
-	   * For running threaded games.
-	   * **/
-//	  public final void setBoard(Board board){brd = board;}
-//	  public final Position[] getMove(){return mv;}
-//	  public void run(){
-//	    mv = playMove(brd);
-//	  }
-
-	}
+}
 
 
