@@ -1,5 +1,6 @@
 package application.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,7 @@ public class MoveController {
 //        board.remove(square);
 //        board.put(square1, piece);
         //board.put(square, new Piece(PieceSymbol.P, Color.R));
-        //TODO pass the move to the game logic
+        //TODO pass the move to the game logic game.makeMove("Ra1", "Ra3")
         //TODO call game logic here to get the updated board
         return board;
     }
@@ -38,6 +39,13 @@ public class MoveController {
         System.out.println("Response: " + allMoves);
         return allMoves;
     }
+
+//    @GetMapping("/playerTurn")
+//    public String handlePlayerTurn(){
+//        System.out.println("Requesting player turn");
+//        //TODO call game logic here to get the updated board
+//        return "";
+//    }
 
 
 }

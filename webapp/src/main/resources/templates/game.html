@@ -51,7 +51,19 @@
             fill:  #ec7063
         }
 
-        text {
+        /*text {*/
+        /*    font-family: 'DejaVuSans', sans-serif;*/
+        /*}*/
+
+        .font1{
+            font-family: 'Arial', sans-serif;
+        }
+
+        .font2{
+            font-family: 'FreeSerif', sans-serif;
+        }
+
+        .font3{
             font-family: 'DejaVuSans', sans-serif;
         }
 
@@ -88,7 +100,18 @@
 
 <div class="gameview">
     <div class="leftpane">
-        <h2>Left Pane</h2>
+        <h2 align="center">Themes</h2>
+        <form>
+            <input type="radio" name="font" id="font1" onclick="updateFont(id)" checked>
+            <label for="font1">Default</label>
+
+            <input type="radio" name="font" id="font2" onclick="updateFont(id)">
+            <label for="font2">Free Sans</label>
+
+            <input type="radio" name="font" id="font3" onclick="updateFont(id)">
+            <label for="font3">Dejavu Sans</label>
+        </form>
+
     </div>
     <div class="middlepane">
         <h1 align="center">Three Player Chess Application</h1>
@@ -199,7 +222,7 @@
             <polygon id="Ra4" class="red light a4" points="164.9999999999999,311.76914536239804 89.99999999999989,259.8076211353317 119.99999999999989,207.84609690826534 209.9999999999999,259.80762113533166" ></polygon>
         </svg>
     </div>
-    <div class="leftpane">
+    <div class="rightpane">
         <h2>Right Pane</h2>
     </div>
 </div>
@@ -244,6 +267,12 @@
         });
       });
     });
+
+    function updateFont(name){
+        console.log('New Font: ' + name)
+        const pieceList = document.querySelectorAll('text');
+        pieceList.forEach(piece => piece.setAttribute('class', name))
+    }
 
     function displayPossibleMoves(data){
         console.log(data);
