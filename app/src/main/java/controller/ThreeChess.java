@@ -1,9 +1,9 @@
+package controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
-import controller.Board;
 import model.common.Agent;
 import model.common.Colour;
 import model.common.Position;
@@ -17,10 +17,6 @@ import view.ThreeChessDisplay;
  * @author Tim French
  * **/
 public class ThreeChess{
-
-  private final static int pause = 1000;//The pause in milliseconds between updating the graphical board
-  private final static int[][] perms = {{0,1,2},{0,2,1},{1,0,2},{1,2,0},{2,0,1},{2,1,0}};//to randomise play order
-  private final static Random random = new Random();
   
   /**
    * A private class for representing the statistics of an agent in a tournament.
@@ -86,7 +82,7 @@ public class ThreeChess{
    * @param displayOn a boolean flag for whether the game should be graphically displayed
    * @param logFile a FileName to print the game logs to. If this can't be found, or is null, System.out will be used instead.
    * **/
-  public static void  tournament(Agent[] bots, int timeLimit, int numGames, Boolean displayOn, String logFile){
+  public static void  tournament(Agent[] bots, int numGames, Boolean displayOn, String logFile){
     HashMap<Agent, Statistics> scoreboard = new HashMap<Agent,Statistics>();
     PrintStream logger = System.out;
     try{
@@ -96,7 +92,7 @@ public class ThreeChess{
     for(Agent a: bots) scoreboard.put(a, new Statistics(a));
     
     // play a manual game
-    int[] res = play(bots[0],bots[1],bots[2], timeLimit, logger, displayOn);
+    int[] res = play(bots[0],bots[1],bots[2], logger, displayOn);
     
     for(int o = 0; o<3;o++)scoreboard.get(bots[o]).update(res[o]);
     for(Agent a: bots)logger.println(scoreboard.get(a));
@@ -120,10 +116,9 @@ public class ThreeChess{
    * @param displayOn a boolean flag for whether the game should be graphically displayed
    * @return an array of three ints, the scores for blue, green and red, in that order.
    * **/
-  public static int[] play(Agent blue, Agent green, Agent red, int timeLimit, PrintStream logger, boolean displayOn){
+  public static int[] play(Agent blue, Agent green, Agent red, PrintStream logger, boolean displayOn){
     // Board board = new Board(timeLimit>0?timeLimit*1000:1);
 	Board board = new Board();
-    boolean timed = timeLimit>0;
     logger.println("======NEW GAME======");
     logger.println("BLUE: "+blue.toString());
     logger.println("GREEN: "+green.toString());
@@ -153,16 +148,9 @@ public class ThreeChess{
       long time = (System.nanoTime() - startTime + 500_000L) / 1_000_000L; // Rounds to nearest millisecond
       if(move!=null && move.length==2 && board.isLegalMove(move[0],move[1])){
         try{
-          board.move(move[0],move[1],(timed?(int)time:0));
+          // board.move(move[0],move[1],(timed?(int)time:0));
+          board.move(move[0],move[1]);
           logger.println(currentTurn + ": " + move[0] + '-' + move[1] + " t:" + time);
-          if(displayOn){
-            // There's no point in sleeping if we have to wait for the user to input their move anyway.
-            if (current.isAutonomous()) {
-              try{Thread.sleep(pause);}
-              catch(InterruptedException e){}
-            }
-            display.repaintCanvas();
-          }
         }
         catch(ImpossiblePositionException e){logger.println(e.getMessage());}
       }
@@ -196,11 +184,11 @@ public class ThreeChess{
 	  
 	  if(args.length > 0 && args[0].equals("manual")){
 	      bots = new Agent[] {new ManualAgent(playerNames[0]), new ManualAgent(playerNames[1]), new ManualAgent(playerNames[2])};
-	      tournament(bots,60,0,true, null);
+	      tournament(bots,0,true, null);
 	    }
 	    else {
 	      bots = new Agent[] {new GUIAgent(playerNames[0]), new GUIAgent(playerNames[1]), new GUIAgent(playerNames[2])};
-	      tournament(bots,60,0,true, null);
+	      tournament(bots,0,true, null);
 	    }
   }
   

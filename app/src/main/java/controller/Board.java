@@ -277,13 +277,10 @@ public class Board implements Cloneable { // implements Cloneable, Serializable
 	   * @param time the number of milliseconds taken to play the move
 	   * @throws ImpossiblePositionException if the move is not legal
 	   * **/ 
-	  public void move(Position start, Position end, int time) throws ImpossiblePositionException{
+	  public void move(Position start, Position end) throws ImpossiblePositionException{
 	    if(isLegalMove(start,end)){
 	      Piece mover = board.get(start);
 	      Piece taken = board.get(end);
-	      // timeLeft.put(mover.getColour(),timeLeft.get(mover.getColour())-time);
-	      // if(timeLeft.get(mover.getColour())<0) gameOver=true;
-	      // else{
 	      board.remove(start);//empty start square
 	      if(mover.getType()==PieceType.PAWN && end.getRow()==0 && end.getColour()!=mover.getColour())
 	        board.put(end, new Piece(PieceType.QUEEN, mover.getColour()));//promote pawn if back rank
@@ -320,9 +317,9 @@ public class Board implements Cloneable { // implements Cloneable, Serializable
 	   * @param end the ending position of the move
 	   * @throws ImpossiblePositionException if the move is not legal
 	   * **/ 
-	  public void move(Position start, Position end) throws ImpossiblePositionException{
-	    move(start,end,0);
-	  }
+	//   public void move(Position start, Position end) throws ImpossiblePositionException{
+	//     move(start,end,0);
+	//   }
 	  
 	  /**
 	   * Gets the player whose turn it currently is

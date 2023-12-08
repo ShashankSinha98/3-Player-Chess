@@ -27,11 +27,6 @@ public class GUIAgent extends Agent {
     );
   }
 
-  @Override
-  public boolean isAutonomous() {
-    return false;
-  }
-
   /** Gets and returns a move from the display for this agent. **/
   public Position[] playMove(Board board){
     try {
