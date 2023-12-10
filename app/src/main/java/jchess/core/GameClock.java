@@ -24,7 +24,7 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.swing.JPanel;
 
-import jchess.view.Settings;
+import jchess.util.Settings;
 
 /** Class to representing the full game time
  * @param game The current game

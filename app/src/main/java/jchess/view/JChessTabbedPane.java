@@ -27,6 +27,7 @@ import jchess.JChessApp;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.ImageObserver;
+import jchess.util.GUI;
 
 public class JChessTabbedPane extends JTabbedPane implements MouseListener, ImageObserver
 {

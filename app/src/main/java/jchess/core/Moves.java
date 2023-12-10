@@ -21,7 +21,7 @@
 package jchess.core;
 
 import jchess.core.pieces.Piece;
-import jchess.view.Settings;
+import jchess.util.Settings;
 
 import java.util.ArrayList;
 import java.util.Stack;

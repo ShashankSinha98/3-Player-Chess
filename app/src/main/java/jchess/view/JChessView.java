@@ -23,6 +23,8 @@ import org.jdesktop.application.TaskMonitor;
 
 import jchess.JChessApp;
 import jchess.core.Game;
+import jchess.util.GUI;
+import jchess.util.Settings;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,9 +35,6 @@ import javax.swing.JFrame;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
-import java.applet.*;
-import java.io.IOException;
-
 
 
 /**

@@ -18,22 +18,17 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package jchess.view;
+package jchess.util;
 
 import java.awt.*;
 import java.net.*;
 import java.io.*;
-import java.io.InputStreamReader;
-import javax.swing.*;
-import javax.swing.JPanel;
 
 import jchess.JChessApp;
 import jchess.core.Game;
 
-import java.io.IOException;
 import java.util.Properties;
-import java.io.FileOutputStream;
-import java.util.logging.Logger;
+
 
 /** Class representing the game interface which is seen by a player and
  * where are lockated available for player opptions, current games and where
@@ -84,12 +79,12 @@ public class GUI
     }/*--endOf-loadImage--*/
 
 
-    static boolean themeIsValid(String name)
+    public static boolean themeIsValid(String name)
     {
         return true;
     }
 
-    static String getJarPath()
+    public static String getJarPath()
     {
         String path = GUI.class.getProtectionDomain().getCodeSource().getLocation().getFile();
         path = path.replaceAll("[a-zA-Z0-9%!@#$%^&*\\(\\)\\[\\]\\{\\}\\.\\,\\s]+\\.jar", "");
@@ -102,10 +97,10 @@ public class GUI
         return path;
     }
 
-    static Properties getConfigFile()
+    public static Properties getConfigFile()
     {
         Properties defConfFile = new Properties();
-        Properties confFile = new Properties();
+        // Properties confFile = new Properties();
         // File outFile = new File(GUI.getJarPath() + File.separator + "config.txt");
         try
         {

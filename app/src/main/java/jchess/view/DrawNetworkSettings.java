@@ -40,7 +40,8 @@ import javax.swing.JTextField;
 import jchess.JChessApp;
 import jchess.network.Client;
 import jchess.core.Game;
-import jchess.core.MD5;
+import jchess.util.MD5;
+import jchess.util.Settings;
 import jchess.server.Server;
 
 /**

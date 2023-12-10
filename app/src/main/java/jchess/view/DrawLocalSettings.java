@@ -30,6 +30,7 @@ import javax.swing.text.BadLocationException;
 import jchess.JChessApp;
 import jchess.core.Game;
 import jchess.core.Player;
+import jchess.util.Settings;
 
 /**
  * Class responsible for drawing the fold with local game settings

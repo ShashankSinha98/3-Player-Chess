@@ -27,6 +27,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import jchess.JChessApp;
+import jchess.util.GUI;
+import jchess.util.Settings;
 
 import javax.swing.event.ListSelectionEvent;
 import java.io.File;
@@ -134,8 +136,7 @@ public class ThemeChooseWindow extends JDialog implements ActionListener, ListSe
                 prp.setProperty("THEME", name);
                 try
                 {
-                    //FileOutputStream fOutStr = new FileOutputStream(ThemeChooseWindow.class.getResource("config.txt").getFile());
-                    FileOutputStream fOutStr = new FileOutputStream("config.txt");
+                    FileOutputStream fOutStr = new FileOutputStream(GUI.getJarPath() +"config.txt");
                     prp.store(fOutStr, null);
                     fOutStr.flush();
                     fOutStr.close();

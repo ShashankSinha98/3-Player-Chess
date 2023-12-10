@@ -37,8 +37,11 @@ package jchess.core.pieces;
         |_|_|_|_|_|_|_|_|0
         0 1 2 3 4 5 6 7
  */
-import jchess.core.*;
-import jchess.view.GUI;
+import jchess.core.Chessboard;
+import jchess.core.Colors;
+import jchess.core.Player;
+import jchess.core.Square;
+import jchess.util.GUI;
 
 import java.util.ArrayList;
 import java.awt.Image;

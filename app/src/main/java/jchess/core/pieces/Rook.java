@@ -22,7 +22,7 @@
 package jchess.core.pieces;
 
 import jchess.core.*;
-import jchess.view.GUI;
+import jchess.util.GUI;
 
 import java.util.ArrayList;
 import java.awt.Image;

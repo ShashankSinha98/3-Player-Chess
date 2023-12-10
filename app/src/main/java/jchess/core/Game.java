@@ -23,7 +23,7 @@ package jchess.core;
 import jchess.JChessApp;
 import jchess.core.pieces.King;
 import jchess.network.Chat;
-import jchess.view.Settings;
+import jchess.util.Settings;
 import jchess.network.Client;
 
 import java.awt.event.ComponentEvent;

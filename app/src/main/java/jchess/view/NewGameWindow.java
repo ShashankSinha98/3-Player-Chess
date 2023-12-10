@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 import java.util.PropertyResourceBundle;
 import java.util.Locale;
 
+import jchess.util.Settings;
 /**
  *
  * @author donmateo

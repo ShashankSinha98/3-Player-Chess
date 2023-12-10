@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jchess.server.Connection_info;
-import jchess.view.Settings;
+import jchess.util.Settings;
 import jchess.core.Game;
 /**
  * Class responsible for clients references:

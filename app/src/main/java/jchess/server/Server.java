@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import jchess.core.MD5;
+import jchess.util.MD5;
 
 public class Server implements Runnable
 {

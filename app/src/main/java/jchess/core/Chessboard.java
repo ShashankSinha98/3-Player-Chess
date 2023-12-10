@@ -31,7 +31,8 @@ import javax.swing.JPanel;
 import jchess.JChessApp;
 import jchess.core.Moves.castling;
 import jchess.core.pieces.*;
-import jchess.view.*;
+import jchess.util.GUI;
+import jchess.util.Settings;
 
 /** Class to represent chessboard. Chessboard is made from squares.
  * It is setting the squers of chessboard and sets the pieces(pawns)
