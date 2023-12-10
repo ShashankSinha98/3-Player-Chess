@@ -1,4 +1,5 @@
 plugins {
+    id 'application'
     id 'java'
 }
 
@@ -7,6 +8,26 @@ version = 'unspecified'
 
 repositories {
     mavenCentral()
+}
+
+application {
+    // Define the main class for the application.
+    mainClass = 'main.GameMain'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+}
+
+jar {
+    //archiveBaseName = 'jchess'
+    //archiveVersion =  '0.1.0'
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 dependencies {

@@ -33,4 +33,8 @@ public class Board {
 
     public Map<Position, Piece> getBoardMap() { return this.board; }
 
+    public boolean isEmpty(int squareIndex) throws ImpossiblePositionException {
+        return !board.containsKey(Position.get(squareIndex));
+    }
+
 }
