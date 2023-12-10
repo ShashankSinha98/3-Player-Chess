@@ -234,35 +234,15 @@
         polygons.forEach(function (polygon) {
         polygon.addEventListener('click', function () {
             const polygonId = polygon.id;
-            if(polygon.classList.contains('highlight')){
-                console.log('Clicked highlighted square');
-                polygons.forEach( polygon => polygon.classList.remove('highlight'));
-                fetch('/move', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain',
-                    },
-                    body: polygonId,
-                }).then(response => response.json())
-                    .then(data => updateBoard(data))
-                    .catch(error => console.error('Fehler beim Senden der Anfrage:', error));
-            } else{
-                if(hasHighlighting()){
-                    removeHighlighting()
-                } else{
-                    fetch('/allMoves', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'text/plain',
-                        },
-                        body: polygonId,
-                    }).then(response => response.json())
-                        .then(data => displayPossibleMoves(data))
-                        //.then(response => response.json())
-                        //.then(data => updateBoard(data))
-                        .catch(error => console.error('Fehler beim Senden der Anfrage:', error));
-                }
-            }
+            fetch('/move', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                body: polygonId,
+            }).then(response => response.json())
+                .then(data => updateBoard(data))
+                .catch(error => console.error('Fehler beim Senden der Anfrage:', error));
 
         });
       });
@@ -275,7 +255,7 @@
     }
 
     function displayPossibleMoves(data){
-        console.log(data);
+        //console.log(data);
         data.forEach(function (squareId) {
             const polygon = document.getElementById(squareId);
             polygon.classList.add('highlight')
@@ -308,19 +288,20 @@
         console.log('New Board Configuration:', data);
 
         for (const squareId in data) {
-            if (data.hasOwnProperty(squareId)) {
-                const value = data[squareId];
-                const pieceToken = value.piece;
-                const pieceColor = value.color;
-                displayPiece(squareId, pieceToken, pieceColor);
-            }
+
+            const value = data[squareId];
+            const pieceColor = value[0];
+            const pieceToken = value[1];
+
+            displayPiece(squareId, pieceToken, pieceColor);
+
         }
     }
 
     function displayPiece(squareId, pieceToken, pieceColor) {
-        console.log(squareId);
+        //console.log(squareId);
         const square = document.getElementById(squareId);
-        console.log(square);
+        //console.log(square);
         const punkte = square.points;
 
         let x = (punkte.getItem(0).x + punkte.getItem(2).x)/2;

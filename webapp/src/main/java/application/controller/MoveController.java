@@ -1,5 +1,8 @@
 package application.controller;
 
+import abstraction.IGameInterface;
+import common.ImpossiblePositionException;
+import main.GameMain;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,18 +17,33 @@ import java.util.Map;
 
 @RestController
 public class MoveController {
+    private IGameInterface game;
+
+    public MoveController() {
+        this.game = new GameMain();
+    }
+
+    private int calculateSquareId(String square){
+        char color = square.charAt(0);
+        int y = square.charAt(1) - 'a';
+        int x = square.charAt(2) - '1';
+        int offset = 0;
+        if(color == 'G'){
+            offset = 32;
+        }else if(color == 'R'){
+            offset = 64;
+        }
+
+        return offset + x + 4*y;
+    }
+
     @PostMapping("/move")
-    public Map<Square, Piece> handleMove(@RequestBody String squareText) {
-        System.out.println("valid end square: " + squareText);
-        Map<Square, Piece> board = Board.getInitialPosition();
-//        Square square = new Square(Color.R, "d2");
-//        Square square1 = new Square(Color.R, "d4");
-//        Piece piece = board.get(square);
-//        board.remove(square);
-//        board.put(square1, piece);
-        //board.put(square, new Piece(PieceSymbol.P, Color.R));
-        //TODO pass the move to the game logic game.makeMove("Ra1", "Ra3")
-        //TODO call game logic here to get the updated board
+    public Map<String, String> handleMove(@RequestBody String squareText) throws ImpossiblePositionException {
+        int squareId = calculateSquareId(squareText);
+
+        System.out.println("Square: " + squareText + " with ID " +squareId);
+        Map<String, String> board = game.onClick(squareId);
+
         return board;
     }
 
