@@ -9,7 +9,7 @@ name: Checkstyle
 
 on:
   push:
-    branches: [ "feature/checkstyleIntegration" ]
+    branches: [ "feature/mvcArchitecture" ]
 
 jobs:
   checkstyle:

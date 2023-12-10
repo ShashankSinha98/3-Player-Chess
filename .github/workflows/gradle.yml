@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "feature/checkstyleIntegration" ]
+    branches: [ "feature/mvcArchitecture" ]
   
 
 permissions:
