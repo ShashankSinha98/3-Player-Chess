@@ -1,6 +1,7 @@
 plugins {
     id 'application'
     id 'java'
+    id 'checkstyle'
 }
 
 group = 'org.example'
@@ -30,11 +31,20 @@ jar {
     }
 }
 
+checkstyle {
+    toolVersion = "9.0"
+    configFile = file("${rootProject.projectDir}/config/checkstyle.xml")
+	ignoreFailures = true
+    showViolations = true
+}
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
 test {
+    // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
