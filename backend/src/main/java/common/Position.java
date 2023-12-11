@@ -92,6 +92,10 @@ public enum Position{
     throw new ImpossiblePositionException("No such position.");
   }
 
+  public int getValue() {
+    return this.row + (4 * this.column);
+  }
+
   private char getColumnChar(int col) {
     switch (col) {
         case 0: return 'a';
