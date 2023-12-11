@@ -26,10 +26,10 @@ jobs:
         java-version: '8'
 
     - name: Build and run Checkstyle for backend
-      run: ./gradlew :backend:checkstyle
+      run: ./gradlew :backend:checkstyleMain
 
     - name: Build and run Checkstyle for webapp
-      run: ./gradlew :webapp:checkstyle
+      run: ./gradlew :webapp:checkstyleMain
 
     - name: Upload Checkstyle reports
       uses: actions/upload-artifact@v3
