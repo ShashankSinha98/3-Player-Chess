@@ -50,12 +50,7 @@ public class MoveController {
     @PostMapping("/allMoves")
     public List<String> handleAllMoves(@RequestBody String squareText) {
         System.out.println("Requesting all possible moves of: " + squareText);
-        String squareId = squareText.substring(1);
-        List<String> allMoves = new ArrayList<>(Arrays.asList('R' + squareId,'G' + squareId, 'B' + squareId));
-        allMoves.remove(squareText);
-        //TODO call game logic here to get all possible Moves
-        System.out.println("Response: " + allMoves);
-        return allMoves;
+        return game.getHighlightSquarePositions();
     }
 
 //    @GetMapping("/playerTurn")

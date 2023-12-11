@@ -2,6 +2,7 @@ package abstraction;
 import common.Colour;
 import common.ImpossiblePositionException;
 
+import java.util.List;
 import java.util.Map;
 
 public interface IGameInterface {
@@ -28,10 +29,12 @@ public interface IGameInterface {
      * */
     Colour getTurn();
 
-    /** Unique square positions which will be highlighted when user click on a valid sqaure
-     *  to tell him possible valid moves
+    /**
+     * Unique square positions which will be highlighted when user click on a valid sqaure
+     * to tell him possible valid moves
+     *
      * @return list of square positions
      * TODO: Currently return hardcoded values
-     * */
-    Integer[] getHighlightSquarePositions();
+     */
+    List<String> getHighlightSquarePositions();
 }

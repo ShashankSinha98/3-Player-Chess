@@ -242,8 +242,17 @@
                 body: polygonId,
             }).then(response => response.json())
                 .then(data => updateBoard(data))
-                .catch(error => console.error('Fehler beim Senden der Anfrage:', error));
+                .catch(error => console.error('Error while sending the request:', error));
 
+            fetch('/allMoves', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                body: polygonId,
+            }).then(response => response.json())
+                .then(data => displayPossibleMoves(data))
+                .catch(error => console.error('Error while sending the request:', error));
         });
       });
     });
@@ -255,10 +264,14 @@
     }
 
     function displayPossibleMoves(data){
-        //console.log(data);
+        console.log(data);
+        removeHighlighting();
         data.forEach(function (squareId) {
             const polygon = document.getElementById(squareId);
-            polygon.classList.add('highlight')
+            if(polygon != null){
+                polygon.classList.add('highlight')
+            }
+
         });
     }
 

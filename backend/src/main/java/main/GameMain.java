@@ -5,6 +5,9 @@ import utility.BoardAdapter;
 import common.*;
 import utility.Log;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class GameMain implements IGameInterface {
@@ -16,7 +19,7 @@ public class GameMain implements IGameInterface {
     private Colour mTurn;
 
     private Position mStartPos, mEndPos;
-    private Integer[] mHighlightSquares;
+    private List<String> mHighlightSquares;
 
 
     public GameMain() {
@@ -30,7 +33,7 @@ public class GameMain implements IGameInterface {
         mIsGameRunning = false;
         mTurn = Colour.BLUE;
         mStartPos = mEndPos = null;
-        mHighlightSquares = null;
+        mHighlightSquares = new ArrayList<>();
     }
 
     public void play() {
@@ -52,7 +55,9 @@ public class GameMain implements IGameInterface {
             if(!mBoard.isEmpty(squarePos)) {
                 mStartPos = Position.get(squarePos);
                 Log.d(TAG, "First click, mStartPos: " + mStartPos);
-                mHighlightSquares = new Integer[] {79, 51}; // hardcoded for now
+                mHighlightSquares.add("Ra4");
+                mHighlightSquares.add("Bd3");
+                mHighlightSquares.add("Gc2"); // hardcoded for now
             } else {
                 Log.d(TAG, "First click, Clicked on empty square. mStartPos: " + mStartPos);
             }
@@ -63,6 +68,7 @@ public class GameMain implements IGameInterface {
 
             // reset start and end position
             mStartPos = mEndPos = null;
+            mHighlightSquares.clear();
         }
 
         return getBoard();
@@ -74,7 +80,7 @@ public class GameMain implements IGameInterface {
     }
 
     @Override
-    public Integer[] getHighlightSquarePositions() {
+    public List<String> getHighlightSquarePositions() {
         return mHighlightSquares;
     }
 }
