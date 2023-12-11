@@ -18,6 +18,10 @@ application {
     mainClass = 'main.GameMain'
 }
 
+springBoot {
+    mainClass = 'main.GameMain'
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
