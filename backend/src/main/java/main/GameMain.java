@@ -6,7 +6,6 @@ import common.*;
 import utility.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -14,12 +13,12 @@ public class GameMain implements IGameInterface {
 
     private static final String TAG = GameMain.class.getSimpleName();
 
-    private Board mBoard;
-    private boolean mIsGameRunning;
-    private Colour mTurn;
+    private Board board;
+    private boolean isGameRunning;
+    private Colour turn;
 
-    private Position mStartPos, mEndPos;
-    private List<String> mHighlightSquares;
+    private Position moveStartPos, moveEndPos;
+    private List<String> highlightSquares;
 
 
     public GameMain() {
@@ -29,15 +28,15 @@ public class GameMain implements IGameInterface {
 
     private void initGame() {
         Log.d(TAG, "initGame()");
-        mBoard = new Board();
-        mIsGameRunning = false;
-        mTurn = Colour.BLUE;
-        mStartPos = mEndPos = null;
-        mHighlightSquares = new ArrayList<>();
+        board = new Board();
+        isGameRunning = false;
+        turn = Colour.BLUE;
+        moveStartPos = moveEndPos = null;
+        highlightSquares = new ArrayList<>();
     }
 
     public void play() {
-        if(!mIsGameRunning) {
+        if(!isGameRunning) {
 
         }
     }
@@ -45,30 +44,32 @@ public class GameMain implements IGameInterface {
 
     @Override
     public Map<String, String> getBoard() {
-        return BoardAdapter.convertModelBoardToViewBoard(mBoard.getBoardMap());
+        return BoardAdapter.convertModelBoardToViewBoard(board.getBoardMap());
     }
 
     @Override
-    public Map<String, String> onClick(int squarePos) throws ImpossiblePositionException {
+    public Map<String, String> onClick(int squarePos) throws InvalidPositionException {
         Log.d(TAG, "onClick called: "+squarePos);
-        if(mStartPos == null) {
-            if(!mBoard.isEmpty(squarePos)) {
-                mStartPos = Position.get(squarePos);
-                Log.d(TAG, "First click, mStartPos: " + mStartPos);
-                mHighlightSquares.add("Ra4");
-                mHighlightSquares.add("Bd3");
-                mHighlightSquares.add("Gc2"); // hardcoded for now
-            } else {
-                Log.d(TAG, "First click, Clicked on empty square. mStartPos: " + mStartPos);
+        if(moveStartPos == null) {
+            if(!board.isEmpty(squarePos) && board.getBoardMap().get(Position.get(squarePos)).getColour() == turn) {
+                moveStartPos = Position.get(squarePos);
+                Log.d(TAG, "First click, mStartPos: " + moveStartPos);
+                highlightSquares.add("Ra4");
+                highlightSquares.add("Bd3");
+                highlightSquares.add("Gc2"); // hardcoded for now
+            }  else {
+                Log.d(TAG, "empty square or wrong player piece selected");
             }
         } else {
-            mEndPos = Position.get(squarePos);
-            Log.d(TAG, "Second click, mStartPos: "+mStartPos+", mEndPos: "+mEndPos);
-            mBoard.move(mStartPos, mEndPos);
+            moveEndPos = Position.get(squarePos);
+            Log.d(TAG, "Second click, mStartPos: "+ moveStartPos +", mEndPos: "+ moveEndPos);
+            board.move(moveStartPos, moveEndPos);
 
             // reset start and end position
-            mStartPos = mEndPos = null;
-            mHighlightSquares.clear();
+            moveStartPos = moveEndPos = null;
+            highlightSquares.clear();
+            turn = Colour.values()[(turn.ordinal()+1)%3];
+            Log.d(TAG, "turn: "+turn);
         }
 
         return getBoard();
@@ -76,11 +77,11 @@ public class GameMain implements IGameInterface {
 
     @Override
     public Colour getTurn() {
-        return mTurn;
+        return turn;
     }
 
     @Override
     public List<String> getHighlightSquarePositions() {
-        return mHighlightSquares;
+        return highlightSquares;
     }
 }

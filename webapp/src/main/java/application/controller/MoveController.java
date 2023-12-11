@@ -1,16 +1,12 @@
 package application.controller;
 
 import abstraction.IGameInterface;
-import common.ImpossiblePositionException;
+import common.InvalidPositionException;
 import main.GameMain;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import application.gamelogic.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +34,7 @@ public class MoveController {
     }
 
     @PostMapping("/move")
-    public Map<String, String> handleMove(@RequestBody String squareText) throws ImpossiblePositionException {
+    public Map<String, String> handleMove(@RequestBody String squareText) throws InvalidPositionException {
         int squareId = calculateSquareId(squareText);
 
         System.out.println("Square: " + squareText + " with ID " +squareId);

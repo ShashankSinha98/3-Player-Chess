@@ -20,7 +20,7 @@ public class Board {
                     board.put(Position.get(c,1,i), new Piece(PieceType.PAWN,c));
                 }
             }
-        }catch(ImpossiblePositionException e){}//no impossible positions in this code
+        }catch(InvalidPositionException e){}//no impossible positions in this code
     }
 
     public void move(Position start, Position end) {
@@ -33,7 +33,7 @@ public class Board {
 
     public Map<Position, Piece> getBoardMap() { return this.board; }
 
-    public boolean isEmpty(int squareIndex) throws ImpossiblePositionException {
+    public boolean isEmpty(int squareIndex) throws InvalidPositionException {
         return !board.containsKey(Position.get(squareIndex));
     }
 

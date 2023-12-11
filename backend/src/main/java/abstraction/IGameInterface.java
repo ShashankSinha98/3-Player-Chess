@@ -1,6 +1,6 @@
 package abstraction;
 import common.Colour;
-import common.ImpossiblePositionException;
+import common.InvalidPositionException;
 
 import java.util.List;
 import java.util.Map;
@@ -18,10 +18,10 @@ public interface IGameInterface {
      * updated board layout to player.
      * @param  squarePos The unique position of the square which is clicked by player
      * @return Board map which will be rendered by web view
-     * @throws ImpossiblePositionException if the square position is outside range [0, 95]
+     * @throws InvalidPositionException if the square position is outside range [0, 95]
      * // TODO: Currently blindly moves the piece
      * */
-    Map<String, String> onClick(int squarePos) throws ImpossiblePositionException;
+    Map<String, String> onClick(int squarePos) throws InvalidPositionException;
 
     /**
      * @return returns which colour turn it is currently

@@ -1,12 +1,10 @@
 package common;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.*;
 
@@ -35,22 +33,22 @@ public class BoardTest {
     // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
     @Test
     public void isEmpty_outOfBoundIndex_Exception() {
-        assertThrows(ImpossiblePositionException.class,
+        assertThrows(InvalidPositionException.class,
                 () -> {board.isEmpty(-1);});
 
-        assertThrows(ImpossiblePositionException.class,
+        assertThrows(InvalidPositionException.class,
                 () -> {board.isEmpty(96);});
     }
 
     @Test
-    public void isEmpty_nonEmptyIndex_False() throws ImpossiblePositionException {
+    public void isEmpty_nonEmptyIndex_False() throws InvalidPositionException {
         for(int pos: startingPiecesIndexes) {
             assertFalse(board.isEmpty(pos));
         }
     }
 
     @Test
-    public void isEmpty_emptyIndex_True() throws ImpossiblePositionException {
+    public void isEmpty_emptyIndex_True() throws InvalidPositionException {
         for(int pos=0; pos< TOTAL_SQUARES; pos++) {
             if(!startingPiecesIndexes.contains(pos)) {
                 assertTrue(board.isEmpty(pos));
