@@ -34,4 +34,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: jchess-artifact_test
-        path: app/build/libs/jchess-0.1.0.jar
+        path: jchess/build/libs/jchess-0.1.0.jar
