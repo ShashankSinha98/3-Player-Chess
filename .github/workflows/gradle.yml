@@ -9,8 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "develop" ]
-  
+    branches:
+      - develop
+      - main  
 
 permissions:
   contents: read
@@ -21,17 +22,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Set up JDK 8
       uses: actions/setup-java@v3
       with:
         java-version: '8'
         distribution: 'temurin'
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+
+    # - name: Build with Gradle
+    #   uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+    #   with:
+    #     arguments: build
+    
+    - name: Build backend and webapp
+      run: ./gradlew clean build
+
+    - name: Package backend as JAR
+      run: ./gradlew :backend:bootJar
+
+    - name: Package webapp as JAR
+      run: ./gradlew :webapp:bootJar
+
+    # - uses: actions/upload-artifact@v3
+    #   with:
+    #     name: jchess-artifact_test
+    #     path: jchess/build/libs/jchess-0.1.0.jar
+        
+    - name: Upload JAR artifacts
+      uses: actions/upload-artifact@v3
       with:
-        arguments: build
-    - uses: actions/upload-artifact@v3
-      with:
-        name: jchess-artifact_test
-        path: app/build/libs/jchess-0.1.0.jar
+        name: app-artifacts
+        path: |
+          backend/build/libs/*.jar
+          webapp/build/libs/*.jar
