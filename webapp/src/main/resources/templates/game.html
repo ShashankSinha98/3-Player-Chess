@@ -71,6 +71,7 @@
             width: 25%;
             height: 100vh;
             background-color: rosybrown;
+            padding: 16px;
         }
 
         .middlepane {
@@ -81,7 +82,8 @@
         .rightpane {
             width: 25%;
             height: 100vh;
-            background-color: yellow;
+            background-color: rosybrown;
+            padding: 16px;
         }
 
         .gameview {
@@ -100,7 +102,7 @@
 
 <div class="gameview">
     <div class="leftpane">
-        <h2 align="center">Themes</h2>
+        <h2 style="text-align: center">Themes</h2>
         <form>
             <input type="radio" name="font" id="arialTheme"  onclick="updateTheme(id)" checked>
             <label for="arialTheme">Arial</label><br>
@@ -114,7 +116,7 @@
 
     </div>
     <div class="middlepane">
-        <h1 align="center">Three Player Chess Application</h1>
+        <h1 style="text-align: center">Three Player Chess Application</h1>
         <svg style="background-color:#ffffff"  width="100%" height="90%" viewBox="0 0 960 831">
             <polygon id="Bh1" class="blue light h1" points="300,0 240,0 210,51.96152422706631 277.5,64.95190528383289" ></polygon>
             <polygon id="Bg1" class="blue dark g1" points="360,0 300,0 277.5,64.95190528383289 345,77.94228634059947" ></polygon>
@@ -223,7 +225,9 @@
         </svg>
     </div>
     <div class="rightpane">
-        <h2>Right Pane</h2>
+        <h2 style="text-align: center">Game Status</h2>
+        <p style="display: inline-block; margin-right: 10px;">Current Player:</p>
+        <p id="playerdisplay" style="text-align: center; display: inline-block;">Blue</p>
     </div>
 </div>
 
@@ -255,9 +259,24 @@
             }).then(response => response.json())
                 .then(data => displayPossibleMoves(data))
                 .catch(error => console.error('Error while sending the request:', error));
+
+            fetch('/currentPlayer', {
+                method: 'GET',
+                headers: {
+                    Accept: "text/plain"
+                }
+            }).then(reponse => reponse.text())
+                .then(data => updateCurrenPlayer(data))
+                .catch(error => console.error('Error while sending the request:', error));
         });
       });
     });
+
+    function updateCurrenPlayer(color){
+        console.log("Current player: " + color);
+        const p = document.getElementById('playerdisplay');
+        p.textContent = colorMap[color]
+    }
 
     function updateTheme(name){
         console.log('New Font: ' + name);
