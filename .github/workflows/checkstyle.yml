@@ -9,8 +9,10 @@ name: Checkstyle
 
 on:
   push:
-    branches: [ "feature/3pCheckstyleIntegration" ]
-
+    branches:
+      - develop
+      - main
+      
 jobs:
   checkstyle:
     runs-on: ubuntu-latest
