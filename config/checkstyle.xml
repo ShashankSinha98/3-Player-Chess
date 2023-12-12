@@ -6,7 +6,7 @@
 <module name="Checker">
   <module name="JavadocPackage"/>
   <module name="TreeWalker">
-    <!-- <module name="AvoidStarImport"/> -->
+    <module name="AvoidStarImport"/>
     <module name="AbbreviationAsWordInName"/>
     <module name="ArrayTypeStyle"/>
     <module name="AvoidNestedBlocks"/>
