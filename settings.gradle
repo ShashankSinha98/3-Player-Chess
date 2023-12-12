@@ -1,2 +1,5 @@
 rootProject.name = 'Coding-Ninjas-Chess'
-include('app')
+include('jchess')
+include 'webapp'
+include 'backend'
+
