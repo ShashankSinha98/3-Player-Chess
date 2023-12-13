@@ -23,44 +23,6 @@ const colorMap = {'R':'Red', 'G':'Green', 'B': 'Blue'};
  */
 let theme = 'arialTheme'
 
-document.addEventListener('DOMContentLoaded', function () {
-    const polygons = document.querySelectorAll('polygon');
-
-    polygons.forEach(function (polygon) {
-        polygon.addEventListener('click', function () {
-            const polygonId = polygon.id;
-            fetch('/move', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'text/plain',
-                },
-                body: polygonId,
-            }).then(response => response.json())
-                .then(data => updateBoard(data))
-                .catch(error => console.error('Error while sending the request:', error));
-
-            fetch('/allMoves', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'text/plain',
-                },
-                body: polygonId,
-            }).then(response => response.json())
-                .then(data => displayPossibleMoves(data))
-                .catch(error => console.error('Error while sending the request:', error));
-
-            fetch('/currentPlayer', {
-                method: 'GET',
-                headers: {
-                    Accept: "text/plain"
-                }
-            }).then(reponse => reponse.text())
-                .then(data => updateCurrenPlayer(data))
-                .catch(error => console.error('Error while sending the request:', error));
-        });
-    });
-});
-
 /**
  * displays the current player inside p element with the id "playerdisplay"
  * @param color color of the current player as single character (R, G, B)
@@ -181,53 +143,80 @@ function clearBoard() {
     });
 }
 
-const startPosition = {
-    "h1":"♖",
-    "g1":"♘",
-    "f1":"♗",
-    "e1":"♔",
-    "d1":"♕",
-    "a1":"♖",
-    "b1":"♘",
-    "c1":"♗",
-    "h2":"♙",
-    "g2":"♙",
-    "f2":"♙",
-    "e2":"♙",
-    "d2":"♙",
-    "a2":"♙",
-    "b2":"♙",
-    "c2":"♙",
+/**
+ * called when the html document finished loading
+ */
+function bodyLoaded(){
+    console.log("Body loaded");
+    requestUpdatedBoard();
+    requestCurrentPlayer()
+
+    const polygons = document.querySelectorAll('polygon');
+
+    polygons.forEach(function (polygon) {
+        polygon.addEventListener('click', function () {
+            const polygonId = polygon.id;
+            sendSquareClicked(polygonId);
+
+            requestHighlightedSquares(polygonId);
+            requestCurrentPlayer();
+        });
+    });
 }
 
-displayPieces('red', startPosition);
-displayPieces('green', startPosition);
-displayPieces('blue', startPosition);
+/**
+ * post the id of the clicked Square to the server on /move endpoint
+ * @param polygonId id of the clicked square, e.g. Ra1, Gb3, ...
+ */
+function sendSquareClicked(polygonId){
+    fetch('/move', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/plain',
+        },
+        body: polygonId,
+    }).then(response => response.json())
+        .then(data => updateBoard(data))
+        .catch(error => console.error('Error while sending the request:', error));
+}
 
-function displayPieces(color, position) {
-    for(const id in position) {
-        const pieceSymbol = startPosition[id];
-        const squares = document.getElementsByClassName(id + " "+ color);
-        console.log(squares);
-        for(let i = 0; i < squares.length; i++) {
-            const square = squares[i];
-            const punkte = square.points;
+/**
+ * requests all possible Moves of a piece and highlights them on the board
+ * @param polygonId id of the square on which the piece is located
+ */
+function requestHighlightedSquares(polygonId){
+    fetch('/allMoves', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/plain',
+        },
+        body: polygonId,
+    }).then(response => response.json())
+        .then(data => displayPossibleMoves(data))
+        .catch(error => console.error('Error while sending the request:', error));
+}
 
-            let x = (punkte.getItem(0).x + punkte.getItem(2).x)/2
-            let y = (punkte.getItem(0).y + punkte.getItem(2).y)/2
+/**
+ * requests the new board state and displays it
+ */
+function requestUpdatedBoard(){
+    fetch('/board', {
+        method: 'GET',
+    }).then(response => response.json())
+        .then(data => updateBoard(data))
+        .catch(error => console.error('Error while sending the request:', error));
+}
 
-            const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            textElement.setAttribute('x', x.toString());
-            textElement.setAttribute('y', y.toString());
-            textElement.setAttribute("text-anchor", "middle");
-            textElement.setAttribute("dominant-baseline", "middle");
-            textElement.setAttribute('fill', color);
-            textElement.setAttribute('font-size', '48');
-            textElement.setAttribute('font-weight', 'bold');
-            textElement.setAttribute('class', theme);
-            textElement.textContent = pieceSymbol;
-            square.parentNode.insertBefore(textElement, square.nextSibling);
+/**
+ * requests the current player and displays it
+ */
+function requestCurrentPlayer(){
+    fetch('/currentPlayer', {
+        method: 'GET',
+        headers: {
+            Accept: "text/plain"
         }
-
-    }
+    }).then(reponse => reponse.text())
+        .then(data => updateCurrenPlayer(data))
+        .catch(error => console.error('Error while sending the request:', error));
 }

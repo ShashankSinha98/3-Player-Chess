@@ -56,5 +56,10 @@ public class GameController {
         return game.getTurn().toString();
     }
 
+    @GetMapping("/board")
+    public Map<String, String> handleBoardRequest(){
+        return game.getBoard();
+    }
+
 
 }
