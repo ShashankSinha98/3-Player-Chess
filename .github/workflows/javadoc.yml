@@ -10,7 +10,6 @@ name: Javadoc
 on:
   push:
     branches:
-      - feature/javadoc-ci
       - develop
       - main
 
