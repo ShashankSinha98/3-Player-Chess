@@ -34,9 +34,6 @@ jobs:
     - name: Build backend and webapp
       run: ./gradlew clean build
 
-    - name: Package backend as JAR
-      run: ./gradlew :backend:bootJar
-
     - name: Package webapp as JAR
       run: ./gradlew :webapp:bootJar
         
@@ -45,5 +42,4 @@ jobs:
       with:
         name: app-artifacts
         path: |
-          backend/build/libs/*.jar
           webapp/build/libs/*.jar
