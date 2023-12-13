@@ -10,12 +10,11 @@ name: Testautomation
 on:
   push:
     branches:
-      - feature/junit-ci
       - develop
       - main
 
 jobs:
-  checkstyle:
+  testautomation:
     runs-on: ubuntu-latest
 
     steps:
