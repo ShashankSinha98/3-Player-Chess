@@ -13,11 +13,6 @@ Clone the repository
 git clone https://github.com/ShashankSinha98/Coding-Ninjas-Chess.git
   ```
 
-Run the two player game as following:
-```sh
-gradlew run
-  ```
-
 Run the web application:
 ```sh
 gradlew bootRun
