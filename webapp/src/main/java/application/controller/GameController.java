@@ -13,10 +13,10 @@ import java.util.Map;
 
 
 @RestController
-public class MoveController {
+public class GameController {
     private IGameInterface game;
 
-    public MoveController() {
+    public GameController() {
         this.game = new GameMain();
     }
 
