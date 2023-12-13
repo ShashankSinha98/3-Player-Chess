@@ -236,7 +236,7 @@
 </div>
 
 <script>
-    var theme = 'arialTheme'
+    let theme = 'arialTheme'
 
     document.addEventListener('DOMContentLoaded', function () {
         const polygons = document.querySelectorAll('polygon');
@@ -285,7 +285,7 @@
     function updateTheme(name){
         console.log('New Font: ' + name);
         theme = name;
-        var textElements = document.querySelectorAll('text');
+        const textElements = document.querySelectorAll('text');
         textElements.forEach(function(element) {
             element.setAttribute('class', name);
         });
@@ -354,18 +354,6 @@
         square.parentNode.insertBefore(textElement, square.nextSibling);
     }
 
-    /*function addHoverEffect(square){
-        console.log("Mouse over Event ");
-        square.classList.add('highlight');
-    }
-
-    function removeHoverEffect(square){
-        console.log("Mouse over Event ");
-        square.classList.remove('highlight');
-    }*/
-
-
-
     function getPieceText(x, y, color, pieceToken) {
         const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         textElement.setAttribute('x', x);
@@ -419,16 +407,16 @@
             const pieceSymbol = startPosition[id];
             const squares = document.getElementsByClassName(id + " "+ color);
             console.log(squares);
-            for(var i = 0; i < squares.length; i++) {
-                var square = squares[i];
+            for(let i = 0; i < squares.length; i++) {
+                const square = squares[i];
                 const punkte = square.points;
 
                 let x = (punkte.getItem(0).x + punkte.getItem(2).x)/2
                 let y = (punkte.getItem(0).y + punkte.getItem(2).y)/2
 
                 const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                textElement.setAttribute('x', x);
-                textElement.setAttribute('y', y);
+                textElement.setAttribute('x', x.toString());
+                textElement.setAttribute('y', y.toString());
                 textElement.setAttribute("text-anchor", "middle");
                 textElement.setAttribute("dominant-baseline", "middle");
                 textElement.setAttribute('fill', color);

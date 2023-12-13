@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 public class GameController {
-    private IGameInterface game;
+    private final IGameInterface game;
 
     public GameController() {
         this.game = new GameMain();
