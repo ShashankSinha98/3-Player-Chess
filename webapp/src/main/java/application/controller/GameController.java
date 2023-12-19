@@ -14,10 +14,10 @@ import java.util.Map;
 
 @RestController
 public class GameController {
-    private final IGameInterface game;
+    private IGameInterface game;
 
     public GameController() {
-        this.game = new GameMain();
+        //this.game = new GameMain();
     }
 
     private int calculateSquareId(String square){
@@ -32,6 +32,12 @@ public class GameController {
         }
 
         return offset + x + 4*y;
+    }
+
+    @GetMapping("/newGame")
+    public void handleNewGame(){
+        System.out.println("New Game");
+        this.game = new GameMain();
     }
 
     @PostMapping("/move")
