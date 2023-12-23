@@ -5,6 +5,30 @@
 </head>
 <body>
 <h1>Welcome to 3 player chess!</h1>
-<button onclick="window.location.href='/game.html'">New Game</button>
+<button onclick="newGame()">New Game</button>
+
+<script>
+    function newGame(){
+        fetch('/newGame', {
+            method: 'GET',
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error making GET request to /newGame');
+                }
+
+                console.log('GET request to /newGame was successful');
+                return response.text();
+            })
+            .then(data => {
+                window.location.href = '/game.html';
+            })
+            .catch(error => {
+
+                console.error(error);
+            });
+        //window.location.href = '/game.html';
+    }
+</script>
 </body>
 </html>
