@@ -1,14 +1,21 @@
 package common;
 
+import utility.BoardAdapter;
+import utility.Log;
+
 import java.util.*;
 
 public class Board {
 
+    private static final String TAG = "Board";
+    
     /** A map from board positions to the pieces at that position **/
     private Map<Position,Piece> board;
+    private Colour turn;
 
-    public Board(){//(int time){
+    public Board(){
         board = new HashMap<Position,Piece>();
+        turn = Colour.BLUE;
         try{
             // Blue, Green, Red
             for(Colour c: Colour.values()){
@@ -23,18 +30,92 @@ public class Board {
         }catch(InvalidPositionException e){}//no impossible positions in this code
     }
 
-    public void move(Position start, Position end) {
-        Piece movingPiece = board.get(start);
-        if(movingPiece != null)
-            board.remove(start);
 
-        board.put(end, movingPiece);
+    public void move(Position start, Position end) throws InvalidPositionException {
+        if(isLegalMove(start, end)) {
+            Piece mover = board.get(start);
+            Piece taken = board.get(end);
+            board.remove(start);//empty start square
+            board.put(end,mover);//move piece
+            turn = Colour.values()[(turn.ordinal()+1)%3];
+        } else throw new InvalidPositionException("Illegal Move: "+start+"-"+end);
     }
 
-    public Map<Position, Piece> getBoardMap() { return this.board; }
+    public boolean isLegalMove(Position start, Position end){
+        Piece mover = getPiece(start);
+        Piece target = getPiece(end);
+        if(mover==null) return false; // No piece present at start pos
+        Colour moverCol = mover.getColour();
+        if(moverCol!=turn) return false; // piece colour mismatches player colour
+        if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
 
-    public boolean isEmpty(int squareIndex) throws InvalidPositionException {
-        return !board.containsKey(Position.get(squareIndex));
+        Direction[][] steps = mover.getType().getSteps();  // get possible direction of the piece clicked
+
+        switch(mover.getType()){
+            case PAWN://note, there is no two step first move
+                for(int i = 0; i<steps.length; i++){
+                    try{
+                        if(end == step(mover,steps[i],start) &&
+                                ((target==null && i==0) // 1 step forward, not taking
+                                        || (target==null && i==1 // 2 steps forward,
+                                        && start.getColour()==moverCol && start.getRow()==1 //must be in initial position
+                                        && board.get(Position.get(moverCol,2,start.getColumn()))==null)//and can't jump a piece
+                                        || (target!=null && i>1)//or taking diagonally
+                                )
+                        )
+                            return true;
+                    }catch(InvalidPositionException e){}//do nothing, steps went off board.
+                }
+                break;
+        }
+        return false;
+    }
+
+    public Position step(Piece piece, Direction[] step, Position current) throws InvalidPositionException {
+        boolean reverse = false;
+        for(Direction d: step){
+            if((piece.getColour()!=current.getColour() && piece.getType() == PieceType.PAWN) || reverse){//reverse directions for knights
+                switch(d){
+                    case FORWARD: d = Direction.BACKWARD; break;
+                    case BACKWARD: d = Direction.FORWARD; break;
+                    case LEFT: d = Direction.RIGHT; break;
+                    case RIGHT: d = Direction.LEFT; break;
+                }
+            }
+            Position next = current.neighbour(d);
+            if(next.getColour()!= current.getColour()){//need to reverse directions when switching between sections of the board
+                reverse=true;
+            }
+            current = next;
+        }
+        return current;
+    }
+
+
+    public Colour getTurn(){
+        return turn;
+    }
+
+    public Piece getPiece(Position position){
+        return board.get(position);
+    }
+
+    public Map<String, String> getWebViewBoard() {
+        return BoardAdapter.convertModelBoardToViewBoard(this.board);
+    }
+
+    public List<Position> getPossibleMoves(Position pos) {
+        List<Position> possibleMoves = new ArrayList<>();
+        Piece mover = board.get(pos);
+        if(mover != null) {
+            for(Position pi: Position.values()) {
+                if(isLegalMove(pos, pi)) {
+                    possibleMoves.add(pi);
+                }
+            }
+        }
+        Log.d(TAG, "getPossibleMoves: "+possibleMoves);
+        return possibleMoves;
     }
 
 }

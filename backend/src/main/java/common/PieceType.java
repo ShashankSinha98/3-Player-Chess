@@ -9,6 +9,19 @@ public enum PieceType{
 	QUEEN, //Q
 	KING; //K
 
+    private static Direction[][] pawnSteps(){
+        return new Direction[][] {{Direction.FORWARD},{Direction.FORWARD,Direction.FORWARD},
+                {Direction.FORWARD,Direction.LEFT},{Direction.LEFT,Direction.FORWARD},{Direction.FORWARD,Direction.RIGHT},
+                {Direction.RIGHT,Direction.FORWARD}};
+    }
+
+    public Direction[][] getSteps(){
+        switch(this){
+            case PAWN: return pawnSteps();
+            default: return pawnSteps();
+        }
+    }
+
     @Override
     public String toString() {
         switch(this) {
