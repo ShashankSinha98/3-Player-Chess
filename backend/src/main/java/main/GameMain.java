@@ -1,11 +1,8 @@
 package main;
 
 import abstraction.IGameInterface;
-import common.Board;
-import common.Colour;
-import common.InvalidPositionException;
-import common.Position;
 import utility.BoardAdapter;
+import common.*;
 import utility.Log;
 
 import java.util.ArrayList;
