@@ -67,6 +67,15 @@ public class Board {
                     }catch(InvalidPositionException e){}//do nothing, steps went off board.
                 }
                 break;
+
+            case KNIGHT:
+                for(int i = 0; i<steps.length; i++){
+                    try{
+                        if(end == step(mover, steps[i],start))
+                            return true;
+                    }catch(InvalidPositionException e){}//do nothing, steps went off board.
+                }
+                break;
         }
         return false;
     }

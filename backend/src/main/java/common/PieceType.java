@@ -15,9 +15,22 @@ public enum PieceType{
                 {Direction.RIGHT,Direction.FORWARD}};
     }
 
+    private static Direction[][] knightSteps(){
+        return new Direction[][] {{Direction.FORWARD,Direction.FORWARD,Direction.LEFT},
+                {Direction.FORWARD,Direction.FORWARD,Direction.RIGHT},{Direction.FORWARD,Direction.LEFT,Direction.LEFT},
+                {Direction.FORWARD,Direction.RIGHT,Direction.RIGHT},{Direction.BACKWARD,Direction.BACKWARD,Direction.LEFT},
+                {Direction.BACKWARD,Direction.BACKWARD,Direction.RIGHT},{Direction.BACKWARD,Direction.LEFT,Direction.LEFT},
+                {Direction.BACKWARD,Direction.RIGHT,Direction.RIGHT},{Direction.LEFT,Direction.LEFT,Direction.FORWARD},
+                {Direction.LEFT,Direction.LEFT,Direction.BACKWARD},{Direction.LEFT,Direction.FORWARD,Direction.FORWARD},
+                {Direction.LEFT,Direction.BACKWARD,Direction.BACKWARD},{Direction.RIGHT,Direction.RIGHT,Direction.FORWARD},
+                {Direction.RIGHT,Direction.RIGHT,Direction.BACKWARD},{Direction.RIGHT,Direction.FORWARD,Direction.FORWARD},
+                {Direction.RIGHT,Direction.BACKWARD,Direction.BACKWARD}};
+    }
+
     public Direction[][] getSteps(){
         switch(this){
             case PAWN: return pawnSteps();
+            case KNIGHT: return knightSteps();
             default: return pawnSteps();
         }
     }
