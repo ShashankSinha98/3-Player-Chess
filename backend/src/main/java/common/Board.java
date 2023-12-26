@@ -160,4 +160,10 @@ public class Board {
         return possibleMoves;
     }
 
+    // returns true if there is a piece on current square which matches the colour of
+    // player in turn
+    public boolean isCurrentPlayersPiece(Position pos) {
+        return getPiece(pos) != null && getPiece(pos).getColour()==turn;
+    }
+
 }

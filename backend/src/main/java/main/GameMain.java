@@ -53,8 +53,9 @@ public class GameMain implements IGameInterface {
     public OnClickResponse onClick(int squarePos) {
         Log.d(TAG, ">>> onClick called: "+squarePos);
         try {
-            if (moveStartPos == null) {
-                moveStartPos = Position.get(squarePos);
+            Position pos = Position.get(squarePos);
+            if (moveStartPos == null || board.isCurrentPlayersPiece(pos)) {
+                moveStartPos = pos;
                 Log.d(TAG, ">>> moveStartPos: " + moveStartPos);
                 highlightSquares = board.getPossibleMoves(moveStartPos);
                 if(highlightSquares.size() == 0) { // Selected piece has no square to move, reset selection
