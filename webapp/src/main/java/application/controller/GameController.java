@@ -2,6 +2,7 @@ package application.controller;
 
 import abstraction.IGameInterface;
 import common.InvalidPositionException;
+import common.OnClickResponse;
 import main.GameMain;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,21 +41,19 @@ public class GameController {
         this.game = new GameMain();
     }
 
-    @PostMapping("/move")
-    public Map<String, String> handleMove(@RequestBody String squareText) throws InvalidPositionException {
+    @PostMapping("/onClick")
+    public OnClickResponse handleMove(@RequestBody String squareText) throws InvalidPositionException {
         int squareId = calculateSquareId(squareText);
 
         System.out.println("Square: " + squareText + " with ID " +squareId);
-        Map<String, String> board = game.onClick(squareId);
-
-        return board;
+        return game.onClick(squareId);
     }
 
-    @PostMapping("/allMoves")
-    public List<String> handleAllMoves(@RequestBody String squareText) {
-        System.out.println("Requesting all possible moves of: " + squareText);
-        return game.getHighlightSquarePositions();
-    }
+//    @PostMapping("/allMoves")
+//    public List<String> handleAllMoves(@RequestBody String squareText) {
+//        System.out.println("Requesting all possible moves of: " + squareText);
+//        return game.getHighlightSquarePositions();
+//    }
 
     @GetMapping("/currentPlayer")
     public String handlePlayerTurn(){
