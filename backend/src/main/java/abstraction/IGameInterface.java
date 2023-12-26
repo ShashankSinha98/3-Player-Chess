@@ -22,7 +22,7 @@ public interface IGameInterface {
      * @throws InvalidPositionException if the square position is outside range [0, 95]
      * // TODO: Currently blindly moves the piece
      * */
-    OnClickResponse onClick(int squarePos) throws InvalidPositionException;
+    OnClickResponse onClick(int squarePos);
 
     /**
      * @return returns which colour turn it is currently

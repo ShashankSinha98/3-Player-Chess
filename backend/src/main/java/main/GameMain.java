@@ -47,20 +47,30 @@ public class GameMain implements IGameInterface {
         return board.getWebViewBoard();
     }
 
-    @Override
-    public OnClickResponse onClick(int squarePos) throws InvalidPositionException {
-        Log.d(TAG, ">>> onClick called: "+squarePos);
-        if (moveStartPos == null) {
-            moveStartPos = Position.get(squarePos);
-            highlightSquares = board.getPossibleMoves(moveStartPos);
-            Log.d(TAG, ">>> moveStartPos: " + moveStartPos);
-        } else {
-            moveEndPos = Position.get(squarePos);
-            board.move(moveStartPos, moveEndPos);
-            Log.d(TAG, ">>> moveStartPos: " + moveStartPos + ", moveEndPos: " + moveEndPos);
 
+    // squarePos must be in range [0, 95]
+    @Override
+    public OnClickResponse onClick(int squarePos) {
+        Log.d(TAG, ">>> onClick called: "+squarePos);
+        try {
+            if (moveStartPos == null) {
+                moveStartPos = Position.get(squarePos);
+                highlightSquares = board.getPossibleMoves(moveStartPos);
+                Log.d(TAG, ">>> moveStartPos: " + moveStartPos);
+            } else {
+                moveEndPos = Position.get(squarePos);
+                board.move(moveStartPos, moveEndPos);
+                Log.d(TAG, ">>> moveStartPos: " + moveStartPos + ", moveEndPos: " + moveEndPos);
+
+                moveStartPos = moveEndPos = null;
+                highlightSquares = null;
+            }
+        } catch (InvalidMoveException e) {
+            Log.e(TAG, "InvalidMoveException onClick: "+e.getMessage());
             moveStartPos = moveEndPos = null;
             highlightSquares = null;
+        } catch (InvalidPositionException e) {
+            Log.e(TAG, "InvalidPositionException onClick: "+e.getMessage());
         }
 
         OnClickResponse clickResponse = new OnClickResponse(getBoard(), getHighlightSquarePositions());
