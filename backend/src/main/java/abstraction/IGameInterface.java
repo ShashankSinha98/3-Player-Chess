@@ -1,6 +1,7 @@
 package abstraction;
 import common.Colour;
 import common.InvalidPositionException;
+import common.OnClickResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -21,20 +22,11 @@ public interface IGameInterface {
      * @throws InvalidPositionException if the square position is outside range [0, 95]
      * // TODO: Currently blindly moves the piece
      * */
-    Map<String, String> onClick(int squarePos) throws InvalidPositionException;
+    OnClickResponse onClick(int squarePos) throws InvalidPositionException;
 
     /**
      * @return returns which colour turn it is currently
      * TODO: Currently hardcoded and return only BLUE
      * */
     Colour getTurn();
-
-    /**
-     * Unique square positions which will be highlighted when user click on a valid sqaure
-     * to tell him possible valid moves
-     *
-     * @return list of square positions
-     * TODO: Currently return hardcoded values
-     */
-    List<String> getHighlightSquarePositions();
 }
