@@ -55,8 +55,11 @@ public class GameMain implements IGameInterface {
         try {
             if (moveStartPos == null) {
                 moveStartPos = Position.get(squarePos);
-                highlightSquares = board.getPossibleMoves(moveStartPos);
                 Log.d(TAG, ">>> moveStartPos: " + moveStartPos);
+                highlightSquares = board.getPossibleMoves(moveStartPos);
+                if(highlightSquares.size() == 0) { // Selected piece has no square to move, reset selection
+                    moveStartPos = null;
+                }
             } else {
                 moveEndPos = Position.get(squarePos);
                 board.move(moveStartPos, moveEndPos);

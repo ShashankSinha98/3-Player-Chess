@@ -27,10 +27,22 @@ public enum PieceType{
                 {Direction.RIGHT,Direction.BACKWARD,Direction.BACKWARD}};
     }
 
+    private static Direction[][] bishopSteps(){
+        return new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
+                {Direction.LEFT,Direction.FORWARD},{Direction.RIGHT,Direction.FORWARD},{Direction.BACKWARD,Direction.LEFT},
+                {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD}};
+    }
+
+    private static Direction[][] rookSteps(){
+        return new Direction[][] {{Direction.FORWARD},{Direction.BACKWARD},{Direction.LEFT},{Direction.RIGHT}};
+    }
+
     public Direction[][] getSteps(){
         switch(this){
             case PAWN: return pawnSteps();
             case KNIGHT: return knightSteps();
+            case BISHOP: return bishopSteps();
+            case ROOK: return rookSteps();
             default: return pawnSteps();
         }
     }

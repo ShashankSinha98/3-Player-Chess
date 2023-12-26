@@ -76,12 +76,44 @@ public class Board {
                     }catch(InvalidPositionException e){}//do nothing, steps went off board.
                 }
                 break;
+
+            default: //rook, bishop, queen, just need to check that one of their steps is iterated.
+                for(int i = 0; i<steps.length; i++){
+                    Direction[] step = steps[i];
+                    try{
+                        Position tmp = step(mover,step,start);
+                        while(end != tmp && board.get(tmp)==null){
+                            tmp = step(mover, step, tmp, tmp.getColour()!=start.getColour());
+                        }
+                        if(end==tmp) return true;
+                    }catch(InvalidPositionException e){}//do nothing, steps went off board.
+                }
+                break;
         }
         return false;
     }
 
     public Position step(Piece piece, Direction[] step, Position current) throws InvalidPositionException {
         boolean reverse = false;
+        for(Direction d: step){
+            if((piece.getColour()!=current.getColour() && piece.getType() == PieceType.PAWN) || reverse){//reverse directions for knights
+                switch(d){
+                    case FORWARD: d = Direction.BACKWARD; break;
+                    case BACKWARD: d = Direction.FORWARD; break;
+                    case LEFT: d = Direction.RIGHT; break;
+                    case RIGHT: d = Direction.LEFT; break;
+                }
+            }
+            Position next = current.neighbour(d);
+            if(next.getColour()!= current.getColour()){//need to reverse directions when switching between sections of the board
+                reverse=true;
+            }
+            current = next;
+        }
+        return current;
+    }
+
+    public Position step(Piece piece, Direction[] step, Position current, boolean reverse) throws InvalidPositionException {
         for(Direction d: step){
             if((piece.getColour()!=current.getColour() && piece.getType() == PieceType.PAWN) || reverse){//reverse directions for knights
                 switch(d){
