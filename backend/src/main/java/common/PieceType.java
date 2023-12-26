@@ -37,13 +37,20 @@ public enum PieceType{
         return new Direction[][] {{Direction.FORWARD},{Direction.BACKWARD},{Direction.LEFT},{Direction.RIGHT}};
     }
 
+    private static Direction[][] kingSteps(){
+        return new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
+                {Direction.LEFT,Direction.FORWARD},{Direction.RIGHT,Direction.FORWARD},{Direction.BACKWARD,Direction.LEFT},
+                {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD},
+                {Direction.FORWARD},{Direction.BACKWARD},{Direction.LEFT},{Direction.RIGHT}}; //kings and queens
+    }
+
     public Direction[][] getSteps(){
         switch(this){
             case PAWN: return pawnSteps();
             case KNIGHT: return knightSteps();
             case BISHOP: return bishopSteps();
             case ROOK: return rookSteps();
-            default: return pawnSteps();
+            default: return kingSteps();//Kings and queens have the same steps, but queens may repeat the one step.
         }
     }
 

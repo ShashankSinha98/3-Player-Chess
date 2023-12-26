@@ -69,6 +69,7 @@ public class Board {
                 break;
 
             case KNIGHT:
+            case KING://note, you can move into check or remain in check. You may also castle across check
                 for(int i = 0; i<steps.length; i++){
                     try{
                         if(end == step(mover, steps[i],start))
