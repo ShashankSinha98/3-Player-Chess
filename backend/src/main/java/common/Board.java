@@ -66,6 +66,28 @@ public class Board {
                             return true;
                     }catch(InvalidPositionException e){}//do nothing, steps went off board.
                 }
+                //castling: Must have king and rook in their original positions, although they may have moved
+                try{
+                    if(start==Position.get(moverCol,0,4)){
+                        if(end==Position.get(moverCol,0,6)){
+                            Piece castle = board.get(Position.get(moverCol,0,7));
+                            Piece empty1 = board.get(Position.get(moverCol,0,5));
+                            Piece empty2 = board.get(Position.get(moverCol,0,6));
+                            if(castle!=null && castle.getType()==PieceType.ROOK && castle.getColour()==mover.getColour()
+                                    && empty1==null && empty2==null)
+                                return true;
+                        }
+                        if(end==Position.get(moverCol,0,2)){
+                            Piece castle = board.get(Position.get(moverCol,0,0));
+                            Piece empty1 = board.get(Position.get(moverCol,0,1));
+                            Piece empty2 = board.get(Position.get(moverCol,0,2));
+                            Piece empty3 = board.get(Position.get(moverCol,0,3));
+                            if(castle!=null && castle.getType()==PieceType.ROOK && castle.getColour()==mover.getColour()
+                                    && empty1==null && empty2==null && empty3==null)
+                                return true;
+                        }
+                    }
+                }catch(InvalidPositionException e){}//do nothing, all positions possible here.
                 break;
 
             case KNIGHT:
