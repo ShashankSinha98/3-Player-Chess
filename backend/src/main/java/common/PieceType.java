@@ -9,6 +9,51 @@ public enum PieceType{
 	QUEEN, //Q
 	KING; //K
 
+    private static Direction[][] pawnSteps(){
+        return new Direction[][] {{Direction.FORWARD},{Direction.FORWARD,Direction.FORWARD},
+                {Direction.FORWARD,Direction.LEFT},{Direction.LEFT,Direction.FORWARD},{Direction.FORWARD,Direction.RIGHT},
+                {Direction.RIGHT,Direction.FORWARD}};
+    }
+
+    private static Direction[][] knightSteps(){
+        return new Direction[][] {{Direction.FORWARD,Direction.FORWARD,Direction.LEFT},
+                {Direction.FORWARD,Direction.FORWARD,Direction.RIGHT},{Direction.FORWARD,Direction.LEFT,Direction.LEFT},
+                {Direction.FORWARD,Direction.RIGHT,Direction.RIGHT},{Direction.BACKWARD,Direction.BACKWARD,Direction.LEFT},
+                {Direction.BACKWARD,Direction.BACKWARD,Direction.RIGHT},{Direction.BACKWARD,Direction.LEFT,Direction.LEFT},
+                {Direction.BACKWARD,Direction.RIGHT,Direction.RIGHT},{Direction.LEFT,Direction.LEFT,Direction.FORWARD},
+                {Direction.LEFT,Direction.LEFT,Direction.BACKWARD},{Direction.LEFT,Direction.FORWARD,Direction.FORWARD},
+                {Direction.LEFT,Direction.BACKWARD,Direction.BACKWARD},{Direction.RIGHT,Direction.RIGHT,Direction.FORWARD},
+                {Direction.RIGHT,Direction.RIGHT,Direction.BACKWARD},{Direction.RIGHT,Direction.FORWARD,Direction.FORWARD},
+                {Direction.RIGHT,Direction.BACKWARD,Direction.BACKWARD}};
+    }
+
+    private static Direction[][] bishopSteps(){
+        return new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
+                {Direction.LEFT,Direction.FORWARD},{Direction.RIGHT,Direction.FORWARD},{Direction.BACKWARD,Direction.LEFT},
+                {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD}};
+    }
+
+    private static Direction[][] rookSteps(){
+        return new Direction[][] {{Direction.FORWARD},{Direction.BACKWARD},{Direction.LEFT},{Direction.RIGHT}};
+    }
+
+    private static Direction[][] kingSteps(){
+        return new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
+                {Direction.LEFT,Direction.FORWARD},{Direction.RIGHT,Direction.FORWARD},{Direction.BACKWARD,Direction.LEFT},
+                {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD},
+                {Direction.FORWARD},{Direction.BACKWARD},{Direction.LEFT},{Direction.RIGHT}}; //kings and queens
+    }
+
+    public Direction[][] getSteps(){
+        switch(this){
+            case PAWN: return pawnSteps();
+            case KNIGHT: return knightSteps();
+            case BISHOP: return bishopSteps();
+            case ROOK: return rookSteps();
+            default: return kingSteps();//Kings and queens have the same steps, but queens may repeat the one step.
+        }
+    }
+
     @Override
     public String toString() {
         switch(this) {

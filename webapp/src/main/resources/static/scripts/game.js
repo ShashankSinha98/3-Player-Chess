@@ -74,13 +74,20 @@ function removeHighlighting(){
  * updates the chessboard with the new state
  * @param data new board state with the updated piece positions, e.g. {Ba1: "BR", Ba2: "BP", ...}
  */
-function updateBoard(data) {
+function updateBoard(response) {
     clearBoard();
-    console.log('New Board Configuration:', data);
+    console.log('New Board Configuration:', response);
+    let board = response['board'];
+    let highlightedSquares = response['highlightedSquares']
 
-    for (const squareId in data) {
 
-        const value = data[squareId];
+    updatePieces(board);
+    displayPossibleMoves(highlightedSquares);
+}
+
+function updatePieces(board) {
+    for (const squareId in board) {
+        const value = board[squareId];
         const pieceColor = value[0];
         const pieceToken = value[1];
 
@@ -157,19 +164,17 @@ function bodyLoaded(){
         polygon.addEventListener('click', function () {
             const polygonId = polygon.id;
             sendSquareClicked(polygonId);
-
-            requestHighlightedSquares(polygonId);
             requestCurrentPlayer();
         });
     });
 }
 
 /**
- * post the id of the clicked Square to the server on /move endpoint
+ * post the id of the clicked Square to the server on /onClick endpoint
  * @param polygonId id of the clicked square, e.g. Ra1, Gb3, ...
  */
 function sendSquareClicked(polygonId){
-    fetch('/move', {
+    fetch('/onClick', {
         method: 'POST',
         headers: {
             'Content-Type': 'text/plain',
@@ -203,7 +208,7 @@ function requestUpdatedBoard(){
     fetch('/board', {
         method: 'GET',
     }).then(response => response.json())
-        .then(data => updateBoard(data))
+        .then(data => updatePieces(data))
         .catch(error => console.error('Error while sending the request:', error));
 }
 

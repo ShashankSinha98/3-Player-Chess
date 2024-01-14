@@ -1,8 +1,8 @@
 package main;
 
 import abstraction.IGameInterface;
-import utility.BoardAdapter;
 import common.*;
+import utility.BoardAdapter;
 import utility.Log;
 
 import java.util.ArrayList;
@@ -15,10 +15,10 @@ public class GameMain implements IGameInterface {
 
     private Board board;
     private boolean isGameRunning;
-    private Colour turn;
+    // private Colour turn;
 
     private Position moveStartPos, moveEndPos;
-    private List<String> highlightSquares;
+    private List<Position> highlightSquares;
 
 
     public GameMain() {
@@ -30,7 +30,7 @@ public class GameMain implements IGameInterface {
         Log.d(TAG, "initGame()");
         board = new Board();
         isGameRunning = false;
-        turn = Colour.BLUE;
+        // turn = Colour.BLUE;
         moveStartPos = moveEndPos = null;
         highlightSquares = new ArrayList<>();
     }
@@ -44,44 +44,54 @@ public class GameMain implements IGameInterface {
 
     @Override
     public Map<String, String> getBoard() {
-        return BoardAdapter.convertModelBoardToViewBoard(board.getBoardMap());
+        return board.getWebViewBoard();
     }
 
-    @Override
-    public Map<String, String> onClick(int squarePos) throws InvalidPositionException {
-        Log.d(TAG, "onClick called: "+squarePos);
-        if(moveStartPos == null) {
-            if(!board.isEmpty(squarePos) && board.getBoardMap().get(Position.get(squarePos)).getColour() == turn) {
-                moveStartPos = Position.get(squarePos);
-                Log.d(TAG, "First click, mStartPos: " + moveStartPos);
-                highlightSquares.add("Ra4");
-                highlightSquares.add("Bd3");
-                highlightSquares.add("Gc2"); // hardcoded for now
-            }  else {
-                Log.d(TAG, "empty square or wrong player piece selected");
-            }
-        } else {
-            moveEndPos = Position.get(squarePos);
-            Log.d(TAG, "Second click, mStartPos: "+ moveStartPos +", mEndPos: "+ moveEndPos);
-            board.move(moveStartPos, moveEndPos);
 
-            // reset start and end position
+    // squarePos must be in range [0, 95]
+    @Override
+    public OnClickResponse onClick(int squarePos) {
+        Log.d(TAG, ">>> onClick called: "+squarePos);
+        try {
+            Position pos = Position.get(squarePos);
+            if (moveStartPos == null || board.isCurrentPlayersPiece(pos)) {
+                moveStartPos = pos;
+                Log.d(TAG, ">>> moveStartPos: " + moveStartPos);
+                highlightSquares = board.getPossibleMoves(moveStartPos);
+                if(highlightSquares.size() == 0) { // Selected piece has no square to move, reset selection
+                    moveStartPos = null;
+                }
+            } else {
+                moveEndPos = Position.get(squarePos);
+                board.move(moveStartPos, moveEndPos);
+                Log.d(TAG, ">>> moveStartPos: " + moveStartPos + ", moveEndPos: " + moveEndPos);
+
+                moveStartPos = moveEndPos = null;
+                highlightSquares = null;
+            }
+        } catch (InvalidMoveException e) {
+            Log.e(TAG, "InvalidMoveException onClick: "+e.getMessage());
             moveStartPos = moveEndPos = null;
-            highlightSquares.clear();
-            turn = Colour.values()[(turn.ordinal()+1)%3];
-            Log.d(TAG, "turn: "+turn);
+            highlightSquares = null;
+        } catch (InvalidPositionException e) {
+            Log.e(TAG, "InvalidPositionException onClick: "+e.getMessage());
         }
 
-        return getBoard();
+        OnClickResponse clickResponse = new OnClickResponse(getBoard(), getHighlightSquarePositions());
+        Log.d(TAG, "ClickResponse: "+clickResponse);
+        return clickResponse;
     }
 
     @Override
     public Colour getTurn() {
-        return turn;
+        return board.getTurn();
     }
 
-    @Override
-    public List<String> getHighlightSquarePositions() {
-        return highlightSquares;
+    private List<String> getHighlightSquarePositions() {
+        return BoardAdapter.convertHighlightSquaresToViewBoard(highlightSquares);
+    }
+
+    public static void main(String[] args) {
+
     }
 }

@@ -37,6 +37,12 @@ public enum Position{
     this.colour = colour; this.row = row; this.column = column;
   }
 
+  public Colour getColour(){return colour;}
+
+  public int getRow(){return row;}
+
+  public int getColumn(){return column;}
+
   @Override
   public String toString() {
     return colour.toString()+getColumnChar(column)+(row+1);
@@ -69,6 +75,25 @@ public enum Position{
         return Position.values()[squareIndex];
       }
     throw new InvalidPositionException("No such position.");
+  }
+
+  public Position neighbour(Direction direction) throws InvalidPositionException {
+    switch(direction){
+      case FORWARD:
+        if(row<3) return get(colour, row+1, column);
+        if(column<4) return get(Colour.values()[(colour.ordinal()+1)%3], 3, 7-column);
+        return get(Colour.values()[(colour.ordinal()+2)%3],3,7-column);
+      case BACKWARD:
+        if(row==0) throw new InvalidPositionException("Moved off board");
+        return get(colour,row-1,column);
+      case LEFT:
+        if(column==0) throw new InvalidPositionException("Moved off board");
+        return get(colour,row,column-1);
+      case RIGHT:
+        if(column==7) throw new InvalidPositionException("Moved off board");
+        return get(colour,row,column+1);
+    }
+    throw new InvalidPositionException("Unreachable code?");
   }
 
   public int getValue() {

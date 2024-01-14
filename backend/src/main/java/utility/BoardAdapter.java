@@ -2,8 +2,7 @@ package utility;
 
 import common.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class BoardAdapter {
 
@@ -18,6 +17,16 @@ public class BoardAdapter {
         }
 
         return  viewBoard;
+    }
+
+    public static List<String> convertHighlightSquaresToViewBoard(List<Position> possibleMoves) {
+        List<String> moves = new ArrayList<>();
+        if(possibleMoves == null) return Collections.emptyList();
+        for(Position pi: possibleMoves) {
+            moves.add(pi.toString());
+        }
+
+        return moves;
     }
     
 }
