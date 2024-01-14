@@ -29,8 +29,12 @@ public class OnClickResponse {
         this.winner = winner;
     }
 
-    public boolean getIsGameOver() {
+    public boolean isGameOver() {
         return this.isGameOver;
+    }
+
+    public String getWinner() {
+        return this.winner;
     }
 
     @Override
