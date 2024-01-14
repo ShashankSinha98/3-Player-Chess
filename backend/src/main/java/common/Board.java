@@ -12,10 +12,14 @@ public class Board {
     /** A map from board positions to the pieces at that position **/
     private Map<Position,Piece> board;
     private Colour turn;
+    private boolean gameOver;
+    private String winner;
 
     public Board(){
         board = new HashMap<Position,Piece>();
         turn = Colour.BLUE;
+        gameOver = false;
+        winner = null;
         try{
             // Blue, Green, Red
             for(Colour c: Colour.values()){
@@ -30,12 +34,28 @@ public class Board {
         }catch(InvalidPositionException e){}//no impossible positions in this code
     }
 
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
 
     public void move(Position start, Position end) throws InvalidMoveException {
         if(isLegalMove(start, end)) {
             Piece mover = board.get(start);
+            Piece taken = board.get(end);
             board.remove(start);//empty start square
             board.put(end,mover);//move piece
+
+            if(taken !=null){
+                if(taken.getType()==PieceType.KING) {
+                    gameOver=true;
+                    winner = mover.getColour().toString();
+                }
+            }
             turn = Colour.values()[(turn.ordinal()+1)%3];
         } else throw new InvalidMoveException("Illegal Move: "+start+"-"+end);
     }
