@@ -47,8 +47,10 @@ public class Board {
         if(isLegalMove(start, end)) {
             Piece mover = board.get(start);
             Piece taken = board.get(end);
-            board.remove(start);//empty start square
-            board.put(end,mover);//move piece
+            board.remove(start);  //empty start square
+            if(mover.getType()==PieceType.PAWN && end.getRow()==0 && end.getColour()!=mover.getColour())
+                board.put(end, new Piece(PieceType.QUEEN, mover.getColour()));  //promote pawn
+            else board.put(end,mover);  //move piece
 
             if(taken !=null){
                 if(taken.getType()==PieceType.KING) {
