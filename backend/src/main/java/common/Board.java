@@ -34,7 +34,6 @@ public class Board {
     public void move(Position start, Position end) throws InvalidMoveException {
         if(isLegalMove(start, end)) {
             Piece mover = board.get(start);
-            Piece taken = board.get(end);
             board.remove(start);//empty start square
             board.put(end,mover);//move piece
             turn = Colour.values()[(turn.ordinal()+1)%3];

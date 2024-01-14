@@ -18,15 +18,12 @@ public interface IGameInterface {
      * Responsible for sending mouse click events to backend and apply game logic over it to display
      * updated board layout to player.
      * @param  squarePos The unique position of the square which is clicked by player
-     * @return Board map which will be rendered by web view
-     * @throws InvalidPositionException if the square position is outside range [0, 95]
-     * // TODO: Currently blindly moves the piece
+     * @return OnClickResponse which contains current game board layout and list of squares to highlight
      * */
     OnClickResponse onClick(int squarePos);
 
     /**
      * @return returns which colour turn it is currently
-     * TODO: Currently hardcoded and return only BLUE
      * */
     Colour getTurn();
 }
