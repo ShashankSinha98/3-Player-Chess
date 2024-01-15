@@ -120,8 +120,13 @@ function displayPiece(squareId, pieceToken, pieceColor) {
         square.parentNode.insertBefore(textElement, square.nextSibling);
     }
 }
-function insertLabels(squareId) {
-        const square = document.getElementById(squareId);
+
+/**
+ * creates a new svg text element displaying the polygon name
+ * @param polygonId the id of the square for which label to be added
+ */
+function insertLabels(polygonId) {
+        const square = document.getElementById(polygonId);
         const points = square.points;
         let x = (points.getItem(0).x + points.getItem(2).x) / 2;
         let y = (points.getItem(0).y + points.getItem(2).y) / 2;
@@ -133,9 +138,10 @@ function insertLabels(squareId) {
         textElement.setAttribute('fill', 'rgba(255,255,255,0.8');
         textElement.setAttribute('font-size', '14');
         textElement.setAttribute('font-weight', 'bold');
-        textElement.textContent = squareId.toUpperCase();
+        textElement.textContent = polygonId.toUpperCase();
         square.parentNode.insertBefore(textElement, square.nextSibling);
 }
+
 /**
  * creates a new svg text element displaying a piece
  * @param x coordinate of the text element
