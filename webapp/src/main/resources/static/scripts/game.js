@@ -80,7 +80,6 @@ function updateBoard(response) {
     let board = response['board'];
     let highlightedSquares = response['highlightedSquares']
 
-
     updatePieces(board);
     displayPossibleMoves(highlightedSquares);
 }
@@ -103,18 +102,40 @@ function updatePieces(board) {
  * @param pieceColor color as single character, e.g. R, G, B
  */
 function displayPiece(squareId, pieceToken, pieceColor) {
-    //console.log(squareId);
     const square = document.getElementById(squareId);
-    //console.log(square);
+    const existingText = square.nextElementSibling; // Assuming the existing text is the immediate next sibling
+
     const points = square.points;
+    let x = (points.getItem(0).x + points.getItem(2).x) / 2;
+    let y = (points.getItem(0).y + points.getItem(2).y) / 2;
 
-    let x = (points.getItem(0).x + points.getItem(2).x)/2;
-    let y = (points.getItem(0).y + points.getItem(2).y)/2;
+    const textElement = getPieceText(x, y, pieceColor, pieceToken);
 
-    const textElement = getPieceText(x, y, pieceColor, pieceToken );
-    square.parentNode.insertBefore(textElement, square.nextSibling);
+    // Check if there is existing text, and insert the new text after it
+    if (existingText) {
+        square.parentNode.insertBefore(textElement, existingText.nextSibling);
+    }
+    else {
+        // If there's no existing text, just insert the new text after the polygon
+        square.parentNode.insertBefore(textElement, square.nextSibling);
+    }
 }
-
+function insertLabels(squareId) {
+        const square = document.getElementById(squareId);
+        const points = square.points;
+        let x = (points.getItem(0).x + points.getItem(2).x) / 2;
+        let y = (points.getItem(0).y + points.getItem(2).y) / 2;
+        const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textElement.setAttribute('x', x);
+        textElement.setAttribute('y', y);
+        textElement.setAttribute("text-anchor", "middle");
+        textElement.setAttribute("dominant-baseline", "middle");
+        textElement.setAttribute('fill', 'rgba(255,255,255,0.8');
+        textElement.setAttribute('font-size', '14');
+        textElement.setAttribute('font-weight', 'bold');
+        textElement.textContent = squareId.toUpperCase();
+        square.parentNode.insertBefore(textElement, square.nextSibling);
+}
 /**
  * creates a new svg text element displaying a piece
  * @param x coordinate of the text element
@@ -130,11 +151,9 @@ function getPieceText(x, y, color, pieceToken) {
     textElement.setAttribute("text-anchor", "middle");
     textElement.setAttribute("dominant-baseline", "middle");
     textElement.setAttribute('fill', colorMap[color]);
-    textElement.setAttribute('font-size', '48');
+    textElement.setAttribute('font-size', '50');
     textElement.setAttribute('font-weight', 'bold');
-    //textElement.setAttribute('font-family', 'FreeSerif');
     textElement.textContent = pieceMap[pieceToken];
-    //textElement.classList.add('theme');
     textElement.setAttribute('class', theme);
 
     return textElement;
@@ -146,7 +165,9 @@ function getPieceText(x, y, color, pieceToken) {
 function clearBoard() {
     const textElements = document.querySelectorAll('text');
     textElements.forEach((textElement) => {
-        textElement.remove();
+        if (textElement.classList.contains(theme)) {
+            textElement.remove();
+        }
     });
 }
 
@@ -161,6 +182,7 @@ function bodyLoaded(){
     const polygons = document.querySelectorAll('polygon');
 
     polygons.forEach(function (polygon) {
+        insertLabels(polygon.id)
         polygon.addEventListener('click', function () {
             const polygonId = polygon.id;
             sendSquareClicked(polygonId);
