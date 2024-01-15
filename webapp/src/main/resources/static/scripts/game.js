@@ -225,3 +225,11 @@ function requestCurrentPlayer(){
         .then(data => updateCurrenPlayer(data))
         .catch(error => console.error('Error while sending the request:', error));
 }
+
+function openPopup() {
+    document.getElementById('popup').style.display = 'block';
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+}
