@@ -78,6 +78,11 @@ public class GameMain implements IGameInterface {
         }
 
         OnClickResponse clickResponse = new OnClickResponse(getBoard(), getHighlightSquarePositions());
+        if(board.isGameOver()) {
+            String winner = board.getWinner();
+            Log.d(TAG, "Winner: "+winner);
+            clickResponse.setGameOver(winner);
+        }
         Log.d(TAG, "ClickResponse: "+clickResponse);
         return clickResponse;
     }

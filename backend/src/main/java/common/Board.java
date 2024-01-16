@@ -12,10 +12,14 @@ public class Board {
     /** A map from board positions to the pieces at that position **/
     private Map<Position,Piece> board;
     private Colour turn;
+    private boolean gameOver;
+    private String winner;
 
     public Board(){
         board = new HashMap<Position,Piece>();
         turn = Colour.BLUE;
+        gameOver = false;
+        winner = null;
         try{
             // Blue, Green, Red
             for(Colour c: Colour.values()){
@@ -30,12 +34,42 @@ public class Board {
         }catch(InvalidPositionException e){}//no impossible positions in this code
     }
 
+    public boolean isGameOver() {
+        return gameOver;
+    }
 
-    public void move(Position start, Position end) throws InvalidMoveException {
+    public String getWinner() {
+        return winner;
+    }
+
+
+    public void move(Position start, Position end) throws InvalidMoveException, InvalidPositionException {
         if(isLegalMove(start, end)) {
             Piece mover = board.get(start);
-            board.remove(start);//empty start square
-            board.put(end,mover);//move piece
+            Piece taken = board.get(end);
+            board.remove(start);  //empty start square
+            if(mover.getType()==PieceType.PAWN && end.getRow()==0 && end.getColour()!=mover.getColour())
+                board.put(end, new Piece(PieceType.QUEEN, mover.getColour()));  //promote pawn
+            else board.put(end,mover);  //move piece
+
+            if(mover.getType()==PieceType.KING && start.getColumn()==4 && start.getRow()==0){
+                if(end.getColumn()==2){//castle left, update rook
+                    Position rookPos = Position.get(mover.getColour(),0,0);
+                    board.put(Position.get(mover.getColour(),0,3),board.get(rookPos));
+                    board.remove(rookPos);
+                }else if(end.getColumn()==6){//castle right, update rook
+                    Position rookPos = Position.get(mover.getColour(),0,7);
+                    board.put(Position.get(mover.getColour(),0,5),board.get(rookPos));
+                    board.remove(rookPos);
+                }
+            }
+
+            if(taken !=null){
+                if(taken.getType()==PieceType.KING) {
+                    gameOver=true;
+                    winner = mover.getColour().toString();
+                }
+            }
             turn = Colour.values()[(turn.ordinal()+1)%3];
         } else throw new InvalidMoveException("Illegal Move: "+start+"-"+end);
     }
@@ -90,6 +124,13 @@ public class Board {
                 break;
 
             case KNIGHT:
+                for(int i = 0; i<steps.length; i++){
+                    try{
+                        if(end == step(mover, steps[i],start))
+                            return true;
+                    }catch(InvalidPositionException e){}//do nothing, steps went off board.
+                }
+                break;
             case KING://note, you can move into check or remain in check. You may also castle across check
                 for(int i = 0; i<steps.length; i++){
                     try{
@@ -97,6 +138,30 @@ public class Board {
                             return true;
                     }catch(InvalidPositionException e){}//do nothing, steps went off board.
                 }
+
+                try{
+                    if(start==Position.get(moverCol,0,4)){
+                        if(end==Position.get(moverCol,0,6)){
+                            Piece castle = board.get(Position.get(moverCol,0,7));
+                            Piece empty1 = board.get(Position.get(moverCol,0,5));
+                            Piece empty2 = board.get(Position.get(moverCol,0,6));
+                            if(castle!=null && castle.getType()==PieceType.ROOK && castle.getColour()==mover.getColour()
+                                    && empty1==null && empty2==null)
+                                System.out.println("Castling Legal Move 1: True");
+                            return true;
+                        }
+                        if(end==Position.get(moverCol,0,2)){
+                            Piece castle = board.get(Position.get(moverCol,0,0));
+                            Piece empty1 = board.get(Position.get(moverCol,0,1));
+                            Piece empty2 = board.get(Position.get(moverCol,0,2));
+                            Piece empty3 = board.get(Position.get(moverCol,0,3));
+                            if(castle!=null && castle.getType()==PieceType.ROOK && castle.getColour()==mover.getColour()
+                                    && empty1==null && empty2==null && empty3==null)
+                                System.out.println("Castling Legal Move 2: True");
+                            return true;
+                        }
+                    }
+                }catch(InvalidPositionException e){}
                 break;
 
             default: //rook, bishop, queen, just need to check that one of their steps is iterated.

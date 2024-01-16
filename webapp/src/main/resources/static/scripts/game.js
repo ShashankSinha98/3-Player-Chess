@@ -174,15 +174,14 @@ function bodyLoaded(){
  * @param polygonId id of the clicked square, e.g. Ra1, Gb3, ...
  */
 function sendSquareClicked(polygonId){
-    fetch('/onClick', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'text/plain',
-        },
-        body: polygonId,
-    }).then(response => response.json())
-        .then(data => updateBoard(data))
-        .catch(error => console.error('Error while sending the request:', error));
+    const request = new XMLHttpRequest();
+    request.open("POST", "/onClick", false);
+    request.send(polygonId);
+
+    if (request.status === 200) {
+        const data = JSON.parse(request.response);
+        updateBoard(data);
+    }
 }
 
 /**
@@ -190,40 +189,43 @@ function sendSquareClicked(polygonId){
  * @param polygonId id of the square on which the piece is located
  */
 function requestHighlightedSquares(polygonId){
-    fetch('/allMoves', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'text/plain',
-        },
-        body: polygonId,
-    }).then(response => response.json())
-        .then(data => displayPossibleMoves(data))
-        .catch(error => console.error('Error while sending the request:', error));
+    const request = new XMLHttpRequest();
+    request.open("GET", "/allMoves", false);
+    request.send(polygonId);
+
+    if (request.status === 200) {
+        const data = JSON.parse(request.response);
+        displayPossibleMoves(data);
+    }
 }
 
 /**
  * requests the new board state and displays it
  */
 function requestUpdatedBoard(){
-    fetch('/board', {
-        method: 'GET',
-    }).then(response => response.json())
-        .then(data => updatePieces(data))
-        .catch(error => console.error('Error while sending the request:', error));
+    console.log("Request Current Board");
+    const request = new XMLHttpRequest();
+    request.open("GET", "/board", false);
+    request.send(null);
+
+    if (request.status === 200) {
+        const data = JSON.parse(request.response);
+        updatePieces(data);
+    }
 }
 
 /**
  * requests the current player and displays it
  */
 function requestCurrentPlayer(){
-    fetch('/currentPlayer', {
-        method: 'GET',
-        headers: {
-            Accept: "text/plain"
-        }
-    }).then(reponse => reponse.text())
-        .then(data => updateCurrenPlayer(data))
-        .catch(error => console.error('Error while sending the request:', error));
+    const request = new XMLHttpRequest();
+    request.open("GET", "/currentPlayer", false);
+    request.send(null);
+
+    if (request.status === 200) {
+        const player = request.response;
+        updateCurrenPlayer(player);
+    }
 }
 
 function openPopup() {
