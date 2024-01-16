@@ -78,7 +78,11 @@ function updateBoard(response) {
     clearBoard();
     console.log('New Board Configuration:', response);
     let board = response['board'];
-    let highlightedSquares = response['highlightedSquares']
+    let highlightedSquares = response['highlightedSquares'];
+    let winner = response['winner'];
+    if(response['gameOver']){
+        showGameOverPopup(response['winner']);
+    }
 
 
     updatePieces(board);
@@ -228,8 +232,10 @@ function requestCurrentPlayer(){
     }
 }
 
-function openPopup() {
+function showGameOverPopup(winner) {
     document.getElementById('popup').style.display = 'block';
+    const winnerText = winner + " has won the Game!"
+    document.getElementById('winner').innerText = winnerText;
 }
 
 function closePopup() {
