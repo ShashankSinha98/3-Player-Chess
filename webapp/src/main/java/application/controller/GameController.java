@@ -21,20 +21,6 @@ public class GameController {
         //this.game = new GameMain();
     }
 
-    private int calculateSquareId(String square){
-        char color = square.charAt(0);
-        int y = square.charAt(1) - 'a';
-        int x = square.charAt(2) - '1';
-        int offset = 0;
-        if(color == 'G'){
-            offset = 32;
-        }else if(color == 'R'){
-            offset = 64;
-        }
-
-        return offset + x + 4*y;
-    }
-
     @GetMapping("/newGame")
     public void handleNewGame(){
         System.out.println("New Game");
@@ -43,10 +29,10 @@ public class GameController {
 
     @PostMapping("/onClick")
     public OnClickResponse handleMove(@RequestBody String squareText) throws InvalidPositionException {
-        int squareId = calculateSquareId(squareText);
+        //int squareId = calculateSquareId(squareText);
 
-        System.out.println("Square: " + squareText + " with ID " +squareId);
-        return game.onClick(squareId);
+        System.out.println("Square: " + squareText);
+        return game.onClick(squareText);
     }
 
 //    @PostMapping("/allMoves")
