@@ -2,33 +2,29 @@
 <html lang="en">
 <head>
     <title>Three Player Chess</title>
+    <link rel="stylesheet" type="text/css" href="styles/index.css">
 </head>
 <body>
 <h1>Welcome to 3 player chess!</h1>
-<button onclick="newGame()">New Game</button>
+<div id="newgame">
+    <div>
+        <label for="pl1">Blue Player</label>
+        <input id="pl1" type="text" placeholder="Player 1" oninput="checkInputs()">
+        <span id="blueKing">&#9812;</span>
+    </div>
+    <div>
+        <label for="pl2">Green Player</label>
+        <input id="pl2" type="text" placeholder="Player 2" oninput="checkInputs()">
+        <span id="greenKing">&#9812;</span>
+    </div>
+    <div>
+        <label for="pl3">Red Player</label>
+        <input id="pl3" type="text" placeholder="Player 3" oninput="checkInputs()">
+        <span id="redKing">&#9812;</span>
 
-<script>
-    function newGame(){
-        fetch('/newGame', {
-            method: 'GET',
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error making GET request to /newGame');
-                }
-
-                console.log('GET request to /newGame was successful');
-                return response.text();
-            })
-            .then(data => {
-                window.location.href = '/game.html';
-            })
-            .catch(error => {
-
-                console.error(error);
-            });
-        //window.location.href = '/game.html';
-    }
-</script>
+    </div>
+    <button id="newgamebtn" onclick="newGame()" disabled>New Game</button>
+</div>
+<script src="scripts/index.js"></script>
 </body>
 </html>
