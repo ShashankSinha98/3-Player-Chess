@@ -28,9 +28,14 @@ let theme = 'arialTheme'
  * @param color color of the current player as single character (R, G, B)
  */
 function updateCurrenPlayer(color){
-    console.log("Current player: " + color);
-    const p = document.getElementById('playerdisplay');
-    p.textContent = colorMap[color]
+    const colourName = colorMap[color];
+    const playerName = localStorage.getItem(colourName);
+
+    const p_name = document.getElementById('pl-name');
+    p_name.textContent = playerName;
+
+    const p_colour = document.getElementById('pl-colour');
+    p_colour.style.color = colourName;
 }
 
 /**
@@ -233,8 +238,10 @@ function requestCurrentPlayer(){
 }
 
 function showGameOverPopup(winner) {
+    const colourName = colorMap[winner];
+    const playerName = localStorage.getItem(colourName);
     document.getElementById('popup').style.display = 'block';
-    const winnerText = winner + " has won the Game!"
+    const winnerText = playerName + " (" + colourName + ") has won the Game!"
     document.getElementById('winner').innerText = winnerText;
 }
 
