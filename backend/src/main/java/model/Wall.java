@@ -16,6 +16,11 @@ import java.util.Set;
 import static utility.MovementUtil.step;
 import static utility.MovementUtil.stepOrNull;
 
+/**
+ * Move like a rook. It cannot take any piece and other pieces cannot take it too.
+ * Pieces of different colours cannot pass it through, however, pieces of the same colour
+ * as the wall can pass it through.
+ * */
 public class Wall extends Rook {
 
     private static final String TAG = "WALL";
