@@ -1,5 +1,9 @@
 package common;
 
+/**
+ *  Enum class containing the colors of different players.
+ *  Also has a method for String representation to use in web app
+ **/
 public enum Colour {
 
     BLUE, GREEN, RED;

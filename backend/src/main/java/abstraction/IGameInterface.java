@@ -19,7 +19,7 @@ public interface IGameInterface {
      * updated board layout to player.
      * @param  polygonLabel The unique label of the polygon which is clicked by player
      * @return OnClickResponse which contains current game board layout and list of polygons to highlight
-     * */
+     **/
     OnClickResponse onClick(String polygonLabel);
 
     /**

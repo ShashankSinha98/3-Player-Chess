@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  *  Abstract Base class for all chess pieces. All chess pieces must extend this class
  *  and provide implementation to abstract methods according to their rules.
- * */
+ **/
 public abstract class BasePiece {
 
     protected Colour colour; // colour of the chess piece [Red, Green, Blue]
