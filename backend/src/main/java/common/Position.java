@@ -67,12 +67,12 @@ public enum Position{
 
   /**
    * Gets the position corresponding to the specified colour, row and column.
-   * @return the position of the specified square Index
+   * @return the position of the specified polygon Index
    * @throws InvalidPositionException if outside the bounds of the board.
    * **/
-  public static Position get(int squareIndex) throws InvalidPositionException {
-      if(squareIndex >=0 && squareIndex <=95) {
-        return Position.values()[squareIndex];
+  public static Position get(int polygonIndex) throws InvalidPositionException {
+      if(polygonIndex >=0 && polygonIndex <=95) {
+        return Position.values()[polygonIndex];
       }
     throw new InvalidPositionException("No such position.");
   }

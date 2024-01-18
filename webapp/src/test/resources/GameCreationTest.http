@@ -8,25 +8,25 @@
 ### Step1: Create new game
 GET http://localhost:8080/newGame
 
-### Step2a: Click Square Bd2
+### Step2a: Click Polygon Bd2
 POST http://localhost:8080/move
 Content-Type: text/plain
 
 Bd2
 
-### Step2b: Click Square Bd4
+### Step2b: Click Polygon Bd4
 POST http://localhost:8080/move
 Content-Type: text/plain
 
 Bd4
 
-### Step3a: Click Square Gb2
+### Step3a: Click Polygon Gb2
 POST http://localhost:8080/move
 Content-Type: text/plain
 
 Gb2
 
-### Step3b: Click Square Gb3
+### Step3b: Click Polygon Gb3
 POST http://localhost:8080/move
 Content-Type: text/plain
 

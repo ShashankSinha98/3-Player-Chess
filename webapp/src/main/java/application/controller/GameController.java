@@ -28,17 +28,17 @@ public class GameController {
     }
 
     @PostMapping("/onClick")
-    public OnClickResponse handleMove(@RequestBody String squareText) throws InvalidPositionException {
-        //int squareId = calculateSquareId(squareText);
+    public OnClickResponse handleMove(@RequestBody String polygonText) throws InvalidPositionException {
+        //int polygonId = calculatePolygonId(polygonText);
 
-        System.out.println("Square: " + squareText);
-        return game.onClick(squareText);
+        System.out.println("Polygon: " + polygonText);
+        return game.onClick(polygonText);
     }
 
 //    @PostMapping("/allMoves")
-//    public List<String> handleAllMoves(@RequestBody String squareText) {
-//        System.out.println("Requesting all possible moves of: " + squareText);
-//        return game.getHighlightSquarePositions();
+//    public List<String> handleAllMoves(@RequestBody String polygonText) {
+//        System.out.println("Requesting all possible moves of: " + polygonText);
+//        return game.getHighlightPolygonPositions();
 //    }
 
     @GetMapping("/currentPlayer")

@@ -56,7 +56,7 @@ public class Pawn extends BasePiece {
 
 
     @Override
-    public List<Position> getHighlightSquares(Board board, Position start) {
+    public List<Position> getHighlightPolygons(Board board, Position start) {
         Map<Position, BasePiece> boardMap = board.boardMap;
         Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
         //List<Position> positions = new ArrayList<>();

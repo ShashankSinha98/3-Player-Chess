@@ -20,7 +20,7 @@ public class BoardAdapter {
         return  viewBoard;
     }
 
-    public static List<String> convertHighlightSquaresToViewBoard(List<Position> possibleMoves) {
+    public static List<String> convertHighlightPolygonsToViewBoard(List<Position> possibleMoves) {
         List<String> moves = new ArrayList<>();
         if(possibleMoves == null) return Collections.emptyList();
         for(Position pi: possibleMoves) {

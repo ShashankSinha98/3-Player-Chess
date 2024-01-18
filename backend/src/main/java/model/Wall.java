@@ -53,7 +53,7 @@ public class Wall extends Rook {
     }
 
     @Override
-    public List<Position> getHighlightSquares(Board board, Position start) {
+    public List<Position> getHighlightPolygons(Board board, Position start) {
         Map<Position, BasePiece> boardMap = board.boardMap;
         //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();

@@ -58,7 +58,7 @@ public class BoardTest {
     @EnumSource(Position.class)
     public void move_emptyStartPosition_noUpdateInBoard(Position startPos) {
         Map<Position, Piece> boardMapCopy = new HashMap<>(board.getBoardMap()); // copy original board map
-        if(!startingPiecesIndexes.contains(startPos.getValue())) { // empty square
+        if(!startingPiecesIndexes.contains(startPos.getValue())) { // empty polygon
             board.move(startPos, Position.BA1);
             assertEquals(boardMapCopy.get(startPos), board.getBoardMap().get(startPos));
         }
@@ -69,7 +69,7 @@ public class BoardTest {
     public void move_nonEmptyStartPosition_updateInBoard(Position startPos) {
         Map<Position, Piece> boardMapCopy = new HashMap<>(board.getBoardMap()); // copy original board map
         Map<Position, Piece> boardMap = board.getBoardMap();
-        if(startingPiecesIndexes.contains(startPos.getValue())) {  // non-empty square
+        if(startingPiecesIndexes.contains(startPos.getValue())) {  // non-empty polygon
             Position endPos = Position.BA3;
             Piece movedPiece = boardMapCopy.get(startPos);
             board.move(startPos, endPos);

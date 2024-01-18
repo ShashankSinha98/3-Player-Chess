@@ -54,14 +54,14 @@ function updateTheme(name){
 }
 
 /**
- * highlights a specific set of squares
- * @param data set of squares as JSON array
+ * highlights a specific set of polygons
+ * @param data set of polygons as JSON array
  */
 function displayPossibleMoves(data){
-    console.log('Highlighted Squares: ' + data);
+    console.log('Highlighted Polygons: ' + data);
     removeHighlighting();
-    data.forEach(function (squareId) {
-        const polygon = document.getElementById(squareId);
+    data.forEach(function (polygonId) {
+        const polygon = document.getElementById(polygonId);
         if(polygon != null){
             polygon.classList.add('highlight')
         }
@@ -70,7 +70,7 @@ function displayPossibleMoves(data){
 }
 
 /**
- * removes the highlighting of all squares
+ * removes the highlighting of all polygons
  */
 function removeHighlighting(){
     const polygons = document.querySelectorAll('polygon');
@@ -85,38 +85,38 @@ function updateBoard(response) {
     clearBoard();
     console.log('New Board Configuration:', response);
     let board = response['board'];
-    let highlightedSquares = response['highlightedSquares'];
+    let highlightedPolygons = response['highlightedPolygons'];
     let winner = response['winner'];
     if(response['gameOver']){
         showGameOverPopup(response['winner']);
     }
 
     updatePieces(board);
-    displayPossibleMoves(highlightedSquares);
+    displayPossibleMoves(highlightedPolygons);
 }
 
 function updatePieces(board) {
-    for (const squareId in board) {
-        const value = board[squareId];
+    for (const polygonId in board) {
+        const value = board[polygonId];
         const pieceColor = value[0];
         const pieceToken = value[1];
 
-        displayPiece(squareId, pieceToken, pieceColor);
+        displayPiece(polygonId, pieceToken, pieceColor);
 
     }
 }
 
 /**
  * displays the piece as a textElement inside svg
- * @param squareId Id of the square, e.g. Ba1, Ba2, ...
+ * @param polygonId Id of the polygon, e.g. Ba1, Ba2, ...
  * @param pieceToken token of the piece, e.g. R, N, B, K, Q, P
  * @param pieceColor color as single character, e.g. R, G, B
  */
-function displayPiece(squareId, pieceToken, pieceColor) {
-    const square = document.getElementById(squareId);
-    const existingText = square.nextElementSibling; // Assuming the existing text is the immediate next sibling
+function displayPiece(polygonId, pieceToken, pieceColor) {
+    const polygon = document.getElementById(polygonId);
+    const existingText = polygon.nextElementSibling; // Assuming the existing text is the immediate next sibling
 
-    const points = square.points;
+    const points = polygon.points;
     let x = (points.getItem(0).x + points.getItem(2).x) / 2;
     let y = (points.getItem(0).y + points.getItem(2).y) / 2;
 
@@ -124,21 +124,21 @@ function displayPiece(squareId, pieceToken, pieceColor) {
 
     // Check if there is existing text, and insert the new text after it
     if (existingText) {
-        square.parentNode.insertBefore(textElement, existingText.nextSibling);
+        polygon.parentNode.insertBefore(textElement, existingText.nextSibling);
     }
     else {
         // If there's no existing text, just insert the new text after the polygon
-        square.parentNode.insertBefore(textElement, square.nextSibling);
+        polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
     }
 }
 
 /**
  * creates a new svg text element displaying the polygon name
- * @param polygonId the id of the square for which label to be added
+ * @param polygonId the id of the polygon for which label to be added
  */
 function insertLabels(polygonId) {
-        const square = document.getElementById(polygonId);
-        const points = square.points;
+        const polygon = document.getElementById(polygonId);
+        const points = polygon.points;
         let x = (points.getItem(0).x + points.getItem(2).x) / 2;
         let y = (points.getItem(0).y + points.getItem(2).y) / 2;
         const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -150,7 +150,7 @@ function insertLabels(polygonId) {
         textElement.setAttribute('font-size', '14');
         textElement.setAttribute('font-weight', 'bold');
         textElement.textContent = polygonId.toUpperCase();
-        square.parentNode.insertBefore(textElement, square.nextSibling);
+        polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
 }
 
 /**
@@ -202,17 +202,17 @@ function bodyLoaded(){
         insertLabels(polygon.id)
         polygon.addEventListener('click', function () {
             const polygonId = polygon.id;
-            sendSquareClicked(polygonId);
+            sendPolygonClicked(polygonId);
             requestCurrentPlayer();
         });
     });
 }
 
 /**
- * post the id of the clicked Square to the server on /onClick endpoint
- * @param polygonId id of the clicked square, e.g. Ra1, Gb3, ...
+ * post the id of the clicked Polygon to the server on /onClick endpoint
+ * @param polygonId id of the clicked polygon, e.g. Ra1, Gb3, ...
  */
-function sendSquareClicked(polygonId){
+function sendPolygonClicked(polygonId){
     const request = new XMLHttpRequest();
     request.open("POST", "/onClick", false);
     request.send(polygonId);
@@ -225,9 +225,9 @@ function sendSquareClicked(polygonId){
 
 /**
  * requests all possible Moves of a piece and highlights them on the board
- * @param polygonId id of the square on which the piece is located
+ * @param polygonId id of the polygon on which the piece is located
  */
-function requestHighlightedSquares(polygonId){
+function requestHighlightedPolygons(polygonId){
     const request = new XMLHttpRequest();
     request.open("GET", "/allMoves", false);
     request.send(polygonId);

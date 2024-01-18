@@ -44,7 +44,7 @@ public abstract class BasePiece {
      * @param start: position of piece on board
      * @return List of possible positions a piece is allowed to move
      * */
-    public abstract List<Position> getHighlightSquares(Board board, Position start);
+    public abstract List<Position> getHighlightPolygons(Board board, Position start);
 
     /**
      * @return Colour of the chess piece

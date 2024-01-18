@@ -5,19 +5,19 @@ import java.util.Map;
 
 public class OnClickResponse {
 
-    private final List<String> highlightedSquares;
+    private final List<String> highlightedPolygons;
     private final Map<String, String> board;
 
     private boolean isGameOver = false;
     private String winner = null;
 
-    public OnClickResponse(Map<String, String> board, List<String> highlightedSquares) {
+    public OnClickResponse(Map<String, String> board, List<String> highlightedPolygons) {
         this.board = board;
-        this.highlightedSquares = highlightedSquares;
+        this.highlightedPolygons = highlightedPolygons;
     }
 
-    public List<String> getHighlightedSquares() {
-        return highlightedSquares;
+    public List<String> getHighlightedPolygons() {
+        return highlightedPolygons;
     }
 
     public Map<String, String> getBoard() {
@@ -40,7 +40,7 @@ public class OnClickResponse {
     @Override
     public String toString() {
         return "OnClickResponse{" +
-                "highlightedSquares=" + highlightedSquares +
+                "highlightedPolygons=" + highlightedPolygons +
                 ", board=" + board +
                 '}';
     }
