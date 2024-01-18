@@ -1,6 +1,6 @@
 package main;
 
-import abstraction.IGameInterface;
+import abstraction.*;
 import common.*;
 import utility.BoardAdapter;
 import utility.Log;
@@ -50,18 +50,19 @@ public class GameMain implements IGameInterface {
 
     // squarePos must be in range [0, 95]
     @Override
-    public OnClickResponse onClick(int squarePos) {
+    public OnClickResponse onClick(String squareLabel) {
+        int squarePos = calculateSquareId(squareLabel);
         Log.d(TAG, ">>> onClick called: "+squarePos);
         try {
             Position pos = Position.get(squarePos);
-            if (moveStartPos == null || board.isCurrentPlayersPiece(pos)) {
+            if (board.isCurrentPlayersPiece(pos)) { // player selects his own piece - first move
                 moveStartPos = pos;
                 Log.d(TAG, ">>> moveStartPos: " + moveStartPos);
                 highlightSquares = board.getPossibleMoves(moveStartPos);
                 if(highlightSquares.size() == 0) { // Selected piece has no square to move, reset selection
                     moveStartPos = null;
                 }
-            } else {
+            } else if(moveStartPos != null){
                 moveEndPos = Position.get(squarePos);
                 board.move(moveStartPos, moveEndPos);
                 Log.d(TAG, ">>> moveStartPos: " + moveStartPos + ", moveEndPos: " + moveEndPos);
@@ -97,6 +98,21 @@ public class GameMain implements IGameInterface {
     }
 
     public static void main(String[] args) {
+        Board b = new Board();
+        Log.d(TAG, b.getWebViewBoard());
+    }
 
+    private int calculateSquareId(String square){
+        char color = square.charAt(0);
+        int y = square.charAt(1) - 'a';
+        int x = square.charAt(2) - '1';
+        int offset = 0;
+        if(color == 'G'){
+            offset = 32;
+        }else if(color == 'R'){
+            offset = 64;
+        }
+
+        return offset + x + 4*y;
     }
 }
