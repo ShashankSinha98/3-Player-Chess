@@ -1,6 +1,7 @@
 package abstraction;
 
 import common.*;
+import model.Board;
 import utility.Log;
 
 import java.util.HashMap;
@@ -29,24 +30,26 @@ public abstract class BasePiece {
 
     /**
      * @apiNote To check whether a move is valid
-     * @param board: Current game board map
+     * @param board: Board class instance representing current game board
      * @param start: Start position of move
      * @param end: End position of move
      * @return True if a move is possible from start to end, else False
      * */
-    public abstract boolean isLegalMove(Map<Position, BasePiece> board, Position start, Position end);
+    public abstract boolean isLegalMove(Board board, Position start, Position end);
 
 
     /**
      * @apiNote Fetch all the possible positions where a piece can move on board
-     * @param board: Current game board map
+     * @param board: Board class instance representing current game board
      * @param start: position of piece on board
      * @return List of possible positions a piece is allowed to move
      * */
-    public abstract List<Position> getHighlightSquares(Map<Position, BasePiece> board, Position start);
+    public abstract List<Position> getHighlightSquares(Board board, Position start);
 
     /**
      * @return Colour of the chess piece
      * */
-    public abstract Colour getColour();
+    public Colour getColour() {
+        return this.colour;
+    }
 }

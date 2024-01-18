@@ -41,13 +41,16 @@ public class King extends BasePiece {
     }
 
     @Override
-    public boolean isLegalMove(Map<Position, BasePiece> board, Position start, Position end) {
+    public boolean isLegalMove(Board board, Position start, Position end) {
+        Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
-        BasePiece target = board.get(end);
+        BasePiece target = boardMap.get(end);
         if(mover==null) return false; // No piece present at start pos
         Colour moverCol = mover.getColour();
-        // if(moverCol!=turn) return false; // piece colour mismatches player colour //TODO - colour-turn check need to be handled on Game Main Side
         if(target!= null && moverCol==target.getColour()) return false; // player cannot take it's own piece
+
+        Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
+        if(wallPiecePositions.contains(end)) return false;
 
         Direction[][] steps = this.directions;
         for(int i = 0; i<steps.length; i++){
@@ -57,27 +60,29 @@ public class King extends BasePiece {
             }catch(InvalidPositionException e){}//do nothing, steps went off board.
         }
 
-        boolean isCastling = isCastlingPossible(board, start, end);
+        boolean isCastling = isCastlingPossible(boardMap, start, end);
         if(isCastling) return true;
 
         return false;
     }
 
     @Override
-    public List<Position> getHighlightSquares(Map<Position, BasePiece> board, Position start) {
-        //List<Position> positions = new ArrayList<>();
+    public List<Position> getHighlightSquares(Board board, Position start) {
+        Map<Position, BasePiece> boardMap = board.boardMap;
+        Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
         Set<Position> positionSet = new HashSet<>();
         BasePiece mover = this;
         Direction[][] steps = this.directions;
 
         for (Direction[] step : steps) {
             Position end = stepOrNull(mover, step, start);
+            if(wallPiecePositions.contains(end)) continue;
 
             if(positionSet.contains(end)) continue;
 
             if (end != null) {
-                if(board.get(end)!=null) {
-                    if(board.get(end).getColour()!=mover.getColour()) {
+                if(boardMap.get(end)!=null) {
+                    if(boardMap.get(end).getColour()!=mover.getColour()) {
                         Log.d(TAG, "pos enemy: " + end);
                         //positions.add(end);
                         positionSet.add(end);
@@ -92,7 +97,7 @@ public class King extends BasePiece {
 
         List<Position> castlingPositions = castlingPositionMapping.getOrDefault(mover.getColour(), new ArrayList<>());
         for(Position end: castlingPositions) {
-            if (board.get(end)==null && isCastlingPossible(board, start, end)) {
+            if (boardMap.get(end)==null && isCastlingPossible(boardMap, start, end)) {
                 Log.d(TAG, "pos castling: " + end);
                 //positions.add(end);
                 positionSet.add(end);
@@ -100,11 +105,6 @@ public class King extends BasePiece {
         }
 
         return Util.toList(positionSet);
-    }
-
-    @Override
-    public Colour getColour() {
-        return this.colour;
     }
 
 
