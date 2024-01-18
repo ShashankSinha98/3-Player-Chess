@@ -1,7 +1,11 @@
 package main;
 
 import abstraction.IGameInterface;
-import common.*;
+import common.Colour;
+import common.InvalidMoveException;
+import common.InvalidPositionException;
+import common.OnClickResponse;
+import common.Position;
 import model.Board;
 import utility.BoardAdapter;
 import utility.Log;

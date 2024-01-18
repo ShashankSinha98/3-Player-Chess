@@ -4,7 +4,8 @@ import model.Board;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BoardTest {
 

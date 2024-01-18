@@ -1,12 +1,11 @@
 package abstraction;
 
-import common.*;
+import common.Colour;
+import common.Direction;
+import common.Position;
 import model.Board;
-import utility.Log;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *  Abstract Base class for all chess pieces. All chess pieces must extend this class

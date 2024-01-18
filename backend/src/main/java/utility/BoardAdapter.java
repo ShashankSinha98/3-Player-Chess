@@ -3,7 +3,11 @@ package utility;
 import abstraction.BasePiece;
 import common.Position;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *  Class BoardAdapter to convert information for web app representable form

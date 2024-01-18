@@ -1,7 +1,9 @@
 package utility;
 
 import abstraction.BasePiece;
-import common.*;
+import common.Direction;
+import common.InvalidPositionException;
+import common.Position;
 import model.Pawn;
 import utility.Log;
 
