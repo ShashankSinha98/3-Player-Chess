@@ -19,6 +19,9 @@ import static utility.MovementUtil.stepOrNull;
 /**
  * Wall class extends Rook. The polygons
  * to be highlighted, and its legal moves are checked here
+ * Move like a rook. It cannot take any piece and other pieces cannot take it too.
+ * Pieces of different colours cannot pass it through, however, pieces of the same colour
+ * as the wall can pass it through.
  **/
 public class Wall extends Rook {
 
@@ -47,7 +50,7 @@ public class Wall extends Rook {
         if(mover==null) return false; // No piece present at start position
         if(target!=null) return false; // Wall cannot take any piece
         Colour moverCol = mover.getColour();
-        if(target!= null && moverCol==target.getColour())return false; // player cannot take it's own piece
+        if(target!= null && moverCol==target.getColour())return false; // player cannot take its own piece
 
         Direction[][] steps = this.directions;
         for(int i = 0; i<steps.length; i++){
@@ -87,15 +90,6 @@ public class Wall extends Rook {
                 positionSet.add(tmp);
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
             }
-
-            /*if(tmp!=null) {
-                if(boardMap.get(tmp).getColour()!=mover.getColour()) {
-                    Log.d(TAG, "Opponent tmp: " + tmp);
-                    positionSet.add(tmp);
-                } else {
-                    Log.d(TAG, "Mine tmp: " + tmp);
-                }
-            }*/
         }
 
         return Util.toList(positionSet);
