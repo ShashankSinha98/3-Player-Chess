@@ -15,9 +15,9 @@ public class BoardTest {
     @BeforeAll
     static void initBeforeAllBoardTest() {
         startingPiecesIndexes = new HashSet<>();
-        for(int pos=0; pos<=92; pos+=4) {
-            startingPiecesIndexes.add(pos); // row 1
-            startingPiecesIndexes.add(pos+1); // row 2
+        for(int position=0; position<=92; position+=4) {
+            startingPiecesIndexes.add(position); // row 1
+            startingPiecesIndexes.add(position+1); // row 2
         }
     }
 
@@ -38,16 +38,16 @@ public class BoardTest {
 
     @Test
     public void isEmpty_nonEmptyIndex_False() throws InvalidPositionException {
-        for(int pos: startingPiecesIndexes) {
-            assertFalse(board.isEmpty(pos));
+        for(int position: startingPiecesIndexes) {
+            assertFalse(board.isEmpty(position));
         }
     }*/
 
 /*    @Test
     public void isEmpty_emptyIndex_True() throws InvalidPositionException {
-        for(int pos=0; pos< TOTAL_SQUARES; pos++) {
-            if(!startingPiecesIndexes.contains(pos)) {
-                assertTrue(board.isEmpty(pos));
+        for(int position=0; position< TOTAL_SQUARES; position++) {
+            if(!startingPiecesIndexes.contains(position)) {
+                assertTrue(board.isEmpty(position));
             }
         }
     }*/

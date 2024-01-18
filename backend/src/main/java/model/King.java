@@ -28,7 +28,7 @@ public class King extends BasePiece {
                 castlingPositionMapping.put(c, castlingPositions);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Exception while adding castling end pos: "+e.getMessage());
+            Log.e(TAG, "Exception while adding castling end position: "+e.getMessage());
         }
     }
 
@@ -45,7 +45,7 @@ public class King extends BasePiece {
         Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
         BasePiece target = boardMap.get(end);
-        if(mover==null) return false; // No piece present at start pos
+        if(mover==null) return false; // No piece present at start position
         Colour moverCol = mover.getColour();
         if(target!= null && moverCol==target.getColour()) return false; // player cannot take it's own piece
 
@@ -83,12 +83,12 @@ public class King extends BasePiece {
             if (end != null) {
                 if(boardMap.get(end)!=null) {
                     if(boardMap.get(end).getColour()!=mover.getColour()) {
-                        Log.d(TAG, "pos enemy: " + end);
+                        Log.d(TAG, "position enemy: " + end);
                         //positions.add(end);
                         positionSet.add(end);
                     }
                 } else {
-                    Log.d(TAG, "pos: "+end);
+                    Log.d(TAG, "position: "+end);
                     //positions.add(end);
                     positionSet.add(end);
                 }
@@ -98,7 +98,7 @@ public class King extends BasePiece {
         List<Position> castlingPositions = castlingPositionMapping.getOrDefault(mover.getColour(), new ArrayList<>());
         for(Position end: castlingPositions) {
             if (boardMap.get(end)==null && isCastlingPossible(boardMap, start, end)) {
-                Log.d(TAG, "pos castling: " + end);
+                Log.d(TAG, "position castling: " + end);
                 //positions.add(end);
                 positionSet.add(end);
             }

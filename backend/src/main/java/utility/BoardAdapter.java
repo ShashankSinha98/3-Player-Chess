@@ -10,10 +10,10 @@ public class BoardAdapter {
     public static Map<String, String> convertModelBoardToViewBoard(Map<Position, BasePiece> modelBoard) {
         Map<String, String> viewBoard = new HashMap<>();
 
-        for(Position pos: modelBoard.keySet()) {
-            BasePiece piece = modelBoard.get(pos);
+        for(Position position: modelBoard.keySet()) {
+            BasePiece piece = modelBoard.get(position);
             if(piece != null) {
-                viewBoard.put(pos.toString(), piece.toString());
+                viewBoard.put(position.toString(), piece.toString());
             }
         }
 

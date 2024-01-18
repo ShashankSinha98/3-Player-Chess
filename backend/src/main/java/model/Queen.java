@@ -31,7 +31,7 @@ public class Queen extends BasePiece {
         Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
         BasePiece target = boardMap.get(end);
-        if(mover==null) return false; // No piece present at start pos
+        if(mover==null) return false; // No piece present at start position
         Colour moverCol = mover.getColour();
         if(target!= null && moverCol==target.getColour()) return false; // player cannot take it's own piece
 
@@ -85,10 +85,10 @@ public class Queen extends BasePiece {
             }
         }
 
-        for(Position pos: wallPiecePositions) {
-            if(positionSet.contains(pos)) {
-                Log.d(TAG, "Removed a wallPiecePos: "+pos);
-                positionSet.remove(pos);
+        for(Position position: wallPiecePositions) {
+            if(positionSet.contains(position)) {
+                Log.d(TAG, "Removed a wallPiecePos: "+position);
+                positionSet.remove(position);
             }
         }
 

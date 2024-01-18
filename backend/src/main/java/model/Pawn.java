@@ -30,7 +30,7 @@ public class Pawn extends BasePiece {
         Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
         BasePiece target = boardMap.get(end);
-        if(mover==null) return false; // No piece present at start pos
+        if(mover==null) return false; // No piece present at start position
         Colour moverCol = mover.getColour();
         if(target!= null && moverCol==target.getColour())return false; // player cannot take it's own piece
 
@@ -81,7 +81,7 @@ public class Pawn extends BasePiece {
                             && boardMap.get(Position.get(moverCol, 2, start.getColumn())) == null)//and can't jump a piece
                             || (target != null && i > 1) //or taking diagonally
                     ) {
-                        Log.d(TAG, "pos: " + end);
+                        Log.d(TAG, "position: " + end);
                         //positions.add(end);
                         positionSet.add(end);
                     }

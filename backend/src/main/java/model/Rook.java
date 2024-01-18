@@ -30,7 +30,7 @@ public class Rook extends BasePiece {
         Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
         BasePiece target = boardMap.get(end);
-        if(mover==null) return false; // No piece present at start pos
+        if(mover==null) return false; // No piece present at start position
         Colour moverCol = mover.getColour();
         if(target!= null && moverCol==target.getColour())return false; // player cannot take it's own piece
 
@@ -47,7 +47,7 @@ public class Rook extends BasePiece {
                     Log.d(TAG, "tmp: "+tmp);
                     tmp = step(mover, step, tmp, tmp.getColour()!=start.getColour());
                 }
-                if(end==tmp) return true; // when end pos is in range of rook and contains a piece
+                if(end==tmp) return true; // when end position is in range of rook and contains a piece
             }catch(InvalidPositionException e){
                 Log.d(TAG, "InvalidPositionException: "+e.getMessage());
             }//do nothing, steps went off board.
@@ -83,10 +83,10 @@ public class Rook extends BasePiece {
             }
         }
 
-        for(Position pos: wallPiecePositions) {
-            if(positionSet.contains(pos)) {
-                Log.d(TAG, "Removed a wallPiecePos: "+pos);
-                positionSet.remove(pos);
+        for(Position position: wallPiecePositions) {
+            if(positionSet.contains(position)) {
+                Log.d(TAG, "Removed a wallPiecePos: "+position);
+                positionSet.remove(position);
             }
         }
 

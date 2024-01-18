@@ -36,7 +36,7 @@ public class Knight extends BasePiece {
         Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
         BasePiece target = boardMap.get(end);
-        if(mover==null) return false; // No piece present at start pos
+        if(mover==null) return false; // No piece present at start position
         Colour moverCol = mover.getColour();
         if(target!= null && moverCol==target.getColour()) return false; // player cannot take it's own piece
 
@@ -72,11 +72,11 @@ public class Knight extends BasePiece {
 
                 if(target!=null) {
                     if(target.getColour()!=mover.getColour()) {
-                        Log.d(TAG, "pos enemy: "+end);
+                        Log.d(TAG, "position enemy: "+end);
                         positionSet.add(end);
                     }
                 } else {
-                    Log.d(TAG, "pos: "+end);
+                    Log.d(TAG, "position: "+end);
                     positionSet.add(end);
                 }
             }

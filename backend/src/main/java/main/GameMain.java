@@ -42,9 +42,9 @@ public class GameMain implements IGameInterface {
         int polygonPos = calculatePolygonId(polygonLabel);
         Log.d(TAG, ">>> onClick called: "+polygonPos);
         try {
-            Position pos = Position.get(polygonPos);
-            if (board.isCurrentPlayersPiece(pos)) { // player selects his own piece - first move
-                moveStartPos = pos;
+            Position position = Position.get(polygonPos);
+            if (board.isCurrentPlayersPiece(position)) { // player selects his own piece - first move
+                moveStartPos = position;
                 Log.d(TAG, ">>> moveStartPos: " + moveStartPos);
                 highlightPolygons = board.getPossibleMoves(moveStartPos);
                 if(highlightPolygons.isEmpty()) { // Selected piece has no polygon to move, reset selection
