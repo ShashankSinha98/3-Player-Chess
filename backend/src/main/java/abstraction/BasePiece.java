@@ -18,6 +18,7 @@ public abstract class BasePiece {
     protected Direction[][] directions; // List of possible directions a piece can move. [Left, Right, Forward, Backward]
 
     /**
+     * BasePiece constructor
      * @param colour: Colour of the chess piece being initiated
      * */
     public BasePiece(Colour colour) {
@@ -25,7 +26,9 @@ public abstract class BasePiece {
         setupDirections();
     }
 
-    // To init directions list of a particular piece
+    /**
+     * Method to initialize directions for a chess piece
+     **/
     protected abstract void setupDirections();
 
     /**

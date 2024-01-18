@@ -9,44 +9,46 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Map;
 
-
+/**
+ * GameController class - interacts with the backend logic.
+ * New game instances are created here.
+ **/
 @RestController
 public class GameController {
     private IGameInterface game;
 
-    public GameController() {
-        //this.game = new GameMain();
-    }
-
+    /**
+     * Method to create new game instance
+     **/
     @GetMapping("/newGame")
     public void handleNewGame(){
         System.out.println("New Game");
         this.game = new GameMain();
     }
 
+    /**
+     * Method to notify click events to the backend
+     **/
     @PostMapping("/onClick")
     public OnClickResponse handleMove(@RequestBody String polygonText) throws InvalidPositionException {
-        //int polygonId = calculatePolygonId(polygonText);
-
         System.out.println("Polygon: " + polygonText);
         return game.onClick(polygonText);
     }
 
-//    @PostMapping("/allMoves")
-//    public List<String> handleAllMoves(@RequestBody String polygonText) {
-//        System.out.println("Requesting all possible moves of: " + polygonText);
-//        return game.getHighlightPolygonPositions();
-//    }
-
+    /**
+     * Method to fetch the current player information from backend
+     **/
     @GetMapping("/currentPlayer")
     public String handlePlayerTurn(){
         System.out.println("Requesting current player");
         return game.getTurn().toString();
     }
 
+    /**
+     * Method to fetch the current board information from backend
+     **/
     @GetMapping("/board")
     public Map<String, String> handleBoardRequest(){
         return game.getBoard();

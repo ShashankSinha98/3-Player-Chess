@@ -1,21 +1,38 @@
 package model;
 
 import abstraction.BasePiece;
-import common.*;
+import common.Colour;
+import common.Direction;
+import common.InvalidPositionException;
+import common.Position;
 import utility.Log;
 import utility.Util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static utility.MovementUtil.step;
 import static utility.MovementUtil.stepOrNull;
 
+/**
+ * King class extends BasePiece. Move directions for the King, the polygons
+ * to be highlighted, and its legal moves are checked here
+ **/
 public class King extends BasePiece {
 
     public static final String TAG = "KING";
 
     public Map<Colour, List<Position>> castlingPositionMapping;
 
+    /**
+     * King constructor
+     * @param colour: Colour of the chess piece being initiated
+     * */
     public King(Colour colour) {
         super(colour);
         castlingPositionMapping = new HashMap<>();
@@ -32,6 +49,9 @@ public class King extends BasePiece {
         }
     }
 
+    /**
+     * Method to initialize directions for a chess piece
+     **/
     @Override
     protected void setupDirections() {
         this.directions = new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
@@ -40,6 +60,13 @@ public class King extends BasePiece {
                 {Direction.FORWARD},{Direction.BACKWARD},{Direction.LEFT},{Direction.RIGHT}};
     }
 
+    /**
+     *  To check whether a move is valid
+     * @param board: Board class instance representing current game board
+     * @param start: Start position of move
+     * @param end: End position of move
+     * @return True if a move is possible from start to end, else False
+     * */
     @Override
     public boolean isLegalMove(Board board, Position start, Position end) {
         Map<Position, BasePiece> boardMap = board.boardMap;
@@ -66,6 +93,12 @@ public class King extends BasePiece {
         return false;
     }
 
+    /**
+     * Fetch all the possible positions where a piece can move on board
+     * @param board: Board class instance representing current game board
+     * @param start: position of piece on board
+     * @return List of possible positions a piece is allowed to move
+     * */
     @Override
     public List<Position> getHighlightPolygons(Board board, Position start) {
         Map<Position, BasePiece> boardMap = board.boardMap;
@@ -107,7 +140,13 @@ public class King extends BasePiece {
         return Util.toList(positionSet);
     }
 
-
+    /**
+     * Method to check if castling is possible between given positions
+     * @param board: Board class instance representing current game board
+     * @param start: start position of piece on board
+     * @param end: start position of piece on board
+     * @return bool if castling is possible
+     * */
     private boolean isCastlingPossible(Map<Position, BasePiece> board, Position start, Position end) {
         Log.d(TAG, "isCastlingPossible: start: "+start+", end: "+end);
         BasePiece mover = this;
@@ -138,6 +177,10 @@ public class King extends BasePiece {
         return false;
     }
 
+    /**
+     * Returns custom string representation of the class
+     * @return String
+     * */
     @Override
     public String toString() {
         return this.colour.toString()+"K";

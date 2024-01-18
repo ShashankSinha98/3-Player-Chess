@@ -16,15 +16,29 @@ import java.util.Set;
 import static utility.MovementUtil.step;
 import static utility.MovementUtil.stepOrNull;
 
+/**
+ * Wall class extends Rook. The polygons
+ * to be highlighted, and its legal moves are checked here
+ **/
 public class Wall extends Rook {
 
     private static final String TAG = "WALL";
 
+    /**
+     * Wall constructor
+     * @param colour: Colour of the chess piece being initiated
+     * */
     public Wall(Colour colour) {
         super(colour);
     }
 
-
+    /**
+     *  To check whether a move is valid
+     * @param board: Board class instance representing current game board
+     * @param start: Start position of move
+     * @param end: End position of move
+     * @return True if a move is possible from start to end, else False
+     * */
     @Override
     public boolean isLegalMove(Board board, Position start, Position end) {
         Map<Position, BasePiece> boardMap = board.boardMap;
@@ -52,6 +66,12 @@ public class Wall extends Rook {
         return false;
     }
 
+    /**
+     * Fetch all the possible positions where a piece can move on board
+     * @param board: Board class instance representing current game board
+     * @param start: position of piece on board
+     * @return List of possible positions a piece is allowed to move
+     * */
     @Override
     public List<Position> getHighlightPolygons(Board board, Position start) {
         Map<Position, BasePiece> boardMap = board.boardMap;
@@ -81,6 +101,10 @@ public class Wall extends Rook {
         return Util.toList(positionSet);
     }
 
+    /**
+     * Returns custom string representation of the class
+     * @return String
+     * */
     @Override
     public String toString() {
         return this.colour.toString()+"W";
