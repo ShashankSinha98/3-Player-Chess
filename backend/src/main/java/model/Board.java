@@ -7,6 +7,7 @@ import common.Position;
 import utility.BoardAdapter;
 import utility.Log;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -205,10 +206,9 @@ public class Board {
      * @return list of possible movements
      * */
     public List<Position> getPossibleMoves(Position position) {
-        List<Position> possibleMoves;
         BasePiece mover = boardMap.get(position);
-        possibleMoves = mover.getHighlightPolygons(this, position);
-        Log.d(TAG, "getPossibleMoves: "+possibleMoves);
+        if(mover == null) return new ArrayList<>();
+        List<Position> possibleMoves = mover.getHighlightPolygons(this, position);
         return possibleMoves;
     }
 
