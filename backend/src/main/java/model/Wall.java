@@ -1,41 +1,50 @@
 package model;
 
-import common.*;
+import common.Colour;
+import common.Direction;
+import common.InvalidPositionException;
+import common.Position;
 import utility.Log;
 import utility.Util;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static utility.MovementUtil.step;
 import static utility.MovementUtil.stepOrNull;
 
+/**
+ * Move like a rook. It cannot take any piece and other pieces cannot take it too.
+ * Pieces of different colours cannot pass it through, however, pieces of the same colour
+ * as the wall can pass it through.
+ * */
+public class Wall extends Rook {
 
-public class Rook extends BasePiece {
+    private static final String TAG = "WALL";
 
-    private static final String TAG = "ROOK";
-
-    public Rook(Colour colour) {
+    public Wall(Colour colour) {
         super(colour);
-        setupDirections();
     }
 
-    @Override
-    protected void setupDirections() {
-        this.directions = new Direction[][] {{Direction.BACKWARD},{Direction.LEFT},{Direction.RIGHT},{Direction.FORWARD}};
-    }
 
     @Override
-    public boolean canMove(Board board, Position start, Position end) {
+    public boolean isLegalMove(Board board, Position start, Position end) {
         Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
+        BasePiece target = boardMap.get(end);
+        if(mover==null) return false; // No piece present at start pos
+        if(target!=null) return false; // Wall cannot take any piece
+        Colour moverCol = mover.getColour();
+        if(target!= null && moverCol==target.getColour())return false; // player cannot take it's own piece
 
         Direction[][] steps = this.directions;
         for(int i = 0; i<steps.length; i++){
             Direction[] step = steps[i];
             try{
                 Position tmp = step(mover,step,start);
-                while(end != tmp &&
-                        (boardMap.get(tmp)==null)|| (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour())){
+                while(end != tmp && boardMap.get(tmp)==null){
                     Log.d(TAG, "tmp: "+tmp);
                     tmp = step(mover, step, tmp, tmp.getColour()!=start.getColour());
                 }
@@ -50,7 +59,6 @@ public class Rook extends BasePiece {
     @Override
     public List<Position> getHighlightSquares(Board board, Position start) {
         Map<Position, BasePiece> boardMap = board.boardMap;
-        Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
         //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();
         BasePiece mover = this;
@@ -58,28 +66,20 @@ public class Rook extends BasePiece {
 
         for (Direction[] step : steps) {
             Position tmp = stepOrNull(mover, step, start);
-            while(tmp != null &&
-                    (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
+            while(tmp != null && boardMap.get(tmp)==null) {
                 Log.d(TAG, "tmp: "+tmp);
                 positionSet.add(tmp);
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
             }
 
-            if(tmp!=null) {
+            /*if(tmp!=null) {
                 if(boardMap.get(tmp).getColour()!=mover.getColour()) {
                     Log.d(TAG, "Opponent tmp: " + tmp);
                     positionSet.add(tmp);
                 } else {
                     Log.d(TAG, "Mine tmp: " + tmp);
                 }
-            }
-        }
-
-        for(Position pos: wallPiecePositions) {
-            if(positionSet.contains(pos)) {
-                Log.d(TAG, "Removed a wallPiecePos: "+pos);
-                positionSet.remove(pos);
-            }
+            }*/
         }
 
         return Util.toList(positionSet);
@@ -87,6 +87,6 @@ public class Rook extends BasePiece {
 
     @Override
     public String toString() {
-        return this.colour.toString()+"R";
+        return this.colour.toString()+"W";
     }
 }

@@ -1,6 +1,6 @@
 package utility;
 
-import abstraction.BasePiece;
+import model.BasePiece;
 import common.*;
 
 import java.util.*;

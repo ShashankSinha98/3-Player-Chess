@@ -1,6 +1,5 @@
 package model;
 
-import abstraction.BasePiece;
 import common.*;
 import utility.Log;
 import utility.Util;
@@ -26,20 +25,17 @@ public class Bishop extends BasePiece {
     }
 
     @Override
-    public boolean isLegalMove(Map<Position, BasePiece> board, Position start, Position end) {
+    public boolean canMove(Board board, Position start, Position end) {
+        Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
-        BasePiece target = board.get(end);
-        if(mover==null) return false; // No piece present at start pos
-        Colour moverCol = mover.getColour();
-        // if(moverCol!=turn) return false; // piece colour mismatches player colour //TODO - colour-turn check need to be handled on Game Main Side
-        if(target!= null && moverCol==target.getColour()) return false; // player cannot take it's own piece
 
         Direction[][] steps = this.directions;
         for(int i = 0; i<steps.length; i++){
             Direction[] step = steps[i];
             try{
                 Position tmp = step(mover,step,start);
-                while(end != tmp && board.get(tmp)==null){
+                while(end != tmp &&
+                        (boardMap.get(tmp)==null)|| (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour())){
                     tmp = step(mover, step, tmp, tmp.getColour()!=start.getColour());
                 }
                 if(end==tmp) return true;
@@ -50,8 +46,10 @@ public class Bishop extends BasePiece {
     }
 
     @Override
-    public List<Position> getHighlightSquares(Map<Position, BasePiece> board, Position start) {
-        //List<Position> positions = new ArrayList<>();
+    public List<Position> getHighlightSquares(Board board, Position start) {
+        Map<Position, BasePiece> boardMap = board.boardMap;
+        Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
+
         Set<Position> positionSet = new HashSet<>();
 
         BasePiece mover = this;
@@ -59,17 +57,17 @@ public class Bishop extends BasePiece {
 
         for (Direction[] step : steps) {
             Position tmp = stepOrNull(mover, step, start);
-            while(tmp != null && !positionSet.contains(tmp) && board.get(tmp)==null) {
+            while(tmp != null && !positionSet.contains(tmp)
+                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
                 Log.d(TAG, "tmp: "+tmp);
-                //positions.add(tmp);
                 positionSet.add(tmp); // to prevent same position to add in list again
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
             }
 
-            if(tmp!=null && board.get(tmp)!=null) {
-                if(board.get(tmp).getColour()!=mover.getColour()) {
+            // found a piece diagonally
+            if(tmp!=null && boardMap.get(tmp)!=null) {
+                if(boardMap.get(tmp).getColour()!=mover.getColour()) {
                     Log.d(TAG, "Opponent tmp: " + tmp);
-                    //positions.add(tmp);
                     positionSet.add(tmp);
                 } else {
                     Log.d(TAG, "Mine tmp: " + tmp);
@@ -77,12 +75,14 @@ public class Bishop extends BasePiece {
             }
         }
 
-        return Util.toList(positionSet);
-    }
+        for(Position pos: wallPiecePositions) {
+            if(positionSet.contains(pos)) {
+                Log.d(TAG, "Removed a wallPiecePos: "+pos);
+                positionSet.remove(pos);
+            }
+        }
 
-    @Override
-    public Colour getColour() {
-        return this.colour;
+        return Util.toList(positionSet);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package model;
 
-import abstraction.BasePiece;
 import common.*;
 import utility.Log;
 import utility.Util;
@@ -26,13 +25,11 @@ public class Pawn extends BasePiece {
     }
 
     @Override
-    public boolean isLegalMove(Map<Position,BasePiece> board, Position start, Position end) {
+    public boolean canMove(Board board, Position start, Position end) {
+        Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
-        BasePiece target = board.get(end);
-        if(mover==null) return false; // No piece present at start pos
+        BasePiece target = boardMap.get(end);
         Colour moverCol = mover.getColour();
-        // if(moverCol!=turn) return false; // piece colour mismatches player colour //TODO - colour-turn check need to be handled on Game Main Side
-        if(target!= null && moverCol==target.getColour())return false; // player cannot take it's own piece
 
         Direction[][] steps = this.directions;
         for(int i = 0; i<steps.length; i++){
@@ -41,7 +38,7 @@ public class Pawn extends BasePiece {
                                 (target==null && i==0) // 1 step forward, not taking
                                 || (target==null && i==1 // 2 steps forward,
                                     && start.getColour()==moverCol && start.getRow()==1 //must be in initial position
-                                    && board.get(Position.get(moverCol,2,start.getColumn()))==null)//and can't jump a piece
+                                    && boardMap.get(Position.get(moverCol,2,start.getColumn()))==null)//and can't jump a piece
                                 || (target!=null && i>1)//or taking diagonally
                         )
                 )
@@ -53,7 +50,9 @@ public class Pawn extends BasePiece {
 
 
     @Override
-    public List<Position> getHighlightSquares(Map<Position,BasePiece> board, Position start) {
+    public List<Position> getHighlightSquares(Board board, Position start) {
+        Map<Position, BasePiece> boardMap = board.boardMap;
+        Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
         //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();
         BasePiece mover = this;
@@ -64,15 +63,17 @@ public class Pawn extends BasePiece {
             Direction[] step = steps[i];
             Position end = stepOrNull(mover, step, start);
 
+            if(wallPiecePositions.contains(end)) continue;
+
             if(end!=null && !positionSet.contains(end)) {
-                BasePiece target = board.get(end);
+                BasePiece target = boardMap.get(end);
                 Log.d(TAG, "end: "+end+", step: "+Arrays.toString(step));
                 try {
                     if ((target == null && i == 0) // 1 step forward, not taking
                             || (target == null && i == 1 // 2 steps forward,
                             && start.getColour() == moverCol && start.getRow() == 1 //must be in initial position
-                            && board.get(Position.get(moverCol, 2, start.getColumn())) == null)//and can't jump a piece
-                            || (target != null && i > 1) //or taking diagonally
+                            && boardMap.get(Position.get(moverCol, 2, start.getColumn())) == null)//and can't jump a piece
+                            || (target != null && target.getColour() != moverCol && i > 1) //or taking diagonally
                     ) {
                         Log.d(TAG, "pos: " + end);
                         //positions.add(end);
@@ -85,11 +86,6 @@ public class Pawn extends BasePiece {
             }
 
         return Util.toList(positionSet);
-    }
-
-    @Override
-    public Colour getColour() {
-        return this.colour;
     }
 
     @Override

@@ -2,6 +2,7 @@ package main;
 
 import abstraction.*;
 import common.*;
+import model.Board;
 import utility.BoardAdapter;
 import utility.Log;
 
@@ -97,10 +98,7 @@ public class GameMain implements IGameInterface {
         return BoardAdapter.convertHighlightSquaresToViewBoard(highlightSquares);
     }
 
-    public static void main(String[] args) {
-        Board b = new Board();
-        Log.d(TAG, b.getWebViewBoard());
-    }
+    public static void main(String[] args) { }
 
     private int calculateSquareId(String square){
         char color = square.charAt(0);
