@@ -23,7 +23,7 @@ public class BishopTest {
     // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
     @Test
     public void setupDirections_initPieceDirectionsIsEmpty_False() {
-        BasePiece bishop = board.boardMap.get(BC1);
+        BasePiece bishop = new Bishop(Colour.BLUE);
         assertFalse(bishop.directions.length==0);
     }
 
