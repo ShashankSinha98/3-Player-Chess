@@ -1,6 +1,5 @@
 package model;
 
-import abstraction.BasePiece;
 import common.*;
 import utility.Log;
 import utility.Util;
@@ -26,16 +25,11 @@ public class Pawn extends BasePiece {
     }
 
     @Override
-    public boolean isLegalMove(Board board, Position start, Position end) {
+    public boolean canMove(Board board, Position start, Position end) {
         Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
         BasePiece target = boardMap.get(end);
-        if(mover==null) return false; // No piece present at start pos
         Colour moverCol = mover.getColour();
-        if(target!= null && moverCol==target.getColour())return false; // player cannot take it's own piece
-
-        Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
-        if(wallPiecePositions.contains(end)) return false;
 
         Direction[][] steps = this.directions;
         for(int i = 0; i<steps.length; i++){

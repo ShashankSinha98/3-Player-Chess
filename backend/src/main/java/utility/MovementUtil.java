@@ -1,9 +1,8 @@
 package utility;
 
-import abstraction.BasePiece;
+import model.BasePiece;
 import common.*;
 import model.Pawn;
-import utility.Log;
 
 public class MovementUtil {
 

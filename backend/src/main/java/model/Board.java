@@ -1,6 +1,5 @@
 package model;
 
-import abstraction.*;
 import common.Colour;
 import common.InvalidMoveException;
 import common.InvalidPositionException;
@@ -15,7 +14,6 @@ public class Board {
     private static final String TAG = "Board";
     
     /** A map from board positions to the pieces at that position **/
-    //public Map<Position,Piece> board;
     protected Map<Position, BasePiece> boardMap;
     protected Map<BasePiece, Position> wallPieceMapping;
     private Colour turn;
@@ -23,7 +21,6 @@ public class Board {
     private String winner;
 
     public Board(){
-        //board = new HashMap<Position,Piece>();
         boardMap = new HashMap<Position,BasePiece>();
         wallPieceMapping = new HashMap<>();
         turn = Colour.BLUE;
