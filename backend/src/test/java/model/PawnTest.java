@@ -9,8 +9,7 @@ import java.util.List;
 
 import static common.Position.*;
 import static common.Position.GA2;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PawnTest {
 
@@ -137,6 +136,18 @@ public class PawnTest {
                 assertFalse(highlightedPolygons.contains(end));
             }
         }
+    }
+
+    @Test
+    public void toString_initPawnAllColours_correctStringFormat() {
+        BasePiece bluePawn = new Pawn(Colour.BLUE);
+        assertEquals(bluePawn.toString(), "BP");
+
+        BasePiece redPawn = new Pawn(Colour.RED);
+        assertEquals(redPawn.toString(), "RP");
+
+        BasePiece greenPawn = new Pawn(Colour.GREEN);
+        assertEquals(greenPawn.toString(), "GP");
     }
 
 }

@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static common.Position.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BishopTest {
 
@@ -125,5 +125,17 @@ public class BishopTest {
                 assertFalse(highlightedPolygons.contains(end));
             }
         }
+    }
+
+    @Test
+    public void toString_initBishopAllColours_correctStringFormat() {
+        BasePiece blueBishop = new Bishop(Colour.BLUE);
+        assertEquals(blueBishop.toString(), "BB");
+
+        BasePiece redBishop = new Bishop(Colour.RED);
+        assertEquals(redBishop.toString(), "RB");
+
+        BasePiece greenBishop = new Bishop(Colour.GREEN);
+        assertEquals(greenBishop.toString(), "GB");
     }
 }
