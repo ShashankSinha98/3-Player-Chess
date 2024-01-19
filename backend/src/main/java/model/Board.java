@@ -1,6 +1,5 @@
 package model;
 
-import abstraction.BasePiece;
 import common.Colour;
 import common.InvalidMoveException;
 import common.InvalidPositionException;

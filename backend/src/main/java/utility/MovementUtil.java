@@ -1,11 +1,10 @@
 package utility;
 
-import abstraction.BasePiece;
 import common.Direction;
 import common.InvalidPositionException;
 import common.Position;
+import model.BasePiece;
 import model.Pawn;
-import utility.Log;
 
 /**
  * MovementUtil - helper class for the movement of chess pieces

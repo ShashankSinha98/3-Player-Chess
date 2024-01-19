@@ -1,6 +1,5 @@
 package model;
 
-import abstraction.BasePiece;
 import common.Colour;
 import common.Direction;
 import common.InvalidPositionException;
@@ -52,16 +51,11 @@ public class Pawn extends BasePiece {
      * @return True if a move is possible from start to end, else False
      * */
     @Override
-    public boolean isLegalMove(Board board, Position start, Position end) {
+    public boolean canMove(Board board, Position start, Position end) {
         Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
         BasePiece target = boardMap.get(end);
-        if(mover==null) return false; // No piece present at start position
         Colour moverCol = mover.getColour();
-        if(target!= null && moverCol==target.getColour())return false; // player cannot take it's own piece
-
-        Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
-        if(wallPiecePositions.contains(end)) return false;
 
         Direction[][] steps = this.directions;
         for(int i = 0; i<steps.length; i++){
@@ -110,7 +104,7 @@ public class Pawn extends BasePiece {
                             || (target == null && i == 1 // 2 steps forward,
                             && start.getColour() == moverCol && start.getRow() == 1 //must be in initial position
                             && boardMap.get(Position.get(moverCol, 2, start.getColumn())) == null)//and can't jump a piece
-                            || (target != null && i > 1) //or taking diagonally
+                            || (target != null && target.getColour() != moverCol && i > 1) //or taking diagonally
                     ) {
                         Log.d(TAG, "position: " + end);
                         //positions.add(end);
