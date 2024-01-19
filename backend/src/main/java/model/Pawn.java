@@ -73,7 +73,7 @@ public class Pawn extends BasePiece {
                             || (target == null && i == 1 // 2 steps forward,
                             && start.getColour() == moverCol && start.getRow() == 1 //must be in initial position
                             && boardMap.get(Position.get(moverCol, 2, start.getColumn())) == null)//and can't jump a piece
-                            || (target != null && i > 1) //or taking diagonally
+                            || (target != null && target.getColour() != moverCol && i > 1) //or taking diagonally
                     ) {
                         Log.d(TAG, "pos: " + end);
                         //positions.add(end);
