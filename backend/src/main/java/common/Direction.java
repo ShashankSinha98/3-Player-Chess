@@ -1,5 +1,9 @@
 package common;
 
+/**
+ *  Enum class containing the Directions for the piece movement
+ *  Also has a method for String representation to use in web app
+ **/
 public enum Direction{
     FORWARD,BACKWARD,LEFT,RIGHT;
 

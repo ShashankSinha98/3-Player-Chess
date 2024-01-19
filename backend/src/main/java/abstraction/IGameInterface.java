@@ -17,10 +17,10 @@ public interface IGameInterface {
     /**
      * Responsible for sending mouse click events to backend and apply game logic over it to display
      * updated board layout to player.
-     * @param  squareLabel The unique label of the square which is clicked by player
-     * @return OnClickResponse which contains current game board layout and list of squares to highlight
-     * */
-    OnClickResponse onClick(String squareLabel);
+     * @param  polygonLabel The unique label of the polygon which is clicked by player
+     * @return OnClickResponse which contains current game board layout and list of polygons to highlight
+     **/
+    OnClickResponse onClick(String polygonLabel);
 
     /**
      * @return returns which colour turn it is currently

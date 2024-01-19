@@ -7,8 +7,15 @@ import common.Position;
 import utility.BoardAdapter;
 import utility.Log;
 
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
+/**
+ * Class containing the Board logic. To initialize the board with the pieces.
+ * To highlight the possible moves, check for legal moves and move pieces.
+ * Also, logic to declare winner.
+ */
 public class Board {
 
     private static final String TAG = "Board";
@@ -20,6 +27,9 @@ public class Board {
     private boolean gameOver;
     private String winner;
 
+    /**
+     * Board constructor. Places pieces on the board and initializes variables
+     * */
     public Board(){
         boardMap = new HashMap<Position,BasePiece>();
         wallPieceMapping = new HashMap<>();
@@ -28,64 +38,82 @@ public class Board {
         winner = null;
         try{
             // Blue, Green, Red
-            for(Colour c: Colour.values()){
-                placeChessPieces(c);
+            for(Colour colour: Colour.values()) {
+                placeChessPieces(colour);
             }
-        }catch(InvalidPositionException e){}//no impossible positions in this code
+        } catch(InvalidPositionException e) {
+            Log.e(TAG, "InvalidPositionException: "+e.getMessage());
+        }
     }
 
-    private void placeChessPieces(Colour c) throws InvalidPositionException {
+    /**
+     * Place all the pieces on the board initially at start positions
+     * @param colour for each color place the pieces
+     * */
+    private void placeChessPieces(Colour colour) throws InvalidPositionException {
         // place ROOK
-        Position[] rookStartPositions = new Position[] {Position.get(c,0,0), Position.get(c,0,7)};
-        boardMap.put(rookStartPositions[0], new Rook(c)); boardMap.put(rookStartPositions[1], new Rook(c));
+        Position[] rookStartPositions = new Position[] {Position.get(colour,0,0), Position.get(colour,0,7)};
+        boardMap.put(rookStartPositions[0], new Rook(colour)); boardMap.put(rookStartPositions[1], new Rook(colour));
 
         // place KNIGHT
-        Position[] knightStartPositions = new Position[] {Position.get(c,0,1), Position.get(c,0,6)};
-        boardMap.put(knightStartPositions[0], new Knight(c)); boardMap.put(knightStartPositions[1], new Knight(c));
+        Position[] knightStartPositions = new Position[] {Position.get(colour,0,1), Position.get(colour,0,6)};
+        boardMap.put(knightStartPositions[0], new Knight(colour)); boardMap.put(knightStartPositions[1], new Knight(colour));
 
         // place BISHOP
-        Position[] bishopStartPositions = new Position[] {Position.get(c,0,2), Position.get(c,0,5)};
-        boardMap.put(bishopStartPositions[0], new Bishop(c)); boardMap.put(bishopStartPositions[1], new Bishop(c));
+        Position[] bishopStartPositions = new Position[] {Position.get(colour,0,2), Position.get(colour,0,5)};
+        boardMap.put(bishopStartPositions[0], new Bishop(colour)); boardMap.put(bishopStartPositions[1], new Bishop(colour));
 
         // place Queen
-        Position queenStartingPosition = Position.get(c,0,3);
-        boardMap.put(queenStartingPosition, new Queen(c));
+        Position queenStartingPosition = Position.get(colour,0,3);
+        boardMap.put(queenStartingPosition, new Queen(colour));
 
         // place KING
-        Position kingStartingPosition = Position.get(c,0,4);
-        boardMap.put(kingStartingPosition, new King(c));
+        Position kingStartingPosition = Position.get(colour,0,4);
+        boardMap.put(kingStartingPosition, new King(colour));
 
         // place PAWN
         for(int i = 1; i<7; i++){
-            Position ithPawnPosition = Position.get(c,1,i);
-            boardMap.put(ithPawnPosition, new Pawn(c));
+            Position ithPawnPosition = Position.get(colour,1,i);
+            boardMap.put(ithPawnPosition, new Pawn(colour));
         }
 
         // place JESTER
-        Position jesterStartPosition = Position.get(c,1,0);
-        boardMap.put(jesterStartPosition, new Jester(c));
+        Position jesterStartPosition = Position.get(colour,1,0);
+        boardMap.put(jesterStartPosition, new Jester(colour));
 
         // place WALL
-        Position wallStartPosition = Position.get(c, 1, 7);
-        BasePiece wall = new Wall(c);
+        Position wallStartPosition = Position.get(colour, 1, 7);
+        BasePiece wall = new Wall(colour);
         boardMap.put(wallStartPosition, wall);
         wallPieceMapping.put(wall, wallStartPosition);
     }
 
+     /**
+     * To check if the game is over
+     * @return boolean
+     * */
     public boolean isGameOver() {
         return gameOver;
     }
 
+    /**
+     * To fetch the winner
+     * @return String of Winner name
+     * */
     public String getWinner() {
         return winner;
     }
 
-
+    /**
+     * Called to move a piece from one position to another
+     * @param start The start position
+     * @param end The end position
+     * */
     public void move(Position start, Position end) throws InvalidMoveException, InvalidPositionException {
         if(isLegalMove(start, end)) {
             BasePiece mover = boardMap.get(start);
             BasePiece taken = boardMap.get(end);
-            boardMap.remove(start);  //empty start square
+            boardMap.remove(start);  //empty start polygon
 
             if(mover instanceof Pawn && end.getRow()==0 && end.getColour()!=mover.getColour())
                 boardMap.put(end, new Queen(mover.getColour()));  //promote pawn
@@ -128,10 +156,16 @@ public class Board {
         } else throw new InvalidMoveException("Illegal Move: "+start+"-"+end);
     }
 
+    /**
+     * Checks if the piece can move from start to end positions
+     * @param start The start position
+     * @param end The end position
+     * @return boolean
+     * */
     public boolean isLegalMove(Position start, Position end){
         BasePiece mover = getPiece(start);
         BasePiece target = getPiece(end);
-        if(mover==null) return false; // No piece present at start pos
+        if(mover==null) return false; // No piece present at start position
         Colour moverCol = mover.getColour();
         if(moverCol!=turn) return false; // piece colour mismatches player colour
         if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
@@ -140,30 +174,51 @@ public class Board {
         return isLegalMove;
     }
 
+    /**
+     * Get the current player turn
+     * @return Colour
+     * */
     public Colour getTurn(){
         return turn;
     }
 
-    public BasePiece getPiece(Position position){
+    /**
+     * Get the piece on the selected position
+     * @param position The current selected position
+     * @return BasePiece
+     * */
+    private BasePiece getPiece(Position position){
         return boardMap.get(position);
     }
 
+    /**
+     * For the web app to use, board map is converted to string and returned
+     * @return map of position and piece converted to strings
+     * */
     public Map<String, String> getWebViewBoard() {
         return BoardAdapter.convertModelBoardToViewBoard(this.boardMap);
     }
 
-    public List<Position> getPossibleMoves(Position pos) {
-        List<Position> possibleMoves = new ArrayList<>();
-        BasePiece mover = boardMap.get(pos);
-        possibleMoves = mover.getHighlightSquares(this, pos);
+    /**
+     * For the current selected piece, returns the possible moves
+     * @param position The current selected piece position
+     * @return list of possible movements
+     * */
+    public List<Position> getPossibleMoves(Position position) {
+        List<Position> possibleMoves;
+        BasePiece mover = boardMap.get(position);
+        possibleMoves = mover.getHighlightPolygons(this, position);
         Log.d(TAG, "getPossibleMoves: "+possibleMoves);
         return possibleMoves;
     }
 
-    // returns true if there is a piece on current square which matches the colour of
-    // player in turn
-    public boolean isCurrentPlayersPiece(Position pos) {
-        return getPiece(pos) != null && getPiece(pos).getColour()==turn;
+    /**
+     * Tells if the current player has selected his own piece
+     * @param position The current position of the piece
+     * @return boolean
+     * */
+    public boolean isCurrentPlayersPiece(Position position) {
+        return getPiece(position) != null && getPiece(position).getColour()==turn;
     }
 
 }

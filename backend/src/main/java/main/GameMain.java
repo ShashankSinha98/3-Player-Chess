@@ -1,85 +1,76 @@
 package main;
 
-import abstraction.*;
-import common.*;
+import abstraction.IGameInterface;
+import common.Colour;
+import common.InvalidMoveException;
+import common.InvalidPositionException;
+import common.OnClickResponse;
+import common.Position;
 import model.Board;
 import utility.BoardAdapter;
 import utility.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class containing the main logic of the backend.
+ * the click inputs from the webapp is communicated with the backend.
+ */
 public class GameMain implements IGameInterface {
 
     private static final String TAG = GameMain.class.getSimpleName();
-
-    private Board board;
-    private boolean isGameRunning;
-    // private Colour turn;
-
+    private final Board board;
     private Position moveStartPos, moveEndPos;
-    private List<Position> highlightSquares;
+    private List<Position> highlightPolygons;
 
-
+    /**
+     * GameMain Constructor. Entry point to the backend logic
+     * */
     public GameMain() {
-        initGame();
-        // play();
-    }
-
-    private void initGame() {
-        Log.d(TAG, "initGame()");
+        Log.d(TAG, "initGame GameMain()");
         board = new Board();
-        isGameRunning = false;
-        // turn = Colour.BLUE;
-        moveStartPos = moveEndPos = null;
-        highlightSquares = new ArrayList<>();
+        moveStartPos = null;
+        moveEndPos = null;
+        highlightPolygons = new ArrayList<>();
     }
-
-    public void play() {
-        if(!isGameRunning) {
-
-        }
-    }
-
 
     @Override
     public Map<String, String> getBoard() {
         return board.getWebViewBoard();
     }
 
-
-    // squarePos must be in range [0, 95]
+    // polygonPos must be in range [0, 95]
     @Override
-    public OnClickResponse onClick(String squareLabel) {
-        int squarePos = calculateSquareId(squareLabel);
-        Log.d(TAG, ">>> onClick called: "+squarePos);
+    public OnClickResponse onClick(String polygonLabel) {
+        int polygonPos = calculatePolygonId(polygonLabel);
+        Log.d(TAG, ">>> onClick called: "+polygonPos);
         try {
-            Position pos = Position.get(squarePos);
-            if (board.isCurrentPlayersPiece(pos)) { // player selects his own piece - first move
-                moveStartPos = pos;
+            Position position = Position.get(polygonPos);
+            if (board.isCurrentPlayersPiece(position)) { // player selects his own piece - first move
+                moveStartPos = position;
                 Log.d(TAG, ">>> moveStartPos: " + moveStartPos);
-                highlightSquares = board.getPossibleMoves(moveStartPos);
-                if(highlightSquares.size() == 0) { // Selected piece has no square to move, reset selection
+                highlightPolygons = board.getPossibleMoves(moveStartPos);
+                if(highlightPolygons.isEmpty()) { // Selected piece has no polygon to move, reset selection
                     moveStartPos = null;
                 }
             } else if(moveStartPos != null){
-                moveEndPos = Position.get(squarePos);
+                moveEndPos = Position.get(polygonPos);
                 board.move(moveStartPos, moveEndPos);
                 Log.d(TAG, ">>> moveStartPos: " + moveStartPos + ", moveEndPos: " + moveEndPos);
 
                 moveStartPos = moveEndPos = null;
-                highlightSquares = null;
+                highlightPolygons = null;
             }
         } catch (InvalidMoveException e) {
             Log.e(TAG, "InvalidMoveException onClick: "+e.getMessage());
             moveStartPos = moveEndPos = null;
-            highlightSquares = null;
+            highlightPolygons = null;
         } catch (InvalidPositionException e) {
             Log.e(TAG, "InvalidPositionException onClick: "+e.getMessage());
         }
-
-        OnClickResponse clickResponse = new OnClickResponse(getBoard(), getHighlightSquarePositions());
+        List<String> highlightPolygonsList = BoardAdapter.convertHighlightPolygonsToViewBoard(highlightPolygons);
+        OnClickResponse clickResponse = new OnClickResponse(getBoard(), highlightPolygonsList);
         if(board.isGameOver()) {
             String winner = board.getWinner();
             Log.d(TAG, "Winner: "+winner);
@@ -94,16 +85,17 @@ public class GameMain implements IGameInterface {
         return board.getTurn();
     }
 
-    private List<String> getHighlightSquarePositions() {
-        return BoardAdapter.convertHighlightSquaresToViewBoard(highlightSquares);
-    }
-
     public static void main(String[] args) { }
 
-    private int calculateSquareId(String square){
-        char color = square.charAt(0);
-        int y = square.charAt(1) - 'a';
-        int x = square.charAt(2) - '1';
+    /**
+     * Calculates unique ID for each polygon based on label
+     * @param  polygon The unique label of the polygon which is clicked by player
+     * @return unique ID
+     * */
+    private int calculatePolygonId(String polygon){
+        char color = polygon.charAt(0);
+        int y = polygon.charAt(1) - 'a';
+        int x = polygon.charAt(2) - '1';
         int offset = 0;
         if(color == 'G'){
             offset = 32;

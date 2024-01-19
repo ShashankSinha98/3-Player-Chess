@@ -1,6 +1,8 @@
 package model;
 
-import common.*;
+import common.Colour;
+import common.Direction;
+import common.Position;
 import utility.Log;
 
 import java.util.Collection;
@@ -10,7 +12,7 @@ import java.util.Map;
 /**
  *  Abstract Base class for all chess pieces. All chess pieces must extend this class
  *  and provide implementation to abstract methods according to their rules.
- * */
+ **/
 public abstract class BasePiece {
 
     private static final String TAG = "BasePiece";
@@ -19,6 +21,7 @@ public abstract class BasePiece {
     protected Direction[][] directions; // List of possible directions a piece can move. [Left, Right, Forward, Backward]
 
     /**
+     * BasePiece constructor
      * @param colour: Colour of the chess piece being initiated
      * */
     public BasePiece(Colour colour) {
@@ -26,7 +29,9 @@ public abstract class BasePiece {
         setupDirections();
     }
 
-    // To init directions list of a particular piece
+    /**
+     * Method to initialize directions for a chess piece
+     **/
     protected abstract void setupDirections();
 
     /**
@@ -70,7 +75,7 @@ public abstract class BasePiece {
      * @param start: position of piece on board
      * @return List of possible positions a piece is allowed to move
      * */
-    public abstract List<Position> getHighlightSquares(Board board, Position start);
+    public abstract List<Position> getHighlightPolygons(Board board, Position start);
 
     /**
      * @return Colour of the chess piece

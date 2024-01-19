@@ -1,22 +1,40 @@
 package model;
 
-import common.*;
+import common.Colour;
+import common.Direction;
+import common.InvalidPositionException;
+import common.Position;
 import utility.Log;
 import utility.Util;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static utility.MovementUtil.step;
 import static utility.MovementUtil.stepOrNull;
 
+/**
+ * Knight class extends BasePiece. Move directions for the Knight, the polygons
+ * to be highlighted, and its legal moves are checked here
+ **/
 public class Knight extends BasePiece {
 
     private static final String TAG = "KNIGHT";
 
+    /**
+     * Knight constructor
+     * @param colour: Colour of the chess piece being initiated
+     * */
     public Knight(Colour colour) {
         super(colour);
     }
 
+    /**
+     * Method to initialize directions for a chess piece
+     **/
     @Override
     protected void setupDirections() {
         this.directions = new Direction[][] {{Direction.FORWARD,Direction.FORWARD,Direction.LEFT},
@@ -30,6 +48,13 @@ public class Knight extends BasePiece {
                 {Direction.RIGHT,Direction.BACKWARD,Direction.BACKWARD}};
     }
 
+    /**
+     *  To check whether a move is valid
+     * @param board: Board class instance representing current game board
+     * @param start: Start position of move
+     * @param end: End position of move
+     * @return True if a move is possible from start to end, else False
+     * */
     @Override
     public boolean canMove(Board board, Position start, Position end) {
         Map<Position, BasePiece> boardMap = board.boardMap;
@@ -45,8 +70,14 @@ public class Knight extends BasePiece {
         return false;
     }
 
+    /**
+     * Fetch all the possible positions where a piece can move on board
+     * @param board: Board class instance representing current game board
+     * @param start: position of piece on board
+     * @return List of possible positions a piece is allowed to move
+     * */
     @Override
-    public List<Position> getHighlightSquares(Board board, Position start) {
+    public List<Position> getHighlightPolygons(Board board, Position start) {
         Map<Position, BasePiece> boardMap = board.boardMap;
         Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
 
@@ -64,11 +95,11 @@ public class Knight extends BasePiece {
 
                 if(target!=null) {
                     if(target.getColour()!=mover.getColour()) {
-                        Log.d(TAG, "pos enemy: "+end);
+                        Log.d(TAG, "position enemy: "+end);
                         positionSet.add(end);
                     }
                 } else {
-                    Log.d(TAG, "pos: "+end);
+                    Log.d(TAG, "position: "+end);
                     positionSet.add(end);
                 }
             }
@@ -77,6 +108,10 @@ public class Knight extends BasePiece {
         return Util.toList(positionSet);
     }
 
+    /**
+     * Returns custom string representation of the class
+     * @return String
+     * */
     @Override
     public String toString() {
         return this.colour.toString()+"N";

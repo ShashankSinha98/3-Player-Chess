@@ -1,18 +1,18 @@
 GET http://localhost:8080/game
 
-### Post square d4 of red player
+### Post polygon d4 of red player
 POST http://localhost:8080/move
 Content-Type: text/plain
 
 Rd4
 
-### Post square a1 of blue player
+### Post polygon a1 of blue player
 POST http://localhost:8080/move
 Content-Type: text/plain
 
 Ba1
 
-### Post square g3 of green player
+### Post polygon g3 of green player
 POST http://localhost:8080/move
 Content-Type: text/plain
 
