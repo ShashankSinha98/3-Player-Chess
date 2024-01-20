@@ -62,9 +62,12 @@ public class BishopTest {
     }
 
     @Test
-    public void isLegalMove_bishopAbsentFromStartPosition_False() {
-        BasePiece bishop = new Bishop(Colour.BLUE);
-        assertFalse(bishop.isLegalMove(board, BE4, BD3));
+    public void isLegalMove_bishopPresentInInitialPosition_True() {
+        Position[] bishopInitialPositions = new Position[] {BC1, BF1, RC1, RF1, GC1, GF1};
+        for(Position position: bishopInitialPositions) {
+            BasePiece piece = board.boardMap.get(position);
+            assertTrue(piece instanceof  Bishop);
+        }
     }
 
     @Test
