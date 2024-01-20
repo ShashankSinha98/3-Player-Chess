@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static utility.BoardAdapter.calculatePolygonId;
+
 /**
  * Class containing the main logic of the backend.
  * the click inputs from the webapp is communicated with the backend.
@@ -43,9 +45,11 @@ public class GameMain implements IGameInterface {
     // polygonPos must be in range [0, 95]
     @Override
     public OnClickResponse onClick(String polygonLabel) {
-        int polygonPos = calculatePolygonId(polygonLabel);
-        Log.d(TAG, ">>> onClick called: "+polygonPos);
         try {
+            Log.d(TAG, ">>> onClick called: polygonLabel: "+polygonLabel);
+            int polygonPos = calculatePolygonId(polygonLabel);
+            Log.d(TAG, ">>> onClick called: polygonPos:  "+polygonPos);
+
             Position position = Position.get(polygonPos);
             if (board.isCurrentPlayersPiece(position)) { // player selects his own piece - first move
                 moveStartPos = position;
@@ -68,6 +72,8 @@ public class GameMain implements IGameInterface {
             highlightPolygons = null;
         } catch (InvalidPositionException e) {
             Log.e(TAG, "InvalidPositionException onClick: "+e.getMessage());
+            moveStartPos = moveEndPos = null;
+            highlightPolygons = null;
         }
         List<String> highlightPolygonsList = BoardAdapter.convertHighlightPolygonsToViewBoard(highlightPolygons);
         OnClickResponse clickResponse = new OnClickResponse(getBoard(), highlightPolygonsList);
@@ -87,22 +93,4 @@ public class GameMain implements IGameInterface {
 
     public static void main(String[] args) { }
 
-    /**
-     * Calculates unique ID for each polygon based on label
-     * @param  polygon The unique label of the polygon which is clicked by player
-     * @return unique ID
-     * */
-    private int calculatePolygonId(String polygon){
-        char color = polygon.charAt(0);
-        int y = polygon.charAt(1) - 'a';
-        int x = polygon.charAt(2) - '1';
-        int offset = 0;
-        if(color == 'G'){
-            offset = 32;
-        }else if(color == 'R'){
-            offset = 64;
-        }
-
-        return offset + x + 4*y;
-    }
 }
