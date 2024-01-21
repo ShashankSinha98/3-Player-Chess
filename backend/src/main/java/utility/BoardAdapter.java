@@ -39,7 +39,9 @@ public class BoardAdapter {
      **/
     public static List<String> convertHighlightPolygonsToViewBoard(List<Position> possibleMoves) {
         List<String> moves = new ArrayList<>();
-        if(possibleMoves == null) return Collections.emptyList();
+        if(possibleMoves == null) {
+            return Collections.emptyList();
+        }
         for(Position pi: possibleMoves) {
             moves.add(pi.toString());
         }

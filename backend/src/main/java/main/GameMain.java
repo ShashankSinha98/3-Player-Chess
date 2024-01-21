@@ -35,14 +35,24 @@ public class GameMain implements IGameInterface {
         highlightPolygons = new ArrayList<>();
     }
 
+    /**
+     * Get the current board map being used by backend for current game session
+     * @return Board map
+     * */
     @Override
     public Map<String, String> getBoard() {
         return board.getWebViewBoard();
     }
 
-    // polygonPos must be in range [0, 95]
+    /**
+     * Responsible for sending mouse click events to backend and apply game logic over it to display
+     * updated board layout to player.
+     * @param  polygonLabel The unique label of the polygon which is clicked by player
+     * @return OnClickResponse which contains current game board layout and list of polygons to highlight
+     **/
     @Override
     public OnClickResponse onClick(String polygonLabel) {
+        // polygonPos must be in range [0, 95]
         int polygonPos = calculatePolygonId(polygonLabel);
         Log.d(TAG, ">>> onClick called: "+polygonPos);
         try {
@@ -80,6 +90,9 @@ public class GameMain implements IGameInterface {
         return clickResponse;
     }
 
+    /**
+     * @return returns which colour turn it is currently
+     * */
     @Override
     public Colour getTurn() {
         return board.getTurn();

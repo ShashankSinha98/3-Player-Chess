@@ -109,17 +109,27 @@ public enum Position{
   public Position neighbour(Direction direction) throws InvalidPositionException {
     switch(direction){
       case FORWARD:
-        if(row<3) return get(colour, row+1, column);
-        if(column<4) return get(Colour.values()[(colour.ordinal()+1)%3], 3, 7-column);
+        if(row<3) {
+          return get(colour, row+1, column);
+        }
+        if(column<4) {
+          return get(Colour.values()[(colour.ordinal()+1)%3], 3, 7-column);
+        }
         return get(Colour.values()[(colour.ordinal()+2)%3],3,7-column);
       case BACKWARD:
-        if(row==0) throw new InvalidPositionException("Moved off board");
+        if(row==0) {
+          throw new InvalidPositionException("Moved off board");
+        }
         return get(colour,row-1,column);
       case LEFT:
-        if(column==0) throw new InvalidPositionException("Moved off board");
+        if(column==0) {
+          throw new InvalidPositionException("Moved off board");
+        }
         return get(colour,row,column-1);
       case RIGHT:
-        if(column==7) throw new InvalidPositionException("Moved off board");
+        if(column==7) {
+          throw new InvalidPositionException("Moved off board");
+        }
         return get(colour,row,column+1);
     }
     throw new InvalidPositionException("Unreachable code?");

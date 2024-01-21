@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IGameInterface {
-	
+
     /**
      * Get the current board map being used by backend for current game session
      * @return Board map

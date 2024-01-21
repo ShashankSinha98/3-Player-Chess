@@ -46,23 +46,27 @@ public class Wall extends Rook {
         Map<Position, BasePiece> boardMap = board.boardMap;
         BasePiece mover = this;
         BasePiece target = boardMap.get(end);
-        if(mover==null) return false; // No piece present at start position
-        if(target!=null) return false; // Wall cannot take any piece
+        if(target != null) {
+            return false; // Wall cannot take any piece
+        }
         Colour moverCol = mover.getColour();
-        if(target!= null && moverCol==target.getColour())return false; // player cannot take its own piece
+        if(target != null && moverCol == target.getColour()) {
+            return false; // player cannot take its own piece
+        }
 
         Direction[][] steps = this.directions;
-        for(int i = 0; i<steps.length; i++){
-            Direction[] step = steps[i];
-            try{
-                Position tmp = step(mover,step,start);
-                while(end != tmp && boardMap.get(tmp)==null){
-                    Log.d(TAG, "tmp: "+tmp);
-                    tmp = step(mover, step, tmp, tmp.getColour()!=start.getColour());
+        for (Direction[] step : steps) {
+            try {
+                Position tmp = step(mover, step, start);
+                while (end != tmp && boardMap.get(tmp) == null) {
+                    Log.d(TAG, "tmp: " + tmp);
+                    tmp = step(mover, step, tmp, tmp.getColour() != start.getColour());
                 }
-                if(end==tmp) return true; // when end position is in range of rook and contains a piece
-            }catch(InvalidPositionException e){
-                Log.d(TAG, "InvalidPositionException: "+e.getMessage());
+                if (end == tmp) {
+                    return true; // when end position is in range of rook and contains a piece
+                }
+            } catch (InvalidPositionException e) {
+                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
             }//do nothing, steps went off board.
         }
         return false;

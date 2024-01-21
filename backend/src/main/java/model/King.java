@@ -72,17 +72,17 @@ public class King extends BasePiece {
         BasePiece mover = this;
 
         Direction[][] steps = this.directions;
-        for(int i = 0; i<steps.length; i++){
-            try{
-                if(end == step(mover, steps[i],start))
+        for (Direction[] step : steps) {
+            try {
+                if (end == step(mover, step, start)) {
                     return true;
-            }catch(InvalidPositionException e){}//do nothing, steps went off board.
+                }
+            } catch (InvalidPositionException e) {
+                //do nothing, steps went off board.
+                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
+            }
         }
-
-        boolean isCastling = isCastlingPossible(boardMap, start, end);
-        if(isCastling) return true;
-
-        return false;
+        return isCastlingPossible(boardMap, start, end);
     }
 
     /**
@@ -101,20 +101,18 @@ public class King extends BasePiece {
 
         for (Direction[] step : steps) {
             Position end = stepOrNull(mover, step, start);
-            if(wallPiecePositions.contains(end)) continue;
-
-            if(positionSet.contains(end)) continue;
+            if(wallPiecePositions.contains(end) || positionSet.contains(end)) {
+                continue;
+            }
 
             if (end != null) {
                 if(boardMap.get(end)!=null) {
                     if(boardMap.get(end).getColour()!=mover.getColour()) {
                         Log.d(TAG, "position enemy: " + end);
-                        //positions.add(end);
                         positionSet.add(end);
                     }
                 } else {
                     Log.d(TAG, "position: "+end);
-                    //positions.add(end);
                     positionSet.add(end);
                 }
             }
@@ -124,7 +122,6 @@ public class King extends BasePiece {
         for(Position end: castlingPositions) {
             if (boardMap.get(end)==null && isCastlingPossible(boardMap, start, end)) {
                 Log.d(TAG, "position castling: " + end);
-                //positions.add(end);
                 positionSet.add(end);
             }
         }
@@ -149,23 +146,28 @@ public class King extends BasePiece {
                     BasePiece castle = board.get(Position.get(moverCol,0,7));
                     BasePiece empty1 = board.get(Position.get(moverCol,0,5));
                     BasePiece empty2 = board.get(Position.get(moverCol,0,6));
-                    if(castle!=null && castle instanceof Rook && castle.getColour()==mover.getColour()
-                            && empty1==null && empty2==null)
-                        System.out.println("Castling Legal Move 1: True");
-                    return true;
+                    if(castle instanceof Rook && castle.getColour() == mover.getColour()
+                            && empty1 == null && empty2 == null) {
+                        Log.d(TAG, "Castling Legal Move 1: True");
+                        return true;
+                    }
                 }
                 if(end==Position.get(moverCol,0,2)){
                     BasePiece castle = board.get(Position.get(moverCol,0,0));
                     BasePiece empty1 = board.get(Position.get(moverCol,0,1));
                     BasePiece empty2 = board.get(Position.get(moverCol,0,2));
                     BasePiece empty3 = board.get(Position.get(moverCol,0,3));
-                    if(castle!=null && castle instanceof Rook && castle.getColour()==mover.getColour()
-                            && empty1==null && empty2==null && empty3==null)
-                        System.out.println("Castling Legal Move 2: True");
-                    return true;
+                    if(castle instanceof Rook && castle.getColour() == mover.getColour()
+                            && empty1 == null && empty2 == null && empty3 == null) {
+                        Log.d(TAG, "Castling Legal Move 2: True");
+                        return true;
+                    }
                 }
             }
-        }catch(InvalidPositionException e){}
+        } catch (InvalidPositionException e) {
+            //do nothing, steps went off board.
+            Log.e(TAG, "InvalidPositionException: " + e.getMessage());
+        }
         return false;
     }
 
