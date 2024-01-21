@@ -4,19 +4,21 @@ import common.Colour;
 import common.InvalidMoveException;
 import common.InvalidPositionException;
 import common.Position;
-import model.Board;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utility.Log;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static common.Position.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BoardTest {
 
