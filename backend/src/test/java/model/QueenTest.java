@@ -4,6 +4,8 @@ import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
 
@@ -108,15 +110,12 @@ public class QueenTest {
         }
     }
 
-    @Test
-    public void toString_initQueenAllColours_correctStringFormat() {
-        BasePiece blueQueen = new Queen(Colour.BLUE);
-        assertEquals(blueQueen.toString(), "BQ");
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    void toString_initQueenAllColours_correctStringFormat(Colour colour) {
+        BasePiece queen = new Queen(colour);
+        String expectedFormat = colour.toString() + "Q";
 
-        BasePiece redQueen = new Queen(Colour.RED);
-        assertEquals(redQueen.toString(), "RQ");
-
-        BasePiece greenQueen = new Queen(Colour.GREEN);
-        assertEquals(greenQueen.toString(), "GQ");
+        assertEquals(expectedFormat, queen.toString());
     }
 }

@@ -3,6 +3,8 @@ package model;
 import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -339,15 +341,12 @@ class JesterTest {
     }
 
 
-    @Test
-    void toString_initJesterAllColours_correctStringFormat() {
-        BasePiece blueJester = new Jester(Colour.BLUE);
-        assertEquals(blueJester.toString(), "BJ");
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    void toString_initJesterAllColours_correctStringFormat(Colour colour) {
+        BasePiece jester = new Jester(colour);
+        String expectedFormat = colour.toString() + "J";
 
-        BasePiece redJester = new Jester(Colour.RED);
-        assertEquals(redJester.toString(), "RJ");
-
-        BasePiece greenJester = new Jester(Colour.GREEN);
-        assertEquals(greenJester.toString(), "GJ");
+        assertEquals(expectedFormat, jester.toString());
     }
 }

@@ -4,6 +4,8 @@ import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
 
@@ -131,15 +133,12 @@ public class BishopTest {
         }
     }
 
-    @Test
-    public void toString_initBishopAllColours_correctStringFormat() {
-        BasePiece blueBishop = new Bishop(Colour.BLUE);
-        assertEquals(blueBishop.toString(), "BB");
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    public void toString_initBishopAllColours_correctStringFormat(Colour colour) {
+        BasePiece bishop = new Bishop(colour);
+        String expectedFormat = colour.toString() + "B";
 
-        BasePiece redBishop = new Bishop(Colour.RED);
-        assertEquals(redBishop.toString(), "RB");
-
-        BasePiece greenBishop = new Bishop(Colour.GREEN);
-        assertEquals(greenBishop.toString(), "GB");
+        assertEquals(expectedFormat, bishop.toString());
     }
 }

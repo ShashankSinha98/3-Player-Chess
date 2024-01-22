@@ -4,6 +4,8 @@ import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
 
@@ -117,15 +119,12 @@ public class WallTest {
         }
     }
 
-    @Test
-    public void toString_initWallAllColours_correctStringFormat() {
-        BasePiece blueWall = new Wall(Colour.BLUE);
-        assertEquals(blueWall.toString(), "BW");
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    void toString_initWallAllColours_correctStringFormat(Colour colour) {
+        BasePiece wall = new Wall(colour);
+        String expectedFormat = colour.toString() + "W";
 
-        BasePiece redWall = new Wall(Colour.RED);
-        assertEquals(redWall.toString(), "RW");
-
-        BasePiece greenWall = new Wall(Colour.GREEN);
-        assertEquals(greenWall.toString(), "GW");
+        assertEquals(expectedFormat, wall.toString());
     }
 }

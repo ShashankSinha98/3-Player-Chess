@@ -3,6 +3,8 @@ package model;
 import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -147,15 +149,12 @@ class KnightTest {
         assertEquals(expectedKnightMoves, actualKnightMoves);
     }
 
-    @Test
-    void toString_initBishopAllColours_correctStringFormat() {
-        BasePiece blueKnight = new Knight(Colour.BLUE);
-        assertEquals(blueKnight.toString(), "BN");
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    void toString_initKnightAllColours_correctStringFormat(Colour colour) {
+        BasePiece knight = new Knight(colour);
+        String expectedFormat = colour.toString() + "N";
 
-        BasePiece redKnight = new Knight(Colour.RED);
-        assertEquals(redKnight.toString(), "RN");
-
-        BasePiece greenKnight = new Knight(Colour.GREEN);
-        assertEquals(greenKnight.toString(), "GN");
+        assertEquals(expectedFormat, knight.toString());
     }
 }

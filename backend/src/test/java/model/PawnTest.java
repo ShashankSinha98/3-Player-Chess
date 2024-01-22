@@ -4,6 +4,8 @@ import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
 
@@ -139,16 +141,13 @@ public class PawnTest {
         }
     }
 
-    @Test
-    public void toString_initPawnAllColours_correctStringFormat() {
-        BasePiece bluePawn = new Pawn(Colour.BLUE);
-        assertEquals(bluePawn.toString(), "BP");
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    void toString_initPawnAllColours_correctStringFormat(Colour colour) {
+        BasePiece pawn = new Pawn(colour);
+        String expectedFormat = colour.toString() + "P";
 
-        BasePiece redPawn = new Pawn(Colour.RED);
-        assertEquals(redPawn.toString(), "RP");
-
-        BasePiece greenPawn = new Pawn(Colour.GREEN);
-        assertEquals(greenPawn.toString(), "GP");
+        assertEquals(expectedFormat, pawn.toString());
     }
 
 }

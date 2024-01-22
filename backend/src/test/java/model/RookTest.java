@@ -4,6 +4,8 @@ import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
 
@@ -107,15 +109,12 @@ public class RookTest {
         }
     }
 
-    @Test
-    public void toString_initRookAllColours_correctStringFormat() {
-        BasePiece blueRook = new Rook(Colour.BLUE);
-        assertEquals(blueRook.toString(), "BR");
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    void toString_initRookAllColours_correctStringFormat(Colour colour) {
+        BasePiece rook = new Rook(colour);
+        String expectedFormat = colour.toString() + "R";
 
-        BasePiece redRook = new Rook(Colour.RED);
-        assertEquals(redRook.toString(), "RR");
-
-        BasePiece greenRook = new Rook(Colour.GREEN);
-        assertEquals(greenRook.toString(), "GR");
+        assertEquals(expectedFormat, rook.toString());
     }
 }

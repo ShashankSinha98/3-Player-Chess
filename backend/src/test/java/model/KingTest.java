@@ -4,6 +4,8 @@ import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
 
@@ -163,15 +165,12 @@ public class KingTest {
             }
         }
     }
-    @Test
-    public void toString_initKingAllColours_correctStringFormat() {
-        BasePiece blueKing = new King(Colour.BLUE);
-        assertEquals(blueKing.toString(), "BK");
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    void toString_initKingAllColours_correctStringFormat(Colour colour) {
+        BasePiece king = new King(colour);
+        String expectedFormat = colour.toString() + "K";
 
-        BasePiece redKing = new King(Colour.RED);
-        assertEquals(redKing.toString(), "RK");
-
-        BasePiece greenKing = new King(Colour.GREEN);
-        assertEquals(greenKing.toString(), "GK");
+        assertEquals(expectedFormat, king.toString());
     }
 }
