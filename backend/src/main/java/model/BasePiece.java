@@ -6,8 +6,8 @@ import common.Position;
 import utility.Log;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *  Abstract Base class for all chess pieces. All chess pieces must extend this class
@@ -79,9 +79,9 @@ public abstract class BasePiece {
      * Fetch all the possible positions where a piece can move on board
      * @param board: Board class instance representing current game board
      * @param start: position of piece on board
-     * @return List of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to move
      * */
-    public abstract List<Position> getHighlightPolygons(Board board, Position start);
+    public abstract Set<Position> getHighlightPolygons(Board board, Position start);
 
     /**
      * @return Colour of the chess piece

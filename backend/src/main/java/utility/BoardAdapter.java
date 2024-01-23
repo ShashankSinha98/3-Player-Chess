@@ -4,11 +4,7 @@ import common.InvalidPositionException;
 import model.BasePiece;
 import common.Position;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *  Class BoardAdapter to convert information for web app representable form
@@ -38,7 +34,7 @@ public class BoardAdapter {
      * @param possibleMoves a list of positions to highlight
      * @return list of strings
      **/
-    public static List<String> convertHighlightPolygonsToViewBoard(List<Position> possibleMoves) {
+    public static List<String> convertHighlightPolygonsToViewBoard(Set<Position> possibleMoves) {
         List<String> moves = new ArrayList<>();
         if(possibleMoves == null) {
             return Collections.emptyList();

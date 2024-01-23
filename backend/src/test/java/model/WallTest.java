@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.List;
+import java.util.Set;
 
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -93,7 +94,7 @@ public class WallTest {
             board.boardMap.put(start, wall);
             Position[] ends = endPositions[i];
 
-            List<Position> highlightedPolygons = wall.getHighlightPolygons(board, start);
+            Set<Position> highlightedPolygons = wall.getHighlightPolygons(board, start);
             for(Position end: ends) {
                 assertTrue(highlightedPolygons.contains(end));
             }
@@ -112,7 +113,7 @@ public class WallTest {
             board.boardMap.put(start, wall);
             Position[] ends = endPositions[i];
 
-            List<Position> highlightedPolygons = wall.getHighlightPolygons(board, start);
+            Set<Position> highlightedPolygons = wall.getHighlightPolygons(board, start);
             for (Position end : ends) {
                 assertFalse(highlightedPolygons.contains(end));
             }

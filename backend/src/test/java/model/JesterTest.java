@@ -299,7 +299,7 @@ class JesterTest {
         board.boardMap.put(startPosition, jester);
 
         Set<Position> expectedJesterMoves = new HashSet<>(Arrays.asList(BG3, BF2, BD2, BC3, GF4, GE3, RB4, RC3, RF4, RE3));
-        Set<Position> actualJesterMoves = new HashSet<>(jester.getHighlightPolygons(board, startPosition));
+        Set<Position> actualJesterMoves = jester.getHighlightPolygons(board, startPosition);
 
         assertEquals(expectedJesterMoves, actualJesterMoves);
     }
@@ -317,7 +317,7 @@ class JesterTest {
         board.boardMap.put(RB4, pawn);
 
         Set<Position> expectedJesterMoves = new HashSet<>(Arrays.asList(BG3, BF2, BD2, BC3, GF4, GE3, RC3, RF4, RE3));
-        Set<Position> actualJesterMoves = new HashSet<>(jester.getHighlightPolygons(board, startPosition));
+        Set<Position> actualJesterMoves = jester.getHighlightPolygons(board, startPosition);
 
         assertEquals(expectedJesterMoves, actualJesterMoves);
     }
@@ -335,7 +335,7 @@ class JesterTest {
         board.boardMap.put(RB4, pawn);
 
         Set<Position> expectedJesterMoves = new HashSet<>(Arrays.asList(BG3, BF2, BD2, BC3, GF4, GE3, RB4, RC3, RF4, RE3));
-        Set<Position> actualJesterMoves = new HashSet<>(jester.getHighlightPolygons(board, startPosition));
+        Set<Position> actualJesterMoves = jester.getHighlightPolygons(board, startPosition);
 
         assertEquals(expectedJesterMoves, actualJesterMoves);
     }

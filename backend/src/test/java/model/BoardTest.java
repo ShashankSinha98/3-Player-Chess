@@ -128,19 +128,19 @@ public class BoardTest {
 
     @Test
     public void getPossibleMoves_emptyPosition_emptyPositionsList() {
-        List<Position> possibleMoves = board.getPossibleMoves(BE4);
+        Set<Position> possibleMoves = board.getPossibleMoves(BE4);
         assertTrue(possibleMoves.isEmpty());
     }
 
     @Test
     public void getPossibleMoves_rookBehindJesterInitialPosition_emptyPositionsList() {
-        List<Position> possibleMoves = board.getPossibleMoves(BA1);
+        Set<Position> possibleMoves = board.getPossibleMoves(BA1);
         assertTrue(possibleMoves.isEmpty());
     }
 
     @Test
     public void getPossibleMoves_rookBehindWallInitialPosition_nonEmptyPositionsList() {
-        List<Position> possibleMoves = board.getPossibleMoves(BH1);
+        Set<Position> possibleMoves = board.getPossibleMoves(BH1);
         assertFalse(possibleMoves.isEmpty());
     }
 }

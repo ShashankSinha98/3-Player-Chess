@@ -84,7 +84,7 @@ public class Pawn extends BasePiece {
      * @return List of possible positions a piece is allowed to move
      * */
     @Override
-    public List<Position> getHighlightPolygons(Board board, Position start) {
+    public Set<Position> getHighlightPolygons(Board board, Position start) {
         Map<Position, BasePiece> boardMap = board.boardMap;
         Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
         Set<Position> positionSet = new HashSet<>();
@@ -119,7 +119,7 @@ public class Pawn extends BasePiece {
                 }
             }
 
-        return Util.toList(positionSet);
+        return positionSet;
     }
 
     /**

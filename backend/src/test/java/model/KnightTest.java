@@ -126,7 +126,7 @@ class KnightTest {
         board.boardMap.put(startPosition, knight);
 
         Set<Position> expectedKnightMoves = new HashSet<>(Arrays.asList(BG3, BF2, BD2, BC3, GF4, GE3, RC3, RF4, RE3));
-        Set<Position> actualKnightMoves = new HashSet<>(knight.getHighlightPolygons(board, startPosition));
+        Set<Position> actualKnightMoves = knight.getHighlightPolygons(board, startPosition);
 
         assertEquals(expectedKnightMoves, actualKnightMoves);
     }
@@ -144,7 +144,7 @@ class KnightTest {
         board.boardMap.put(startPosition, knight);
 
         Set<Position> expectedKnightMoves = new HashSet<>(Arrays.asList(BG3, BF2, BD2, BC3, GF4, GE3, RB4, RC3, RF4, RE3));
-        Set<Position> actualKnightMoves = new HashSet<>(knight.getHighlightPolygons(board, startPosition));
+        Set<Position> actualKnightMoves = knight.getHighlightPolygons(board, startPosition);
 
         assertEquals(expectedKnightMoves, actualKnightMoves);
     }

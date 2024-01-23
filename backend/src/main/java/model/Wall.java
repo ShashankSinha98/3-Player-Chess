@@ -79,7 +79,7 @@ public class Wall extends Rook {
      * @return List of possible positions a piece is allowed to move
      * */
     @Override
-    public List<Position> getHighlightPolygons(Board board, Position start) {
+    public Set<Position> getHighlightPolygons(Board board, Position start) {
         Map<Position, BasePiece> boardMap = board.boardMap;
         //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();
@@ -95,7 +95,7 @@ public class Wall extends Rook {
             }
         }
 
-        return Util.toList(positionSet);
+        return positionSet;
     }
 
     /**

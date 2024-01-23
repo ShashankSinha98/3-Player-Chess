@@ -1,5 +1,6 @@
 package model;
 
+import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.InvalidMoveException;
 import common.InvalidPositionException;
@@ -7,10 +8,7 @@ import common.Position;
 import utility.BoardAdapter;
 import utility.Log;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class containing the Board logic. To initialize the board with the pieces.
@@ -214,10 +212,10 @@ public class Board {
      * @param position The current selected piece position
      * @return list of possible movements
      * */
-    public List<Position> getPossibleMoves(Position position) {
+    public Set<Position> getPossibleMoves(Position position) {
         BasePiece mover = boardMap.get(position);
-        if(mover == null) return new ArrayList<>();
-        List<Position> possibleMoves = mover.getHighlightPolygons(this, position);
+        if(mover == null) return ImmutableSet.of();
+        Set<Position> possibleMoves = mover.getHighlightPolygons(this, position);
         return possibleMoves;
     }
 

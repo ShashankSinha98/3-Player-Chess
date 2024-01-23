@@ -1,5 +1,6 @@
 package model;
 
+import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -128,9 +127,9 @@ public class BishopTest {
         BasePiece bishop = new Bishop(colour);
         board.boardMap.put(startPosition, bishop);
 
-        Set<Position> expectedBishopMoves = new HashSet<>(
-                Arrays.asList(BH1, BG2, BF3, BD3, BC2, BB1, RC4, RB3, RA2, GE4, GF3, GG2, GH1, RE4, RF3, RG2, RH1));
-        Set<Position> actualBishopMoves = new HashSet<>(bishop.getHighlightPolygons(board, startPosition));
+        Set<Position> expectedBishopMoves =
+                ImmutableSet.of(BH1, BG2, BF3, BD3, BC2, BB1, RC4, RB3, RA2, GE4, GF3, GG2, GH1, RE4, RF3, RG2, RH1);
+        Set<Position> actualBishopMoves = bishop.getHighlightPolygons(board, startPosition);
 
         assertEquals(expectedBishopMoves, actualBishopMoves);
     }
