@@ -12,7 +12,7 @@ import java.util.Set;
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PawnTest {
+ class PawnTest {
 
     private Board board;
 
@@ -23,13 +23,13 @@ public class PawnTest {
 
     // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
     @Test
-    public void setupDirections_initPieceDirectionsIsEmpty_False() {
+     void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece pawn = new Pawn(Colour.BLUE);
         assertNotEquals(0, pawn.directions.length);
     }
 
     @Test
-    public void isLegalMove_validMoves_True() {
+     void isLegalMove_validMoves_True() {
         Position[] startPositions = new Position[] {BH2, BE4};
         Position[][] endPositions = new Position[][] {{BH3, BH4}, {RD4}};
 
@@ -46,7 +46,7 @@ public class PawnTest {
     }
 
     @Test
-    public void isLegalMove_invalidMoves_False() {
+     void isLegalMove_invalidMoves_False() {
         Position[] startPositions = new Position[] {BH2, BE4};
         Position[][] endPositions = new Position[][] {{BG3, BH1}, {BE3}};
 
@@ -63,13 +63,13 @@ public class PawnTest {
     }
 
     @Test
-    public void isLegalMove_pawnAbsentFromStartPosition_False() {
+     void isLegalMove_pawnAbsentFromStartPosition_False() {
         BasePiece pawn = new Pawn(Colour.BLUE);
         assertFalse(pawn.isLegalMove(board, BE4, BD3));
     }
 
     @Test
-    public void isLegalMove_pawnMoveForwardToTakeOpponentPiece_False() {
+     void isLegalMove_pawnMoveForwardToTakeOpponentPiece_False() {
         BasePiece pawn = new Pawn(Colour.BLUE);
         board.boardMap.put(BE4, pawn);
 
@@ -80,7 +80,7 @@ public class PawnTest {
     }
 
     @Test
-    public void isLegalMove_pawnMoveDiagonalToTakeOpponentPiece_True() {
+     void isLegalMove_pawnMoveDiagonalToTakeOpponentPiece_True() {
         BasePiece pawn = new Pawn(Colour.BLUE);
         board.boardMap.put(BE4, pawn);
 
@@ -91,7 +91,7 @@ public class PawnTest {
     }
 
     @Test
-    public void isLegalMove_pawnTakesItsColourPiece_False() {
+     void isLegalMove_pawnTakesItsColourPiece_False() {
         BasePiece bluePawn = new Pawn(Colour.BLUE);
         board.boardMap.put(BE4, bluePawn);
 
@@ -102,7 +102,7 @@ public class PawnTest {
     }
 
     @Test
-    public void getHighlightPolygons_validPolygons_presentInPolygonList() {
+     void getHighlightPolygons_validPolygons_presentInPolygonList() {
         Position[] startPositions = new Position[] {BH2, BE4};
         Position[][] endPositions = new Position[][] {{BH3, BH4}, {RD4}};
 
@@ -121,7 +121,7 @@ public class PawnTest {
     }
 
     @Test
-    public void getHighlightPolygons_invalidPolygons_presentInPolygonList() {
+     void getHighlightPolygons_invalidPolygons_presentInPolygonList() {
         Position[] startPositions = new Position[] {BH2, BE4};
         Position[][] endPositions = new Position[][] {{BG3, BH1}, {BE3}};
 

@@ -15,7 +15,7 @@ import java.util.Set;
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BoardTest {
+ class BoardTest {
 
     private final int TOTAL_SQUARES = 8 * 4 * 3; // col * row * players
     private Board board;
@@ -37,7 +37,7 @@ public class BoardTest {
 
     // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
     @Test
-    public void move_pieceMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupied() throws InvalidPositionException, InvalidMoveException {
+     void move_pieceMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupied() throws InvalidPositionException, InvalidMoveException {
         BasePiece pawn = board.boardMap.get(BE2);
         board.move(BE2, BE4);
         assertNull(board.boardMap.get(BE2));
@@ -46,7 +46,7 @@ public class BoardTest {
     }
 
     @Test
-    public void move_wallMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupiedAndWallMappingUpdate() throws InvalidPositionException, InvalidMoveException {
+     void move_wallMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupiedAndWallMappingUpdate() throws InvalidPositionException, InvalidMoveException {
         BasePiece wall = board.boardMap.get(BH2);
         assertInstanceOf(Wall.class, wall);
         assertEquals(Colour.BLUE, wall.getColour());
@@ -59,7 +59,7 @@ public class BoardTest {
     }
 
     @Test
-    public void move_pawnToOppositeEndRow_pawnUpgradeToQueen() throws InvalidPositionException, InvalidMoveException {
+     void move_pawnToOppositeEndRow_pawnUpgradeToQueen() throws InvalidPositionException, InvalidMoveException {
         BasePiece bluePawn = new Pawn(Colour.BLUE);
         board.boardMap.put(RA2, bluePawn);
         board.boardMap.remove(RA1); // empty RA1 for blue pawn to move
@@ -70,7 +70,7 @@ public class BoardTest {
     }
 
     @Test
-    public void move_jesterTakesWall_jesterWallPositionSwitchAndWallPieceMappingUpdates() throws InvalidPositionException, InvalidMoveException {
+     void move_jesterTakesWall_jesterWallPositionSwitchAndWallPieceMappingUpdates() throws InvalidPositionException, InvalidMoveException {
         BasePiece blueJester = new Jester(Colour.BLUE);
         board.boardMap.put(BE4, blueJester);
 
@@ -84,7 +84,7 @@ public class BoardTest {
     }
 
     @Test
-    public void move_rightCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
+     void move_rightCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
         board.boardMap.remove(BF1);
         board.boardMap.remove(BG1);
 
@@ -97,7 +97,7 @@ public class BoardTest {
     }
 
     @Test
-    public void move_leftCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
+     void move_leftCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
         board.boardMap.remove(BD1);
         board.boardMap.remove(BC1);
         board.boardMap.remove(BB1);
@@ -111,7 +111,7 @@ public class BoardTest {
     }
 
     @Test
-    public void move_bluePieceTakesRedKing_gameOverAndBlueWinner() throws InvalidPositionException, InvalidMoveException {
+     void move_bluePieceTakesRedKing_gameOverAndBlueWinner() throws InvalidPositionException, InvalidMoveException {
         BasePiece blueRook = new Rook(Colour.BLUE);
         board.boardMap.put(RE2, blueRook);
 
@@ -122,19 +122,19 @@ public class BoardTest {
     }
 
     @Test
-    public void getPossibleMoves_emptyPosition_emptyPositionsList() {
+     void getPossibleMoves_emptyPosition_emptyPositionsList() {
         Set<Position> possibleMoves = board.getPossibleMoves(BE4);
         assertTrue(possibleMoves.isEmpty());
     }
 
     @Test
-    public void getPossibleMoves_rookBehindJesterInitialPosition_emptyPositionsList() {
+     void getPossibleMoves_rookBehindJesterInitialPosition_emptyPositionsList() {
         Set<Position> possibleMoves = board.getPossibleMoves(BA1);
         assertTrue(possibleMoves.isEmpty());
     }
 
     @Test
-    public void getPossibleMoves_rookBehindWallInitialPosition_nonEmptyPositionsList() {
+     void getPossibleMoves_rookBehindWallInitialPosition_nonEmptyPositionsList() {
         Set<Position> possibleMoves = board.getPossibleMoves(BH1);
         assertFalse(possibleMoves.isEmpty());
     }

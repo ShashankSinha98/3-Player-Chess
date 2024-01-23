@@ -12,7 +12,7 @@ import java.util.Set;
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class QueenTest {
+ class QueenTest {
 
     private Board board;
 
@@ -22,13 +22,13 @@ public class QueenTest {
     }
 
     @Test
-    public void setupDirections_initPieceDirectionsIsEmpty_False() {
+     void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece queen = new Queen(Colour.BLUE);
         assertNotEquals(0, queen.directions.length);
     }
 
     @Test
-    public void isLegalMove_validMoves_True() {
+     void isLegalMove_validMoves_True() {
         Position[] startPositions = new Position[] {BE4, BD3, GH3, RD3};
         Position[][] endPositions = new Position[][] {{BF3, BD3, GE4, RE4, RC4, BE3, BD4, BF4, RD4}, {RA2, GH3}, {BE2, BC4}, {BH3, GA2}};
 
@@ -45,7 +45,7 @@ public class QueenTest {
     }
 
     @Test
-    public void isLegalMove_invalidMoves_False() {
+     void isLegalMove_invalidMoves_False() {
         Position[] startPositions = new Position[] {BF3, BE4};
         Position[][] endPositions = new Position[][] {{BH4, RB4}, {BG3, BH3, GH4, GF4}};
 
@@ -62,7 +62,7 @@ public class QueenTest {
     }
 
     @Test
-    public void isLegalMove_queenPresentInInitialPosition_True() {
+     void isLegalMove_queenPresentInInitialPosition_True() {
         Position[] queenInitialPositions = new Position[] {BD1, RD1, GD1};
         for(Position position: queenInitialPositions) {
             BasePiece piece = board.boardMap.get(position);
@@ -71,7 +71,7 @@ public class QueenTest {
     }
 
     @Test
-    public void getHighlightPolygons_validPolygons_presentInPolygonList() {
+     void getHighlightPolygons_validPolygons_presentInPolygonList() {
         Position[] startPositions = new Position[] {BE4, BD3, GH3, RD3};
         Position[][] endPositions = new Position[][] {{BF3, BD3, GE4, RE4, RC4, BE3, BD4, BF4, RD4}, {RA2, GH3}, {BE2, BC4}, {BH3, GA2}};
 
@@ -90,7 +90,7 @@ public class QueenTest {
     }
 
     @Test
-    public void getHighlightPolygons_invalidPolygons_absentInPolygonList() {
+     void getHighlightPolygons_invalidPolygons_absentInPolygonList() {
         Position[] startPositions = new Position[] {BF3, BE4};
         Position[][] endPositions = new Position[][] {{BH4, RB4}, {BG3, BH3, GH4, GF4}};
 

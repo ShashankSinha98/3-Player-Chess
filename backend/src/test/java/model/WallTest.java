@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class WallTest {
+ class WallTest {
     private Board board;
 
     @BeforeEach
@@ -25,13 +25,13 @@ public class WallTest {
     }
 
     @Test
-    public void setupDirections_initPieceDirectionsIsEmpty_False() {
+     void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece wall = new Wall(Colour.BLUE);
         assertNotEquals(0, wall.directions.length);
     }
 
     @Test
-    public void canMove_validMoves_True() {
+     void canMove_validMoves_True() {
         Position[] startPositions = new Position[] {BH2, BE4, GE4};
         Position[][] endPositions = new Position[][] {{BH3, BH4, RA4, RA3}, {BD4, BE3, BG4, BF4, BH4}, {GB4, GH4, BD3}};
 
@@ -48,7 +48,7 @@ public class WallTest {
     }
 
     @Test
-    public void canMove_invalidMoves_False() {
+     void canMove_invalidMoves_False() {
         Position[] startPositions = new Position[] {GE4, BB3};
         Position[][] endPositions = new Position[][] {{GF3, BA3, BH2}, {BF2, BA1, GH4, GF4}};
 
@@ -65,7 +65,7 @@ public class WallTest {
     }
 
     @Test
-    public void isLegalMove_wallPresentInInitialPosition_True() {
+     void isLegalMove_wallPresentInInitialPosition_True() {
         Position[] wallInitialPositions = new Position[] {BH2, RH2, GH2};
         for(Position position: wallInitialPositions) {
             BasePiece piece = board.boardMap.get(position);
@@ -73,7 +73,7 @@ public class WallTest {
         }
     }
     @Test
-    public void isLegalMove_wallPresentInInitialPosition_False() {
+     void isLegalMove_wallPresentInInitialPosition_False() {
         Position[] wallInitialPositions = new Position[] {BA2, RA2, GA2};
         for(Position position: wallInitialPositions) {
             BasePiece piece = board.boardMap.get(position);
@@ -82,7 +82,7 @@ public class WallTest {
     }
 
     @Test
-    public void getHighlightPolygons_validPolygons_presentInPolygonList() {
+     void getHighlightPolygons_validPolygons_presentInPolygonList() {
         Position[] startPositions = new Position[] {BA4, BF4, GD4};
         Position[][] endPositions = new Position[][] {{BA3, GH4, GH3, BC4, BG4}, {BF3, BC4, RC3, BH4}, {RE3, GC4, GH4, GD3, GA4}};
 
@@ -101,7 +101,7 @@ public class WallTest {
     }
 
     @Test
-    public void getHighlightPolygons_invalidPolygons_absentInPolygonList() {
+     void getHighlightPolygons_invalidPolygons_absentInPolygonList() {
         Position[] startPositions = new Position[] {RD3, BG3, RE1};
         Position[][] endPositions = new Position[][] {{GD1, BF3, BA1}, {RA3, BG3, GH4, GC2}, {RA3, BC2, GA4, RD3}};
 

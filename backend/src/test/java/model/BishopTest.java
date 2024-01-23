@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BishopTest {
+ class BishopTest {
 
     private Board board;
 
@@ -56,14 +56,14 @@ public class BishopTest {
 
     // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
     @Test
-    public void setupDirections_initPieceDirectionsIsEmpty_False() {
+     void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece bishop = new Bishop(Colour.BLUE);
         assertNotEquals(0, bishop.directions.length);
     }
 
     @ParameterizedTest
     @CsvFileSource(files = "src/test/resources/legalBishopMoves.csv")
-    public void isLegalMove_validMoves_True(String start, String end) {
+     void isLegalMove_validMoves_True(String start, String end) {
         Board board = new Board();
         Position startPosition = Position.valueOf(start);
         Position endPosition = Position.valueOf(end);
@@ -76,7 +76,7 @@ public class BishopTest {
 
     @ParameterizedTest
     @CsvFileSource(files = "src/test/resources/illegalBishopMoves.csv")
-    public void isLegalMove_invalidMoves_False(String start, String end) {
+     void isLegalMove_invalidMoves_False(String start, String end) {
         Board board = new Board();
         Position startPosition = Position.valueOf(start);
         Position endPosition = Position.valueOf(end);
@@ -89,7 +89,7 @@ public class BishopTest {
 
     @ParameterizedTest
     @EnumSource(value = Position.class, names = {"BC1", "BF1", "RC1", "RF1", "GC1", "GF1"})
-    public void isLegalMove_bishopPresentInInitialPosition_True(Position position) {
+     void isLegalMove_bishopPresentInInitialPosition_True(Position position) {
         BasePiece piece = board.boardMap.get(position);
         assertInstanceOf(Bishop.class, piece);
     }
@@ -97,7 +97,7 @@ public class BishopTest {
 
     @ParameterizedTest
     @MethodSource("pieceProvider")
-    public void isLegalMove_bishopTakesItsColourPiece_False(BasePiece piece) {
+     void isLegalMove_bishopTakesItsColourPiece_False(BasePiece piece) {
         BasePiece bishop = new Bishop(piece.colour);
 
         board.boardMap.put(BE4, bishop);
@@ -108,7 +108,7 @@ public class BishopTest {
 
     @ParameterizedTest
     @MethodSource("pieceProvider")
-    public void isLegalMove_bishopTakesDifferentColourPiece_True(BasePiece piece) {
+     void isLegalMove_bishopTakesDifferentColourPiece_True(BasePiece piece) {
         BasePiece bishop = new Bishop(piece.colour.next());
         board.boardMap.put(BE4, bishop);
 
@@ -119,7 +119,7 @@ public class BishopTest {
 
     @ParameterizedTest
     @EnumSource(Colour.class)
-    public void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
+     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
         Board board = new Board();
         board.boardMap.clear();                 //empty board
         Position startPosition = BE4;
@@ -136,7 +136,7 @@ public class BishopTest {
 
     @ParameterizedTest
     @EnumSource(Colour.class)
-    public void toString_initBishopAllColours_correctStringFormat(Colour colour) {
+     void toString_initBishopAllColours_correctStringFormat(Colour colour) {
         BasePiece bishop = new Bishop(colour);
         String expectedFormat = colour.toString() + "B";
 
