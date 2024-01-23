@@ -5,18 +5,50 @@ import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.*;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import static common.Position.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BishopTest {
 
     private Board board;
+
+
+    static Stream <BasePiece> pieceProvider() {
+        //maybe replace with for loop
+        return Stream.of(
+                new Pawn(Colour.RED),
+                new Pawn(Colour.BLUE),
+                new Pawn(Colour.GREEN),
+                new Rook(Colour.RED),
+                new Rook(Colour.BLUE),
+                new Rook(Colour.GREEN),
+                new Knight(Colour.BLUE),
+                new Knight(Colour.GREEN),
+                new Knight(Colour.RED),
+                new Bishop(Colour.BLUE),
+                new Bishop(Colour.GREEN),
+                new Bishop(Colour.RED),
+                new Queen(Colour.BLUE),
+                new Queen(Colour.GREEN),
+                new Queen(Colour.RED),
+                new King(Colour.BLUE),
+                new King(Colour.GREEN),
+                new King(Colour.RED),
+                new Jester(Colour.BLUE),
+                new Jester(Colour.GREEN),
+                new Jester(Colour.RED),
+                new Wall(Colour.BLUE),
+                new Wall(Colour.GREEN),
+                new Wall(Colour.RED)
+        );
+    }
 
     @BeforeEach
     void initBeforeEachBoardTest() {
@@ -27,110 +59,80 @@ public class BishopTest {
     @Test
     public void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece bishop = new Bishop(Colour.BLUE);
-        assertFalse(bishop.directions.length==0);
+        assertNotEquals(0, bishop.directions.length);
     }
 
-    @Test
-    public void isLegalMove_validMoves_True() {
-        Position[] startPositions = new Position[] {BE4, BD3, GH3, RD3};
-        Position[][] endPositions = new Position[][] {{BF3, BD3, GE4, RE4, RC4}, {RA2, GH3}, {BE2, BC4}, {BH3, GA2}};
+    @ParameterizedTest
+    @CsvFileSource(files = "src/test/resources/legalBishopMoves.csv")
+    public void isLegalMove_validMoves_True(String start, String end) {
+        Board board = new Board();
+        Position startPosition = Position.valueOf(start);
+        Position endPosition = Position.valueOf(end);
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece bishop = new Bishop(start.getColour());
-            board.boardMap.put(start, bishop);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertTrue(bishop.isLegalMove(board, start, end));
-            }
-        }
+        BasePiece bishop = new Bishop(startPosition.getColour());
+        board.boardMap.put(startPosition, bishop);
+
+        assertTrue(bishop.isLegalMove(board, startPosition, endPosition));
     }
 
-    @Test
-    public void isLegalMove_invalidMoves_False() {
-        Position[] startPositions = new Position[] {BE4, BD3, GH3, RD3};
-        Position[][] endPositions = new Position[][] {{BF4, BD4, GD4, RD4, RB4}, {BE3, BC3}, {GG3, GH4}, {RD4, RD2}};
+    @ParameterizedTest
+    @CsvFileSource(files = "src/test/resources/illegalBishopMoves.csv")
+    public void isLegalMove_invalidMoves_False(String start, String end) {
+        Board board = new Board();
+        Position startPosition = Position.valueOf(start);
+        Position endPosition = Position.valueOf(end);
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece bishop = new Bishop(start.getColour());
-            board.boardMap.put(start, bishop);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertFalse(bishop.isLegalMove(board, start, end));
-            }
-        }
+        BasePiece bishop = new Bishop(startPosition.getColour());
+        board.boardMap.put(startPosition, bishop);
+
+        assertFalse(bishop.isLegalMove(board, startPosition, endPosition));
     }
 
-    @Test
-    public void isLegalMove_bishopPresentInInitialPosition_True() {
-        Position[] bishopInitialPositions = new Position[] {BC1, BF1, RC1, RF1, GC1, GF1};
-        for(Position position: bishopInitialPositions) {
-            BasePiece piece = board.boardMap.get(position);
-            assertTrue(piece instanceof  Bishop);
-        }
+    @ParameterizedTest
+    @EnumSource(value = Position.class, names = {"BC1", "BF1", "RC1", "RF1", "GC1", "GF1"})
+    public void isLegalMove_bishopPresentInInitialPosition_True(Position position) {
+        BasePiece piece = board.boardMap.get(position);
+        assertInstanceOf(Bishop.class, piece);
     }
 
-    @Test
-    public void isLegalMove_bishopTakesItsColourPiece_False() {
-        BasePiece blueBishop = new Bishop(Colour.BLUE);
-        board.boardMap.put(BE4, blueBishop);
 
-        BasePiece bluePawn = new Pawn(Colour.BLUE);
-        board.boardMap.put(BD3, bluePawn);
+    @ParameterizedTest
+    @MethodSource("pieceProvider")
+    public void isLegalMove_bishopTakesItsColourPiece_False(BasePiece piece) {
+        BasePiece bishop = new Bishop(piece.colour);
 
-        assertFalse(blueBishop.isLegalMove(board, BE4, BD3));
+        board.boardMap.put(BE4, bishop);
+        board.boardMap.put(BD3, piece);
+
+        assertFalse(bishop.isLegalMove(board, BE4, BD3));
     }
 
-    @Test
-    public void isLegalMove_bishopTakesDifferentColourPiece_True() {
-        BasePiece blueBishop = new Bishop(Colour.BLUE);
-        board.boardMap.put(BE4, blueBishop);
+    @ParameterizedTest
+    @MethodSource("pieceProvider")
+    public void isLegalMove_bishopTakesDifferentColourPiece_True(BasePiece piece) {
+        BasePiece bishop = new Bishop(piece.colour.next());
+        board.boardMap.put(BE4, bishop);
 
-        BasePiece bluePawn = new Pawn(Colour.RED);
-        board.boardMap.put(BD3, bluePawn);
+        board.boardMap.put(BD3, piece);
 
-        assertTrue(blueBishop.isLegalMove(board, BE4, BD3));
+        assertTrue(bishop.isLegalMove(board, BE4, BD3));
     }
 
-    @Test
-    public void getHighlightPolygons_validPolygons_presentInPolygonList() {
-        Position[] startPositions = new Position[] {BE4, BD3, GH3, RD3};
-        Position[][] endPositions = new Position[][] {{BF3, BD3, GE4, RE4, RC4}, {RA2, GH3}, {BE2, BC4}, {BH3, GA2}};
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    public void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
+        Board board = new Board();
+        board.boardMap.clear();                 //empty board
+        Position startPosition = BE4;
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece bishop = new Bishop(start.getColour());
-            board.boardMap.put(start, bishop);
-            Position[] ends = endPositions[i];
+        BasePiece bishop = new Bishop(colour);
+        board.boardMap.put(startPosition, bishop);
 
-            List<Position> highlightedPolygons = bishop.getHighlightPolygons(board, start);
-            for(Position end: ends) {
-                assertTrue(highlightedPolygons.contains(end));
-            }
-        }
-    }
+        Set<Position> expectedBishopMoves = new HashSet<>(
+                Arrays.asList(BH1, BG2, BF3, BD3, BC2, BB1, RC4, RB3, RA2, GE4, GF3, GG2, GH1, RE4, RF3, RG2, RH1));
+        Set<Position> actualBishopMoves = new HashSet<>(bishop.getHighlightPolygons(board, startPosition));
 
-    @Test
-    public void getHighlightPolygons_invalidPolygons_absentInPolygonList() {
-        Position[] startPositions = new Position[] {BE4, BD3, GH3, RD3};
-        Position[][] endPositions = new Position[][] {{BF4, BD4, GD4, RD4, RB4}, {BE3, BC3}, {GG3, GH4}, {RD4, RD2}};
-
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece bishop = new Bishop(start.getColour());
-            board.boardMap.put(start, bishop);
-            Position[] ends = endPositions[i];
-
-            List<Position> highlightedPolygons = bishop.getHighlightPolygons(board, start);
-            for(Position end: ends) {
-                assertFalse(highlightedPolygons.contains(end));
-            }
-        }
+        assertEquals(expectedBishopMoves, actualBishopMoves);
     }
 
     @ParameterizedTest

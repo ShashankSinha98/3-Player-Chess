@@ -8,6 +8,13 @@ public enum Colour {
 
     BLUE, GREEN, RED;
 
+    public Colour next() {
+        switch (this) {
+            case BLUE: return GREEN;
+            case GREEN: return RED;
+            default: return BLUE;
+        }
+    }
     @Override
     public String toString() {
         switch (this) {
