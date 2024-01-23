@@ -29,7 +29,7 @@ class JesterTest {
         BasePiece jester = new Jester(Colour.BLUE);
         board.boardMap.put(jesterPosition, jester);
 
-        assertTrue(jester.isLegalMove(board, jesterPosition, BF4));
+        assertTrue(jester.isLegalMove(board.boardMap, jesterPosition, BF4));
     }
 
     @Test
@@ -46,7 +46,7 @@ class JesterTest {
         BasePiece pawn = new Pawn(Colour.BLUE);
         board.boardMap.put(pawnPosition, pawn);
 
-        assertFalse(jester.isLegalMove(board, jesterPosition, pawnPosition));
+        assertFalse(jester.isLegalMove(board.boardMap, jesterPosition, pawnPosition));
     }
 
     @Test
@@ -63,7 +63,7 @@ class JesterTest {
         BasePiece rook = new Rook(Colour.BLUE);
         board.boardMap.put(rookPosition, rook);
 
-        assertFalse(jester.isLegalMove(board, jesterPosition, rookPosition));
+        assertFalse(jester.isLegalMove(board.boardMap, jesterPosition, rookPosition));
     }
 
     @Test
@@ -80,7 +80,7 @@ class JesterTest {
         BasePiece knight = new Knight(Colour.BLUE);
         board.boardMap.put(knightPosition, knight);
 
-        assertFalse(jester.isLegalMove(board, jesterPosition, knightPosition));
+        assertFalse(jester.isLegalMove(board.boardMap, jesterPosition, knightPosition));
     }
 
     @Test
@@ -97,7 +97,7 @@ class JesterTest {
         BasePiece bishop = new Bishop(Colour.BLUE);
         board.boardMap.put(bishopPosition, bishop);
 
-        assertFalse(jester.isLegalMove(board, jesterPosition, bishopPosition));
+        assertFalse(jester.isLegalMove(board.boardMap, jesterPosition, bishopPosition));
     }
 
     @Test
@@ -114,7 +114,7 @@ class JesterTest {
         BasePiece king = new King(Colour.BLUE);
         board.boardMap.put(kingPosition, king);
 
-        assertFalse(jester.isLegalMove(board, jesterPosition, kingPosition));
+        assertFalse(jester.isLegalMove(board.boardMap, jesterPosition, kingPosition));
     }
 
     @Test
@@ -131,7 +131,7 @@ class JesterTest {
         BasePiece queen = new Queen(Colour.BLUE);
         board.boardMap.put(queenPosition, queen);
 
-        assertFalse(jester.isLegalMove(board, jesterPosition, queenPosition));
+        assertFalse(jester.isLegalMove(board.boardMap, jesterPosition, queenPosition));
     }
 
     @Test
@@ -148,7 +148,7 @@ class JesterTest {
         BasePiece wall = new Wall(Colour.BLUE);
         board.boardMap.put(wallPosition, wall);
 
-        assertFalse(jester.isLegalMove(board, jesterPosition, wallPosition));
+        assertFalse(jester.isLegalMove(board.boardMap, jesterPosition, wallPosition));
     }
 
     @Test
@@ -165,7 +165,7 @@ class JesterTest {
         BasePiece pawn = new Pawn(Colour.RED);
         board.boardMap.put(pawnPosition, pawn);
 
-        assertTrue(jester.isLegalMove(board, jesterPosition, pawnPosition));
+        assertTrue(jester.isLegalMove(board.boardMap, jesterPosition, pawnPosition));
     }
 
     @Test
@@ -182,7 +182,7 @@ class JesterTest {
         BasePiece rook = new Rook(Colour.RED);
         board.boardMap.put(rookPosition, rook);
 
-        assertTrue(jester.isLegalMove(board, jesterPosition, rookPosition));
+        assertTrue(jester.isLegalMove(board.boardMap, jesterPosition, rookPosition));
     }
 
     @Test
@@ -199,7 +199,7 @@ class JesterTest {
         BasePiece knight = new Knight(Colour.RED);
         board.boardMap.put(knightPosition, knight);
 
-        assertTrue(jester.isLegalMove(board, jesterPosition, knightPosition));
+        assertTrue(jester.isLegalMove(board.boardMap, jesterPosition, knightPosition));
     }
 
     @Test
@@ -216,7 +216,7 @@ class JesterTest {
         BasePiece bishop = new Bishop(Colour.RED);
         board.boardMap.put(bishopPosition, bishop);
 
-        assertTrue(jester.isLegalMove(board, jesterPosition, bishopPosition));
+        assertTrue(jester.isLegalMove(board.boardMap, jesterPosition, bishopPosition));
     }
 
     @Test
@@ -233,7 +233,7 @@ class JesterTest {
         BasePiece wall = new Wall(Colour.RED);
         board.boardMap.put(wallPosition, wall);
 
-        assertTrue(jester.isLegalMove(board, jesterPosition, wallPosition));
+        assertTrue(jester.isLegalMove(board.boardMap, jesterPosition, wallPosition));
     }
 
     @Test
@@ -250,7 +250,7 @@ class JesterTest {
         BasePiece king = new King(Colour.RED);
         board.boardMap.put(kingPosition, king);
 
-        assertTrue(jester.isLegalMove(board, jesterPosition, kingPosition));
+        assertTrue(jester.isLegalMove(board.boardMap, jesterPosition, kingPosition));
     }
 
     @Test
@@ -267,7 +267,7 @@ class JesterTest {
         BasePiece queen = new Queen(Colour.RED);
         board.boardMap.put(queenPosition, queen);
 
-        assertTrue(jester.isLegalMove(board, jesterPosition, queenPosition));
+        assertTrue(jester.isLegalMove(board.boardMap, jesterPosition, queenPosition));
     }
 
     @Test
@@ -284,7 +284,7 @@ class JesterTest {
         BasePiece jester2 = new Jester(Colour.RED);
         board.boardMap.put(jesterPosition2, jester2);
 
-        assertTrue(jester1.isLegalMove(board, jesterPosition1, jesterPosition2));
+        assertTrue(jester1.isLegalMove(board.boardMap, jesterPosition1, jesterPosition2));
     }
 
     @Test
@@ -297,7 +297,7 @@ class JesterTest {
         board.boardMap.put(startPosition, jester);
 
         Set<Position> expectedJesterMoves = new HashSet<>(Arrays.asList(BG3, BF2, BD2, BC3, GF4, GE3, RB4, RC3, RF4, RE3));
-        Set<Position> actualJesterMoves = new HashSet<>(jester.getHighlightPolygons(board, startPosition));
+        Set<Position> actualJesterMoves = new HashSet<>(jester.getHighlightPolygons(board.boardMap, startPosition));
 
         assertEquals(expectedJesterMoves, actualJesterMoves);
     }
@@ -315,7 +315,7 @@ class JesterTest {
         board.boardMap.put(RB4, pawn);
 
         Set<Position> expectedJesterMoves = new HashSet<>(Arrays.asList(BG3, BF2, BD2, BC3, GF4, GE3, RC3, RF4, RE3));
-        Set<Position> actualJesterMoves = new HashSet<>(jester.getHighlightPolygons(board, startPosition));
+        Set<Position> actualJesterMoves = new HashSet<>(jester.getHighlightPolygons(board.boardMap, startPosition));
 
         assertEquals(expectedJesterMoves, actualJesterMoves);
     }
@@ -333,7 +333,7 @@ class JesterTest {
         board.boardMap.put(RB4, pawn);
 
         Set<Position> expectedJesterMoves = new HashSet<>(Arrays.asList(BG3, BF2, BD2, BC3, GF4, GE3, RB4, RC3, RF4, RE3));
-        Set<Position> actualJesterMoves = new HashSet<>(jester.getHighlightPolygons(board, startPosition));
+        Set<Position> actualJesterMoves = new HashSet<>(jester.getHighlightPolygons(board.boardMap, startPosition));
 
         assertEquals(expectedJesterMoves, actualJesterMoves);
     }

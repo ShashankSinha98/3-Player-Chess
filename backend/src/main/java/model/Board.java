@@ -177,7 +177,7 @@ public class Board {
         Colour moverCol = mover.getColour();
         if(moverCol!=turn) return false; // piece colour mismatches player colour
         if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
-        boolean isLegalMove = mover.isLegalMove(this, start, end);
+        boolean isLegalMove = mover.isLegalMove(this.boardMap, start, end);
         Log.d(TAG, "isLegalMove: "+isLegalMove);
 
         if(isLegalMove && isCheck(turn, boardMap)) {
@@ -225,7 +225,7 @@ public class Board {
     public List<Position> getPossibleMoves(Position position) {
         BasePiece mover = boardMap.get(position);
         if(mover == null) return new ArrayList<>();
-        List<Position> possibleMoves = mover.getHighlightPolygons(this, position);
+        List<Position> possibleMoves = mover.getHighlightPolygons(this.boardMap, position);
         return possibleMoves;
     }
 
@@ -245,7 +245,7 @@ public class Board {
         for(Position position: boardMap.keySet()) {
             BasePiece piece = boardMap.get(position);
             if(piece.getColour()!=colour) {
-                List<Position> possibleTargetPositions = piece.getHighlightPolygons(this, position);
+                List<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                 if(possibleTargetPositions.contains(kingPosition)) {
                     Log.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
                     return true;
@@ -263,7 +263,7 @@ public class Board {
         for(Position position: boardMap.keySet()) {
             BasePiece piece = boardMap.get(position);
             if(piece.getColour()==colour) {
-                List<Position> possibleMoves = piece.getHighlightPolygons(this, position);
+                List<Position> possibleMoves = piece.getHighlightPolygons(boardMap, position);
                 for(Position endPos: possibleMoves) {
                     if(!isCheckAfterLegalMove(colour, boardMap, position, endPos)) {
                         return false;

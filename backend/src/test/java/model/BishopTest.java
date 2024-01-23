@@ -40,7 +40,7 @@ public class BishopTest {
             board.boardMap.put(start, bishop);
             Position[] ends = endPositions[i];
             for(Position end: ends) {
-                assertTrue(bishop.isLegalMove(board, start, end));
+                assertTrue(bishop.isLegalMove(board.boardMap, start, end));
             }
         }
     }
@@ -57,7 +57,7 @@ public class BishopTest {
             board.boardMap.put(start, bishop);
             Position[] ends = endPositions[i];
             for(Position end: ends) {
-                assertFalse(bishop.isLegalMove(board, start, end));
+                assertFalse(bishop.isLegalMove(board.boardMap, start, end));
             }
         }
     }
@@ -79,7 +79,7 @@ public class BishopTest {
         BasePiece bluePawn = new Pawn(Colour.BLUE);
         board.boardMap.put(BD3, bluePawn);
 
-        assertFalse(blueBishop.isLegalMove(board, BE4, BD3));
+        assertFalse(blueBishop.isLegalMove(board.boardMap, BE4, BD3));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class BishopTest {
         BasePiece bluePawn = new Pawn(Colour.RED);
         board.boardMap.put(BD3, bluePawn);
 
-        assertTrue(blueBishop.isLegalMove(board, BE4, BD3));
+        assertTrue(blueBishop.isLegalMove(board.boardMap, BE4, BD3));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class BishopTest {
             board.boardMap.put(start, bishop);
             Position[] ends = endPositions[i];
 
-            List<Position> highlightedPolygons = bishop.getHighlightPolygons(board, start);
+            List<Position> highlightedPolygons = bishop.getHighlightPolygons(board.boardMap, start);
             for(Position end: ends) {
                 assertTrue(highlightedPolygons.contains(end));
             }
@@ -124,7 +124,7 @@ public class BishopTest {
             board.boardMap.put(start, bishop);
             Position[] ends = endPositions[i];
 
-            List<Position> highlightedPolygons = bishop.getHighlightPolygons(board, start);
+            List<Position> highlightedPolygons = bishop.getHighlightPolygons(board.boardMap, start);
             for(Position end: ends) {
                 assertFalse(highlightedPolygons.contains(end));
             }
