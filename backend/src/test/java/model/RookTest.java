@@ -7,13 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import java.util.List;
 import java.util.Set;
 
 import static common.Position.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RookTest {
     private Board board;
@@ -26,7 +23,7 @@ public class RookTest {
     @Test
     public void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece rook = new Rook(Colour.BLUE);
-        assertFalse(rook.directions.length==0);
+        assertNotEquals(0, rook.directions.length);
     }
 
     @Test
@@ -68,7 +65,7 @@ public class RookTest {
         Position[] rookInitialPositions = new Position[] {BA1, BH1, RA1, RH1, GA1, GH1};
         for(Position position: rookInitialPositions) {
             BasePiece piece = board.boardMap.get(position);
-            assertTrue(piece instanceof  Rook);
+            assertInstanceOf(Rook.class, piece);
         }
     }
 

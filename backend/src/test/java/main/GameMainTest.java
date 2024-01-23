@@ -1,10 +1,7 @@
 package main;
 
 import common.Colour;
-import common.InvalidPositionException;
 import common.OnClickResponse;
-import model.Board;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +23,7 @@ public class GameMainTest {
     @Test
     public void onClick_selectEmptyPolygon_noHighlight() {
         OnClickResponse response = gameMain.onClick("Bc3");
-        assertTrue(response.getHighlightedPolygons().size()==0);
+        assertEquals(0, response.getHighlightedPolygons().size());
     }
 
     @Test
@@ -38,14 +35,14 @@ public class GameMainTest {
     @Test
     public void onClick_selectNonTurnRedPawnPolygon_noHighlight() {
         OnClickResponse response = gameMain.onClick("Ra2");
-        assertTrue(response.getHighlightedPolygons().size()==0);
+        assertEquals(0, response.getHighlightedPolygons().size());
     }
 
     @Test
     public void onClick_moveBluePawn_noHighlight() {
         gameMain.onClick("Bb2");
         OnClickResponse response = gameMain.onClick("Bb4");
-        assertTrue(response.getHighlightedPolygons().size()==0);
+        assertEquals(0, response.getHighlightedPolygons().size());
     }
 
     @ParameterizedTest
@@ -53,8 +50,8 @@ public class GameMainTest {
     public void onClick_invalidPolygonLabel_noHighlightNoBoardChange(String polygonLabel) {
         Map<String, String> oldBoard = gameMain.getBoard();
         OnClickResponse response = gameMain.onClick(polygonLabel);
-        assertTrue(response.getHighlightedPolygons().size()==0);
-        assertTrue(oldBoard.equals(gameMain.getBoard()));
+        assertEquals(0, response.getHighlightedPolygons().size());
+        assertEquals(oldBoard, gameMain.getBoard());
     }
 
     @Test
@@ -62,8 +59,8 @@ public class GameMainTest {
         Map<String, String> oldBoard = gameMain.getBoard();
         gameMain.onClick("Ba2");
         OnClickResponse response = gameMain.onClick("Ba4");
-        assertTrue(response.getHighlightedPolygons().size()==0);
-        assertTrue(oldBoard.equals(gameMain.getBoard()));
+        assertEquals(0, response.getHighlightedPolygons().size());
+        assertEquals(oldBoard, gameMain.getBoard());
     }
 
     @Test

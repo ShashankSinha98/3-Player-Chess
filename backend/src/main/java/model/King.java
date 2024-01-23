@@ -5,7 +5,6 @@ import common.Direction;
 import common.InvalidPositionException;
 import common.Position;
 import utility.Log;
-import utility.Util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,7 +88,7 @@ public class King extends BasePiece {
      * Fetch all the possible positions where a piece can move on board
      * @param board: Board class instance representing current game board
      * @param start: position of piece on board
-     * @return List of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to move
      * */
     @Override
     public Set<Position> getHighlightPolygons(Board board, Position start) {

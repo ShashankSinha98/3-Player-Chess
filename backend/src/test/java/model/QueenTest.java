@@ -10,9 +10,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.util.Set;
 
 import static common.Position.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QueenTest {
 
@@ -26,7 +24,7 @@ public class QueenTest {
     @Test
     public void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece queen = new Queen(Colour.BLUE);
-        assertFalse(queen.directions.length==0);
+        assertNotEquals(0, queen.directions.length);
     }
 
     @Test
@@ -68,7 +66,7 @@ public class QueenTest {
         Position[] queenInitialPositions = new Position[] {BD1, RD1, GD1};
         for(Position position: queenInitialPositions) {
             BasePiece piece = board.boardMap.get(position);
-            assertTrue(piece instanceof  Queen);
+            assertInstanceOf(Queen.class, piece);
         }
     }
 

@@ -7,13 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import java.util.List;
 import java.util.Set;
 
 import static common.Position.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PawnTest {
 
@@ -28,7 +25,7 @@ public class PawnTest {
     @Test
     public void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece pawn = new Pawn(Colour.BLUE);
-        assertFalse(pawn.directions.length==0);
+        assertNotEquals(0, pawn.directions.length);
     }
 
     @Test

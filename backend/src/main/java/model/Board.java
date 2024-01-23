@@ -210,7 +210,7 @@ public class Board {
     /**
      * For the current selected piece, returns the possible moves
      * @param position The current selected piece position
-     * @return list of possible movements
+     * @return Set of possible movements
      * */
     public Set<Position> getPossibleMoves(Position position) {
         BasePiece mover = boardMap.get(position);
