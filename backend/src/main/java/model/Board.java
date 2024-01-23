@@ -7,10 +7,8 @@ import common.Position;
 import utility.BoardAdapter;
 import utility.Log;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
+import java.security.cert.TrustAnchor;
+import java.util.*;
 
 /**
  * Class containing the Board logic. To initialize the board with the pieces.
@@ -151,8 +149,17 @@ public class Board {
                 } else if(taken instanceof Wall && !(mover instanceof Jester)) {
                     wallPieceMapping.remove(taken);
                 }
-
             }
+
+            for(Colour c: Colour.values()) {
+                if(c!=turn) {
+                    if(isCheckMate(c, boardMap)) {
+                        gameOver = true;
+                        winner = mover.getColour().toString();
+                    }
+                }
+            }
+
             turn = Colour.values()[(turn.ordinal()+1)%3];
         } else throw new InvalidMoveException("Illegal Move: "+start+"-"+end);
     }
@@ -172,6 +179,16 @@ public class Board {
         if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
         boolean isLegalMove = mover.isLegalMove(this, start, end);
         Log.d(TAG, "isLegalMove: "+isLegalMove);
+
+        if(isLegalMove && isCheck(turn, boardMap)) {
+            if(isCheckAfterLegalMove(turn, boardMap, start, end)) {
+                Log.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
+                return false;
+            } else {
+                return true;
+            }
+        }
+
         return isLegalMove;
     }
 
@@ -221,4 +238,61 @@ public class Board {
         return getPiece(position) != null && getPiece(position).getColour()==turn;
     }
 
+
+    private boolean isCheck(Colour colour, Map<Position, BasePiece> boardMap) {
+        Position kingPosition = getKingPosition(colour);
+
+        for(Position position: boardMap.keySet()) {
+            BasePiece piece = boardMap.get(position);
+            if(piece.getColour()!=colour) {
+                List<Position> possibleTargetPositions = piece.getHighlightPolygons(this, position);
+                if(possibleTargetPositions.contains(kingPosition)) {
+                    Log.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isCheckMate(Colour colour, Map<Position, BasePiece> boardMap) {
+        if(!isCheck(colour, boardMap)) {
+            return false;
+        }
+
+        for(Position position: boardMap.keySet()) {
+            BasePiece piece = boardMap.get(position);
+            if(piece.getColour()==colour) {
+                List<Position> possibleMoves = piece.getHighlightPolygons(this, position);
+                for(Position endPos: possibleMoves) {
+                    if(!isCheckAfterLegalMove(colour, boardMap, position, endPos)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isCheckAfterLegalMove(Colour colour, Map<Position, BasePiece> boardMap, Position start, Position end) {
+        Map<Position, BasePiece> copyBoardMap = new HashMap<>(boardMap);
+        BasePiece piece = copyBoardMap.get(start);
+        copyBoardMap.remove(start);
+        copyBoardMap.put(end, piece);
+
+        if(!isCheck(colour, copyBoardMap)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private Position getKingPosition(Colour colour) {
+        for(Position position: this.boardMap.keySet()) {
+            BasePiece piece = this.boardMap.get(position);
+            if(piece instanceof King && piece.getColour()==colour) return position;
+        }
+        return null;
+    }
 }
