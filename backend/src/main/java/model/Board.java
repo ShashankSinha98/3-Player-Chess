@@ -230,6 +230,18 @@ public class Board {
         BasePiece mover = boardMap.get(position);
         if(mover == null) return new ArrayList<>();
         List<Position> possibleMoves = mover.getHighlightPolygons(this.boardMap, position);
+
+        Colour moverColour = mover.getColour();
+        List<Position> nonCheckPositions = new ArrayList<>();
+        if(isCheck(moverColour, this.boardMap)) {
+            for(Position endPos: possibleMoves) {
+                if(!isCheckAfterLegalMove(moverColour, this.boardMap, position, endPos)) {
+                    nonCheckPositions.add(endPos);
+                }
+            }
+            return nonCheckPositions;
+        }
+
         return possibleMoves;
     }
 
