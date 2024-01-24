@@ -18,37 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
     private Board board;
 
-
-    static Stream <BasePiece> pieceProvider() {
-        //maybe replace with for loop
-        return Stream.of(
-                new Pawn(Colour.RED),
-                new Pawn(Colour.BLUE),
-                new Pawn(Colour.GREEN),
-                new Rook(Colour.RED),
-                new Rook(Colour.BLUE),
-                new Rook(Colour.GREEN),
-                new Knight(Colour.BLUE),
-                new Knight(Colour.GREEN),
-                new Knight(Colour.RED),
-                new Bishop(Colour.BLUE),
-                new Bishop(Colour.GREEN),
-                new Bishop(Colour.RED),
-                new Queen(Colour.BLUE),
-                new Queen(Colour.GREEN),
-                new Queen(Colour.RED),
-                new King(Colour.BLUE),
-                new King(Colour.GREEN),
-                new King(Colour.RED),
-                new Jester(Colour.BLUE),
-                new Jester(Colour.GREEN),
-                new Jester(Colour.RED),
-                new Wall(Colour.BLUE),
-                new Wall(Colour.GREEN),
-                new Wall(Colour.RED)
-        );
-    }
-
     @BeforeEach
     void initBeforeEachBoardTest() {
         board = new Board();
@@ -89,14 +58,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @ParameterizedTest
     @EnumSource(value = Position.class, names = {"BC1", "BF1", "RC1", "RF1", "GC1", "GF1"})
-     void isLegalMove_bishopPresentInInitialPosition_True(Position position) {
+     void check_bishopPresentInInitialPosition_True(Position position) {
         BasePiece piece = board.boardMap.get(position);
         assertInstanceOf(Bishop.class, piece);
     }
 
 
     @ParameterizedTest
-    @MethodSource("pieceProvider")
+    @MethodSource("model.DataProvider#pieceProvider")
      void isLegalMove_bishopTakesItsColourPiece_False(BasePiece piece) {
         BasePiece bishop = new Bishop(piece.colour);
 
@@ -107,7 +76,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @ParameterizedTest
-    @MethodSource("pieceProvider")
+    @MethodSource("model.DataProvider#pieceProvider")
      void isLegalMove_bishopTakesDifferentColourPiece_True(BasePiece piece) {
         BasePiece bishop = new Bishop(piece.colour.next());
         board.boardMap.put(BE4, bishop);
