@@ -63,8 +63,13 @@ public class Bishop extends BasePiece {
                         (boardMap.get(tmp)==null)|| (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour())){
                     tmp = step(mover, step, tmp, tmp.getColour()!=start.getColour());
                 }
-                if(end==tmp) return true;
-            }catch(InvalidPositionException e){}//do nothing, steps went off board.
+                if(end==tmp) {
+                    return true;
+                }
+            } catch (InvalidPositionException e) {
+                //do nothing, steps went off board.
+                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
+            }
         }
 
         return false;

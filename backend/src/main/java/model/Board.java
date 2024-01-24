@@ -114,8 +114,9 @@ public class Board {
             BasePiece taken = boardMap.get(end);
             boardMap.remove(start);  //empty start polygon
 
-            if(mover instanceof Pawn && end.getRow()==0 && end.getColour()!=mover.getColour())
+            if(mover instanceof Pawn && end.getRow()==0 && end.getColour()!=mover.getColour()){
                 boardMap.put(end, new Queen(mover.getColour()));  //promote pawn
+            }
             else if (mover instanceof Jester){
                 // switch places
                 boardMap.put(end,mover);
@@ -130,7 +131,7 @@ public class Board {
                 }
             }
 
-            if(mover instanceof King && start.getColumn()==4 && start.getRow()==0){
+            if(mover instanceof King && start.getColumn()==4 && start.getRow()==0) {
                 if(end.getColumn()==2){//castle left, update rook
                     Position rookPos = Position.get(mover.getColour(),0,0);
                     boardMap.put(Position.get(mover.getColour(),0,3), boardMap.get(rookPos));
@@ -161,7 +162,9 @@ public class Board {
             }
 
             turn = Colour.values()[(turn.ordinal()+1)%3];
-        } else throw new InvalidMoveException("Illegal Move: "+start+"-"+end);
+        } else {
+            throw new InvalidMoveException("Illegal Move: "+start+"-"+end);
+        }
     }
 
     /**
@@ -170,11 +173,14 @@ public class Board {
      * @param end The end position
      * @return boolean
      * */
-    public boolean isLegalMove(Position start, Position end){
+    public boolean isLegalMove(Position start, Position end) {
         BasePiece mover = getPiece(start);
         BasePiece target = getPiece(end);
-        if(mover==null) return false; // No piece present at start position
+        if(mover == null) {
+            return false; // No piece present at start position
+        }
         Colour moverCol = mover.getColour();
+
         if(moverCol!=turn) return false; // piece colour mismatches player colour
         if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
         boolean isLegalMove = mover.isLegalMove(this.boardMap, start, end);
@@ -200,7 +206,7 @@ public class Board {
      * Get the current player turn
      * @return Colour
      * */
-    public Colour getTurn(){
+    public Colour getTurn() {
         return turn;
     }
 
@@ -209,7 +215,7 @@ public class Board {
      * @param position The current selected position
      * @return BasePiece
      * */
-    private BasePiece getPiece(Position position){
+    private BasePiece getPiece(Position position) {
         return boardMap.get(position);
     }
 

@@ -43,15 +43,20 @@ public abstract class BasePiece {
      * @param end: End position of move
      * @return True if a move is possible from start to end, else False
      * */
+
     public boolean isLegalMove(Map<Position, BasePiece> boardMap, Position start, Position end) {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         if(wallPiecePositions.contains(end)) return false;
 
         BasePiece mover = boardMap.get(start);
         BasePiece target = boardMap.get(end);
-        if(mover==null) return false; // No piece present at start pos
+        if(mover==null) {
+            return false; // No piece present at start pos
+        }
         Colour moverCol = mover.getColour();
-        if(target!= null && moverCol==target.getColour()) return false; // player cannot take its own piece
+        if(target!= null && moverCol==target.getColour()) {
+            return false; // player cannot take its own piece
+        }
 
         boolean canPieceMove = mover.canMove(boardMap, start, end);
         Log.d(TAG, "canPieceMove: "+canPieceMove);

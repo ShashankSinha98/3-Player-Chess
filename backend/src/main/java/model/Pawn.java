@@ -68,7 +68,10 @@ public class Pawn extends BasePiece {
                         )
                 )
                     return true;
-            }catch(InvalidPositionException e){}//do nothing, steps went off board.
+            }catch(InvalidPositionException e) {
+                //do nothing, steps went off board.
+                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
+            }
         }
         return false;
     }
@@ -82,7 +85,6 @@ public class Pawn extends BasePiece {
     @Override
     public List<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
-        //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();
         BasePiece mover = this;
         Colour moverCol = mover.getColour();
@@ -92,7 +94,9 @@ public class Pawn extends BasePiece {
             Direction[] step = steps[i];
             Position end = stepOrNull(mover, step, start);
 
-            if(wallPiecePositions.contains(end)) continue;
+            if(wallPiecePositions.contains(end)) {
+                continue;
+            }
 
             if(end!=null && !positionSet.contains(end)) {
                 BasePiece target = boardMap.get(end);
@@ -105,7 +109,6 @@ public class Pawn extends BasePiece {
                             || (target != null && target.getColour() != moverCol && i > 1) //or taking diagonally
                     ) {
                         Log.d(TAG, "position: " + end);
-                        //positions.add(end);
                         positionSet.add(end);
                     }
                 } catch (InvalidPositionException e) {

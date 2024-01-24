@@ -53,18 +53,19 @@ public class Rook extends BasePiece {
         BasePiece mover = this;
 
         Direction[][] steps = this.directions;
-        for(int i = 0; i<steps.length; i++){
-            Direction[] step = steps[i];
-            try{
-                Position tmp = step(mover,step,start);
-                while(end != tmp &&
-                        (boardMap.get(tmp)==null)|| (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour())){
-                    Log.d(TAG, "tmp: "+tmp);
-                    tmp = step(mover, step, tmp, tmp.getColour()!=start.getColour());
+        for (Direction[] step : steps) {
+            try {
+                Position tmp = step(mover, step, start);
+                while (end != tmp &&
+                        (boardMap.get(tmp) == null) || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour())) {
+                    Log.d(TAG, "tmp: " + tmp);
+                    tmp = step(mover, step, tmp, tmp.getColour() != start.getColour());
                 }
-                if(end==tmp) return true; // when end position is in range of rook and contains a piece
-            }catch(InvalidPositionException e){
-                Log.d(TAG, "InvalidPositionException: "+e.getMessage());
+                if (end == tmp) {
+                    return true; // when end position is in range of rook and contains a piece
+                }
+            } catch (InvalidPositionException e) {
+                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
             }//do nothing, steps went off board.
         }
         return false;

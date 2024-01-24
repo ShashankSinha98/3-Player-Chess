@@ -12,9 +12,8 @@ public class OnClickResponse {
 
     private final List<String> highlightedPolygons;
     private final Map<String, String> board;
-
-    private boolean isGameOver = false;
-    private String winner = null;
+    private boolean isGameOver;
+    private String winner;
 
     /**
      * OnClickResponse constructor

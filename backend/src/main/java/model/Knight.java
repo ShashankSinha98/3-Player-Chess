@@ -60,11 +60,15 @@ public class Knight extends BasePiece {
         BasePiece mover = this;
 
         Direction[][] steps = this.directions;
-        for(int i = 0; i<steps.length; i++){
-            try{
-                if(end == step(mover, steps[i],start))
+        for (Direction[] step : steps) {
+            try {
+                if (end == step(mover, step, start)) {
                     return true;
-            }catch(InvalidPositionException e){}//do nothing, steps went off board.
+                }
+            } catch (InvalidPositionException e) {
+                //do nothing, steps went off board.
+                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
+            }
         }
         return false;
     }
@@ -86,7 +90,9 @@ public class Knight extends BasePiece {
         for(Direction[] step: steps) {
             Position end = stepOrNull(mover, step, start);
 
-            if(positionSet.contains(end) || wallPiecePositions.contains(end)) continue;
+            if(positionSet.contains(end) || wallPiecePositions.contains(end)) {
+                continue;
+            }
 
             if(end != null) {
                 BasePiece target = boardMap.get(end);

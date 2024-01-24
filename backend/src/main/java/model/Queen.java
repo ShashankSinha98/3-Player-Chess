@@ -53,21 +53,24 @@ public class Queen extends BasePiece {
     @Override
     public boolean canMove(Map<Position, BasePiece> boardMap, Position start, Position end) {
         BasePiece mover = this;
-
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         if(wallPiecePositions.contains(end)) return false;
 
         Direction[][] steps = this.directions;
-        for(int i = 0; i<steps.length; i++){
-            Direction[] step = steps[i];
-            try{
-                Position tmp = step(mover,step,start);
-                while(end != tmp &&
-                        (boardMap.get(tmp)==null)|| (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour())){
-                    tmp = step(mover, step, tmp, tmp.getColour()!=start.getColour());
+        for (Direction[] step : steps) {
+            try {
+                Position tmp = step(mover, step, start);
+                while (end != tmp && (boardMap.get(tmp) == null) ||
+                        (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour())) {
+                    tmp = step(mover, step, tmp, tmp.getColour() != start.getColour());
                 }
-                if(end==tmp) return true;
-            }catch(InvalidPositionException e){}//do nothing, steps went off board.
+                if (end == tmp) {
+                    return true;
+                }
+            } catch (InvalidPositionException e) {
+                //do nothing, steps went off board.
+                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
+            }
         }
 
         return false;
@@ -93,7 +96,6 @@ public class Queen extends BasePiece {
             while(tmp != null && !positionSet.contains(tmp) &&
                     (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
                 Log.d(TAG, "tmp: "+tmp);
-                //positions.add(tmp);
                 positionSet.add(tmp); // to prevent same position to add in list again
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
             }
@@ -101,7 +103,6 @@ public class Queen extends BasePiece {
             if(tmp!=null && boardMap.get(tmp)!=null) {
                 if(boardMap.get(tmp).getColour()!=mover.getColour()) {
                     Log.d(TAG, "Opponent tmp: " + tmp);
-                    //positions.add(tmp);
                     positionSet.add(tmp);
                 } else {
                     Log.d(TAG, "Mine tmp: " + tmp);
