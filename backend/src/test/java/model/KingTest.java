@@ -1,11 +1,13 @@
 package model;
 
+import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Set;
 
@@ -30,141 +32,152 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         assertNotEquals(0, king.directions.length);
     }
 
-    @Test
-     void canMove_validMoves_True() {
-        Position[] startPositions = new Position[] {RE1, BC3, GH4};
-        Position[][] endPositions = new Position[][] {{RE2, RD1, RD2, RF1, RF2},
-                {BC2, BC4, BD2, BD3, BB4, BB2}, {BA4, GH3, BB4, GG3, GG4}};
-
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            board.boardMap.clear();
-            Position start = startPositions[i];
-            BasePiece king = new King(start.getColour());
-            board.boardMap.put(start, king);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertTrue(king.canMove(board, start, end));
-            }
-        }
+    @ParameterizedTest
+    @EnumSource(value = Position.class, names = {"BE1", "RE1", "GE1"})
+    void check_kingPresentInInitialPosition_True(Position position) {
+        BasePiece piece = board.boardMap.get(position);
+        assertInstanceOf(King.class, piece);
+    }
+    @ParameterizedTest
+    @EnumSource(value = Position.class, names = {"BD2", "RD2", "GD2"})
+     void check_kingPresentInInitialPosition_False(Position position) {
+        BasePiece piece = board.boardMap.get(position);
+        assertFalse(piece instanceof King);
     }
 
-    @Test
-     void canMove_invalidMoves_False() {
-        Position[] startPositions = new Position[] {RE2, BA1, GF4};
-        Position[][] endPositions = new Position[][] {{RE2, RD4, GF1, BA3, BE4},
-                {BA3, BB3, BC3, GF4}, {BA4, GH3, GD3, RD4}};
+     @ParameterizedTest
+     @EnumSource(Colour.class)
+     void isLegalMove_kingMovesToEmptySquare_True(Colour colour) {
+         Board board = new Board();
+         board.boardMap.clear();
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece king = new King(start.getColour());
-            board.boardMap.put(start, king);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertFalse(king.canMove(board, start, end));
-            }
-        }
+         Position kingPosition = BE2;
+
+         BasePiece king = new King(colour);
+         board.boardMap.put(kingPosition, king);
+
+         assertTrue(king.isLegalMove(board, kingPosition, BE3));
+     }
+
+     @ParameterizedTest
+     @MethodSource("model.DataProvider#pieceProvider")
+     void isLegalMove_kingTakesItsColourPiece_False(BasePiece piece) {
+         BasePiece king = new King(piece.colour);
+
+         Position startPosition = BE4;
+         Position endPosition = BD3;
+
+         board.boardMap.put(startPosition, king);
+         board.boardMap.put(endPosition, piece);
+
+         assertFalse(king.isLegalMove(board, startPosition, endPosition));
+     }
+
+     @ParameterizedTest
+     @MethodSource("model.DataProvider#pieceProvider")
+     void isLegalMove_kingTakesDifferentColourPiece_True(BasePiece piece) {
+         BasePiece king = new King(piece.colour.next());
+
+         Position startPosition = BE4;
+         Position endPosition = BD3;
+
+         board.boardMap.put(startPosition, king);
+         board.boardMap.put(endPosition, piece);
+
+         assertTrue(king.isLegalMove(board, startPosition, endPosition));
+     }
+     @ParameterizedTest
+     @EnumSource(Colour.class)
+     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
+         Board board = new Board();
+         board.boardMap.clear();                 //empty board
+         Position startPosition = BE4;
+
+         BasePiece king = new King(colour);
+         board.boardMap.put(startPosition, king);
+
+         Set<Position> expectedKingMoves =
+                 ImmutableSet.of(GE4, BD3, RC4, BF3, BD4, BE3, RE4, BF4, RD4);
+         Set<Position> actualKingMoves = king.getHighlightPolygons(board, startPosition);
+
+         assertEquals(expectedKingMoves, actualKingMoves);
+     }
+
+    @Test
+    void isLegalMove_shortCastle_True() {
+        Board board = new Board();
+        board.boardMap.clear();
+
+        Position kingPosition = RE1;
+        Position rookPosition = RH1;
+
+        BasePiece king = new King(kingPosition.getColour());
+        BasePiece rook = new Rook(rookPosition.getColour());
+
+        board.boardMap.put(kingPosition, king);
+        board.boardMap.put(rookPosition, rook);
+
+        assertTrue(king.isLegalMove(board, kingPosition, RG1));
     }
 
-    @Test
-     void isLegalMove_kingPresentInInitialPosition_True() {
-        Position[] kingInitialPositions = new Position[] {BE1, RE1, GE1};
-        for(Position position: kingInitialPositions) {
-            BasePiece piece = board.boardMap.get(position);
-            assertInstanceOf(King.class, piece);
-        }
-    }
-    @Test
-     void isLegalMove_kingPresentInInitialPosition_False() {
-        Position[] kingInitialPositions = new Position[] {BD2, RD2, GD2};
-        for(Position position: kingInitialPositions) {
-            BasePiece piece = board.boardMap.get(position);
-            assertFalse(piece instanceof  King);
-        }
-    }
+     @Test
+     void isLegalMove_shortCastleOccupiedSquare_False() {
+         Board board = new Board();
+         board.boardMap.clear();
 
-    @Test
-     void getHighlightPolygons_validPolygons_presentInPolygonList() {
-        Position[] startPositions = new Position[] {RE1, BC3, GH4};
-        Position[][] endPositions = new Position[][] {{RE2, RD1, RD2, RF1, RF2},
-                {BC2, BC4, BD2, BD3, BB4, BB2}, {BA4, GH3, BB4, GG3, GG4}};
+         Position kingPosition = RE1;
+         Position rookPosition = RH1;
+         Position knightPosition = RG1;
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            board.boardMap.clear();
-            Position start = startPositions[i];
-            BasePiece king = new King(start.getColour());
-            board.boardMap.put(start, king);
-            Position[] ends = endPositions[i];
+         BasePiece king = new King(kingPosition.getColour());
+         BasePiece rook = new Rook(rookPosition.getColour());
+         BasePiece knight = new Knight(knightPosition.getColour());
 
-            Set<Position> highlightedPolygons = king.getHighlightPolygons(board, start);
-            for(Position end: ends) {
-                assertTrue(highlightedPolygons.contains(end));
-            }
-        }
-    }
+         board.boardMap.put(kingPosition, king);
+         board.boardMap.put(rookPosition, rook);
+         board.boardMap.put(knightPosition, knight);
 
-    @Test
-     void getHighlightPolygons_invalidPolygons_absentInPolygonList() {
-        Position[] startPositions = new Position[] {RE2, BA1, GF4};
-        Position[][] endPositions = new Position[][] {{RE2, RD4, GF1, BA3, BE4},
-                {BA3, BB3, BC3, GF4}, {BA4, GH3, GD3, RD4}};
+         assertFalse(king.isLegalMove(board, kingPosition, RG1));
+     }
 
-        for (int i = 0; i < startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece king = new King(start.getColour());
-            board.boardMap.put(start, king);
-            Position[] ends = endPositions[i];
+     @Test
+     void isLegalMove_longCastle_True() {
+         Board board = new Board();
+         board.boardMap.clear();
 
-            Set<Position> highlightedPolygons = king.getHighlightPolygons(board, start);
-            for (Position end : ends) {
-                assertFalse(highlightedPolygons.contains(end));
-            }
-        }
-    }
-    @Test
-     void isCastlingPossible_True() {
-        Position[] startPositions = new Position[] {RE1, BE1, GE1};
-        Position[][] endPositions = new Position[][] {{RC1, RG1},
-                {BC1, BG1}, {GC1, GG1}};
+         Position kingPosition = RE1;
+         Position rookPosition = RA1;
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            board.boardMap.clear();
-            Position start = startPositions[i];
-            BasePiece king = new King(start.getColour());
-            board.boardMap.put(start, king);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                board.boardMap.put(end, new Rook(start.getColour()));
-            }
-            for(Position end: ends) {
-                assertTrue(king.canMove(board, start, end));
-            }
-        }
-    }
-    @Test
-     void isCastlingPossible_False() {
-        Position[] startPositions = new Position[] {RE1, BE1, GE1};
-        Position[][] endPositions = new Position[][] {{RC2, RG2},
-                {BC2, BG2}, {GC2, GG2}};
+         BasePiece king = new King(kingPosition.getColour());
+         BasePiece rook = new Rook(rookPosition.getColour());
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece king = new King(start.getColour());
-            board.boardMap.put(start, king);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                board.boardMap.put(end, new Rook(start.getColour()));
-            }
-            for(Position end: ends) {
-                assertFalse(king.canMove(board, start, end));
-            }
-        }
-    }
+         board.boardMap.put(kingPosition, king);
+         board.boardMap.put(rookPosition, rook);
+
+         assertTrue(king.isLegalMove(board, kingPosition, RC1));
+     }
+
+     @Test
+     void isLegalMove_longCastleOccupiedSquare_False() {
+         Board board = new Board();
+         board.boardMap.clear();
+
+         Position kingPosition = RE1;
+         Position rookPosition = RA1;
+         Position knightPosition = RC1;
+
+         BasePiece king = new King(kingPosition.getColour());
+         BasePiece rook = new Rook(rookPosition.getColour());
+         BasePiece knight = new Knight(knightPosition.getColour());
+
+         board.boardMap.put(kingPosition, king);
+         board.boardMap.put(rookPosition, rook);
+         board.boardMap.put(knightPosition, knight);
+
+         assertFalse(king.isLegalMove(board, kingPosition, RC1));
+     }
+
+
     @ParameterizedTest
     @EnumSource(Colour.class)
     void toString_initKingAllColours_correctStringFormat(Colour colour) {
