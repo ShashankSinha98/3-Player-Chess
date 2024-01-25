@@ -1,11 +1,13 @@
 package model;
 
+import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Set;
 
@@ -27,86 +29,71 @@ import static org.junit.jupiter.api.Assertions.*;
         assertNotEquals(0, queen.directions.length);
     }
 
-    @Test
-     void isLegalMove_validMoves_True() {
-        Position[] startPositions = new Position[] {BE4, BD3, GH3, RD3};
-        Position[][] endPositions = new Position[][] {{BF3, BD3, GE4, RE4, RC4, BE3, BD4, BF4, RD4}, {RA2, GH3}, {BE2, BC4}, {BH3, GA2}};
+     @ParameterizedTest
+     @EnumSource(value = Position.class, names = {"BD1", "RD1", "GD1"})
+     void check_queenPresentInInitialPosition_True(Position position) {
+         BasePiece piece = board.boardMap.get(position);
+         assertInstanceOf(Queen.class, piece);
+     }
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece queen = new Queen(start.getColour());
-            board.boardMap.put(start, queen);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertTrue(queen.isLegalMove(board, start, end));
-            }
-        }
-    }
+     @ParameterizedTest
+     @EnumSource(Colour.class)
+     void isLegalMove_queenMovesToEmptySquare_True(Colour colour) {
+         Board board = new Board();
+         board.boardMap.clear();
 
-    @Test
-     void isLegalMove_invalidMoves_False() {
-        Position[] startPositions = new Position[] {BF3, BE4};
-        Position[][] endPositions = new Position[][] {{BH4, RB4}, {BG3, BH3, GH4, GF4}};
+         Position queenPosition = BE4;
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece queen = new Queen(start.getColour());
-            board.boardMap.put(start, queen);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertFalse(queen.isLegalMove(board, start, end));
-            }
-        }
-    }
+         BasePiece queen = new Queen(colour);
+         board.boardMap.put(queenPosition, queen);
 
-    @Test
-     void isLegalMove_queenPresentInInitialPosition_True() {
-        Position[] queenInitialPositions = new Position[] {BD1, RD1, GD1};
-        for(Position position: queenInitialPositions) {
-            BasePiece piece = board.boardMap.get(position);
-            assertInstanceOf(Queen.class, piece);
-        }
-    }
+         assertTrue(queen.isLegalMove(board, queenPosition, GF3));
+     }
 
-    @Test
-     void getHighlightPolygons_validPolygons_presentInPolygonList() {
-        Position[] startPositions = new Position[] {BE4, BD3, GH3, RD3};
-        Position[][] endPositions = new Position[][] {{BF3, BD3, GE4, RE4, RC4, BE3, BD4, BF4, RD4}, {RA2, GH3}, {BE2, BC4}, {BH3, GA2}};
+     @ParameterizedTest
+     @MethodSource("model.DataProvider#pieceProvider")
+     void isLegalMove_queenTakesItsColourPiece_False(BasePiece piece) {
+         BasePiece queen = new Queen(piece.colour);
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece queen = new Queen(start.getColour());
-            board.boardMap.put(start, queen);
-            Position[] ends = endPositions[i];
+         Position startPosition = BE4;
+         Position endPosition = GF3;
 
-            Set<Position> highlightedPolygons = queen.getHighlightPolygons(board, start);
-            for(Position end: ends) {
-                assertTrue(highlightedPolygons.contains(end));
-            }
-        }
-    }
+         board.boardMap.put(startPosition, queen);
+         board.boardMap.put(endPosition, piece);
 
-    @Test
-     void getHighlightPolygons_invalidPolygons_absentInPolygonList() {
-        Position[] startPositions = new Position[] {BF3, BE4};
-        Position[][] endPositions = new Position[][] {{BH4, RB4}, {BG3, BH3, GH4, GF4}};
+         assertFalse(queen.isLegalMove(board, startPosition, endPosition));
+     }
 
-        for (int i = 0; i < startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece queen = new Queen(start.getColour());
-            board.boardMap.put(start, queen);
-            Position[] ends = endPositions[i];
+     @ParameterizedTest
+     @MethodSource("model.DataProvider#pieceProvider")
+     void isLegalMove_queenTakesDifferentColourPiece_True(BasePiece piece) {
+         BasePiece queen = new Queen(piece.colour.next());
 
-            Set<Position> highlightedPolygons = queen.getHighlightPolygons(board, start);
-            for (Position end : ends) {
-                assertFalse(highlightedPolygons.contains(end));
-            }
-        }
-    }
+         Position startPosition = BE4;
+         Position endPosition = GF3;
+
+         board.boardMap.put(startPosition, queen);
+         board.boardMap.put(endPosition, piece);
+
+         assertTrue(queen.isLegalMove(board, startPosition, endPosition));
+     }
+
+     @ParameterizedTest
+     @EnumSource(Colour.class)
+     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
+         Board board = new Board();
+         board.boardMap.clear();                 //empty board
+         Position startPosition = BE4;
+
+         BasePiece queen = new Queen(colour);
+         board.boardMap.put(startPosition, queen);
+
+         Set<Position> expectedQueenMoves =
+                 ImmutableSet.of(RD2, BE1, GH1, RA2, BD3, RC4, BC4, BH4, RF3, BF3, RD1, RD3, RG2, GE4, RE4, RH1, BE3, BB4, BH1, BE2, BB1, BA4, BD4, RD4, GG2, BG2, BG4, GF3, BC2, RB3, BF4);
+         Set<Position> actualQueenMoves = queen.getHighlightPolygons(board, startPosition);
+
+         assertEquals(expectedQueenMoves, actualQueenMoves);
+     }
 
     @ParameterizedTest
     @EnumSource(Colour.class)
