@@ -1,11 +1,13 @@
 package model;
 
+import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Set;
 
@@ -26,86 +28,71 @@ import static org.junit.jupiter.api.Assertions.*;
         assertNotEquals(0, rook.directions.length);
     }
 
-    @Test
-     void isLegalMove_validMoves_True() {
-        Position[] startPositions = new Position[] {BE4, BA3, GD4};
-        Position[][] endPositions = new Position[][] {{BE3, BD4, BF4, RD4}, {BH3, GH3}, {GA4, GH4, RE3}};
+     @ParameterizedTest
+     @EnumSource(Colour.class)
+     void isLegalMove_rookMovesToEmptySquare_True(Colour colour) {
+         Board board = new Board();
+         board.boardMap.clear();
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece rook = new Rook(start.getColour());
-            board.boardMap.put(start, rook);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertTrue(rook.isLegalMove(board, start, end));
-            }
-        }
-    }
+         Position rookPosition = BE2;
 
-    @Test
-     void isLegalMove_invalidMoves_False() {
-        Position[] startPositions = new Position[] {BF3, BE4};
-        Position[][] endPositions = new Position[][] {{BH4, RB4}, {BG3, BH3, GH4, GF4}};
+         BasePiece rook = new Rook(colour);
+         board.boardMap.put(rookPosition, rook);
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece rook = new Rook(start.getColour());
-            board.boardMap.put(start, rook);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertFalse(rook.isLegalMove(board, start, end));
-            }
-        }
-    }
+         assertTrue(rook.isLegalMove(board, rookPosition, BE4));
+     }
 
-    @Test
-     void isLegalMove_rookPresentInInitialPosition_True() {
-        Position[] rookInitialPositions = new Position[] {BA1, BH1, RA1, RH1, GA1, GH1};
-        for(Position position: rookInitialPositions) {
-            BasePiece piece = board.boardMap.get(position);
-            assertInstanceOf(Rook.class, piece);
-        }
-    }
+     @ParameterizedTest
+     @MethodSource("model.DataProvider#pieceProvider")
+     void isLegalMove_rookTakesItsColourPiece_False(BasePiece piece) {
+         BasePiece rook = new Rook(piece.colour);
 
-    @Test
-     void getHighlightPolygons_validPolygons_presentInPolygonList() {
-        Position[] startPositions = new Position[] {BE4, BA3, GD4};
-        Position[][] endPositions = new Position[][] {{BE3, BD4, BF4, RD4}, {BH3, GH3}, {GA4, GH4, RE3}};
+         Position startPosition = BE2;
+         Position endPosition = BE4;
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece rook = new Rook(start.getColour());
-            board.boardMap.put(start, rook);
-            Position[] ends = endPositions[i];
+         board.boardMap.put(startPosition, rook);
+         board.boardMap.put(endPosition, piece);
 
-            Set<Position> highlightedPolygons = rook.getHighlightPolygons(board, start);
-            for(Position end: ends) {
-                assertTrue(highlightedPolygons.contains(end));
-            }
-        }
-    }
+         assertFalse(rook.isLegalMove(board, startPosition, endPosition));
+     }
 
-    @Test
-     void getHighlightPolygons_invalidPolygons_absentInPolygonList() {
-        Position[] startPositions = new Position[] {BF3, BE4};
-        Position[][] endPositions = new Position[][] {{BH4, RB4}, {BG3, BH3, GH4, GF4}};
+     @ParameterizedTest
+     @MethodSource("model.DataProvider#pieceProvider")
+     void isLegalMove_rookTakesDifferentColourPiece_True(BasePiece piece) {
+         BasePiece rook = new Rook(piece.colour.next());
 
-        for (int i = 0; i < startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece rook = new Rook(start.getColour());
-            board.boardMap.put(start, rook);
-            Position[] ends = endPositions[i];
+         Position startPosition = BE2;
+         Position endPosition = BE4;
 
-            Set<Position> highlightedPolygons = rook.getHighlightPolygons(board, start);
-            for (Position end : ends) {
-                assertFalse(highlightedPolygons.contains(end));
-            }
-        }
-    }
+         board.boardMap.put(startPosition, rook);
+         board.boardMap.put(endPosition, piece);
+
+         assertTrue(rook.isLegalMove(board, startPosition, endPosition));
+     }
+
+     @ParameterizedTest
+     @EnumSource(value = Position.class, names = {"BA1", "BH1", "RA1", "RH1", "GA1", "GH1"})
+     void check_rookPresentInInitialPosition_True(Position position) {
+         BasePiece piece = board.boardMap.get(position);
+         assertInstanceOf(Rook.class, piece);
+     }
+
+     @ParameterizedTest
+     @EnumSource(Colour.class)
+     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
+         Board board = new Board();
+         board.boardMap.clear();                 //empty board
+         Position startPosition = BE4;
+
+         BasePiece rook = new Rook(colour);
+         board.boardMap.put(startPosition, rook);
+
+         Set<Position> expectedRookMoves =
+                 ImmutableSet.of(BE1, BE2, BE3, BA4, BB4, BC4, BD4, BF4, BG4, BH4, RD4, RD3, RD2, RD1);
+         Set<Position> actualRookMoves = rook.getHighlightPolygons(board, startPosition);
+
+         assertEquals(expectedRookMoves, actualRookMoves);
+     }
 
     @ParameterizedTest
     @EnumSource(Colour.class)
