@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Map;
 import java.util.Set;
 
 import static common.Position.*;
@@ -16,12 +17,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
  class PawnTest {
 
-    private Board board;
+     private Board board;
+     private Map<Position, BasePiece> boardMap;
 
-    @BeforeEach
-    void initBeforeEachBoardTest() {
-        board = new Board();
-    }
+     @BeforeEach
+     void initBeforeEachBoardTest() {
+         board = new Board();
+         boardMap = board.boardMap;
+     }
 
     // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
     @Test
@@ -33,16 +36,16 @@ import static org.junit.jupiter.api.Assertions.*;
      @Test
      void isLegalMove_pawnMoveForwardToEmptySquare_True() {
          BasePiece pawn = new Pawn(Colour.BLUE);
-         board.boardMap.put(BE4, pawn);
+         boardMap.put(BE4, pawn);
 
-         assertTrue(pawn.isLegalMove(board.boardMap, BE4, RD4));
+         assertTrue(pawn.isLegalMove(boardMap, BE4, RD4));
      }
 
     @ParameterizedTest
     @EnumSource(Colour.class)
      void isLegalMove_pawnAbsentFromStartPosition_False(Colour colour) {
         BasePiece pawn = new Pawn(colour);
-        assertFalse(pawn.isLegalMove(board.boardMap, BE4, BD3));
+        assertFalse(pawn.isLegalMove(boardMap, BE4, BD3));
     }
 
     @ParameterizedTest
@@ -52,11 +55,11 @@ import static org.junit.jupiter.api.Assertions.*;
         Position startPosition = BE4;
         Position endPosition = RD4;
 
-        board.boardMap.put(startPosition, pawn);
+        boardMap.put(startPosition, pawn);
 
-        board.boardMap.put(endPosition, piece);
+        boardMap.put(endPosition, piece);
 
-        assertFalse(pawn.isLegalMove(board.boardMap, BE4, RD4));
+        assertFalse(pawn.isLegalMove(boardMap, BE4, RD4));
     }
 
     @ParameterizedTest
@@ -69,11 +72,11 @@ import static org.junit.jupiter.api.Assertions.*;
         Position startPosition = BE4;
         Position endPosition = RC4;
 
-        board.boardMap.put(startPosition, pawn);
+        boardMap.put(startPosition, pawn);
 
-        board.boardMap.put(endPosition, piece);
+        boardMap.put(endPosition, piece);
 
-        assertTrue(pawn.isLegalMove(board.boardMap, startPosition, endPosition));
+        assertTrue(pawn.isLegalMove(boardMap, startPosition, endPosition));
     }
 
      @ParameterizedTest
@@ -85,11 +88,11 @@ import static org.junit.jupiter.api.Assertions.*;
         Position startPosition = BE4;
         Position endPosition = RC4;
 
-        board.boardMap.put(startPosition, pawn);
+        boardMap.put(startPosition, pawn);
 
-        board.boardMap.put(endPosition, piece);
+        boardMap.put(endPosition, piece);
 
-        assertFalse(pawn.isLegalMove(board.boardMap, startPosition, endPosition));
+        assertFalse(pawn.isLegalMove(boardMap, startPosition, endPosition));
     }
 
      @Test
@@ -99,7 +102,7 @@ import static org.junit.jupiter.api.Assertions.*;
          BasePiece pawn = new Pawn(startPosition.getColour());
 
          Set<Position> expectedPawnMoves = ImmutableSet.of(BB3, BB4);
-         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(board.boardMap, startPosition);
+         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
 
         assertEquals(expectedPawnMoves, actualPawnMoves);
     }
@@ -111,7 +114,7 @@ import static org.junit.jupiter.api.Assertions.*;
          BasePiece pawn = new Pawn(startPosition.getColour());
 
          Set<Position> expectedPawnMoves = ImmutableSet.of(RD4);
-         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(board.boardMap, startPosition);
+         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
 
          assertEquals(expectedPawnMoves, actualPawnMoves);
      }

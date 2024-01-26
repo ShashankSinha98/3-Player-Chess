@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Map;
 import java.util.Set;
 
 import static common.Position.*;
@@ -19,12 +20,15 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
  class WallTest {
-    private Board board;
 
-    @BeforeEach
-    void initBeforeEachBoardTest() {
-        board = new Board();
-    }
+     private Board board;
+     private Map<Position, BasePiece> boardMap;
+
+     @BeforeEach
+     void initBeforeEachBoardTest() {
+         board = new Board();
+         boardMap = board.boardMap;
+     }
 
     @Test
      void setupDirections_initPieceDirectionsIsEmpty_False() {
@@ -35,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
      @ParameterizedTest
      @EnumSource(value = Position.class, names = {"BH2", "RH2", "GH2"})
      void check_wallPresentInInitialPosition_True(Position position) {
-         BasePiece piece = board.boardMap.get(position);
+         BasePiece piece = boardMap.get(position);
          assertInstanceOf(Wall.class, piece);
      }
 
@@ -43,14 +47,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
      @EnumSource(Colour.class)
      void isLegalMove_wallMovesToEmptySquare_True(Colour colour) {
          Board board = new Board();
-         board.boardMap.clear();
+         boardMap.clear();
 
          Position wallPosition = BE2;
 
          BasePiece wall = new Wall(colour);
-         board.boardMap.put(wallPosition, wall);
+         boardMap.put(wallPosition, wall);
 
-         assertTrue(wall.isLegalMove(board.boardMap, wallPosition, BE4));
+         assertTrue(wall.isLegalMove(boardMap, wallPosition, BE4));
      }
 
      @ParameterizedTest
@@ -61,10 +65,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          Position startPosition = BE2;
          Position endPosition = BE4;
 
-         board.boardMap.put(startPosition, wall);
-         board.boardMap.put(endPosition, piece);
+         boardMap.put(startPosition, wall);
+         boardMap.put(endPosition, piece);
 
-         assertFalse(wall.isLegalMove(board.boardMap, startPosition, endPosition));
+         assertFalse(wall.isLegalMove(boardMap, startPosition, endPosition));
      }
 
      @ParameterizedTest
@@ -75,25 +79,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          Position startPosition = BE2;
          Position endPosition = BE4;
 
-         board.boardMap.put(startPosition, wall);
-         board.boardMap.put(endPosition, piece);
+         boardMap.put(startPosition, wall);
+         boardMap.put(endPosition, piece);
 
-         assertFalse(wall.isLegalMove(board.boardMap, startPosition, endPosition));
+         assertFalse(wall.isLegalMove(boardMap, startPosition, endPosition));
      }
 
      @ParameterizedTest
      @EnumSource(Colour.class)
      void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
          Board board = new Board();
-         board.boardMap.clear();                 //empty board
+         boardMap.clear();                 //empty board
          Position startPosition = BE4;
 
          BasePiece wall = new Wall(colour);
-         board.boardMap.put(startPosition, wall);
+         boardMap.put(startPosition, wall);
 
          Set<Position> expectedWallMoves =
                  ImmutableSet.of(BE1, BE2, BE3, BA4, BB4, BC4, BD4, BF4, BG4, BH4, RD4, RD3, RD2, RD1);
-         Set<Position> actualWallMoves = wall.getHighlightPolygons(board.boardMap, startPosition);
+         Set<Position> actualWallMoves = wall.getHighlightPolygons(boardMap, startPosition);
 
          assertEquals(expectedWallMoves, actualWallMoves);
      }

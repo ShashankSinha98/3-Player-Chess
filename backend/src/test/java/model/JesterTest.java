@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static common.Position.*;
@@ -19,10 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class JesterTest {
 
     private Board board;
+    private Map<Position, BasePiece> boardMap;
 
     @BeforeEach
     void initBeforeEachBoardTest() {
         board = new Board();
+        boardMap = board.boardMap;
     }
 
     @Test
@@ -35,14 +38,14 @@ class JesterTest {
     @EnumSource(Colour.class)
     void isLegalMove_jesterMovesToEmptySquare_True(Colour colour) {
         Board board = new Board();
-        board.boardMap.clear();
+        boardMap.clear();
 
         Position jesterPosition = BE2;
 
         BasePiece jester = new Jester(colour);
-        board.boardMap.put(jesterPosition, jester);
+        boardMap.put(jesterPosition, jester);
 
-        assertTrue(jester.isLegalMove(board.boardMap, jesterPosition, BF4));
+        assertTrue(jester.isLegalMove(boardMap, jesterPosition, BF4));
     }
 
     @ParameterizedTest
@@ -50,20 +53,20 @@ class JesterTest {
     void isLegalMove_jesterTakesItsColourPiece_False(BasePiece piece) {
         BasePiece jester = new Jester(piece.colour);
 
-        board.boardMap.put(BE4, jester);
-        board.boardMap.put(BC3, piece);
+        boardMap.put(BE4, jester);
+        boardMap.put(BC3, piece);
 
-        assertFalse(jester.isLegalMove(board.boardMap, BE4, BC3));
+        assertFalse(jester.isLegalMove(boardMap, BE4, BC3));
     }
 
     @ParameterizedTest
     @MethodSource("model.DataProvider#pieceProvider")
     void isLegalMove_jesterTakesDifferentColourPiece_True(BasePiece piece) {
         BasePiece jester = new Jester(piece.colour.next());
-        board.boardMap.put(BE4, jester);
-        board.boardMap.put(BC3, piece);
+        boardMap.put(BE4, jester);
+        boardMap.put(BC3, piece);
 
-        assertTrue(jester.isLegalMove(board.boardMap, BE4, BC3));
+        assertTrue(jester.isLegalMove(boardMap, BE4, BC3));
     }
 
 
@@ -71,14 +74,14 @@ class JesterTest {
     @EnumSource(Colour.class)
     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour){
         Board board = new Board();
-        board.boardMap.clear();
+        boardMap.clear();
         Position startPosition = BE4;
 
         BasePiece jester = new Jester(colour);
-        board.boardMap.put(startPosition, jester);
+        boardMap.put(startPosition, jester);
 
         Set<Position> expectedJesterMoves = ImmutableSet.of(BG3, BF2, BD2, BC3, GF4, GE3, RB4, RC3, RF4, RE3);
-        Set<Position> actualJesterMoves = jester.getHighlightPolygons(board.boardMap, startPosition);
+        Set<Position> actualJesterMoves = jester.getHighlightPolygons(boardMap, startPosition);
 
         assertEquals(expectedJesterMoves, actualJesterMoves);
     }

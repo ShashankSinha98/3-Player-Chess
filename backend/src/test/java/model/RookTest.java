@@ -9,18 +9,22 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Map;
 import java.util.Set;
 
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
  class RookTest {
-    private Board board;
 
-    @BeforeEach
-    void initBeforeEachBoardTest() {
-        board = new Board();
-    }
+     private Board board;
+     private Map<Position, BasePiece> boardMap;
+
+     @BeforeEach
+     void initBeforeEachBoardTest() {
+         board = new Board();
+         boardMap = board.boardMap;
+     }
 
     @Test
      void setupDirections_initPieceDirectionsIsEmpty_False() {
@@ -32,14 +36,14 @@ import static org.junit.jupiter.api.Assertions.*;
      @EnumSource(Colour.class)
      void isLegalMove_rookMovesToEmptySquare_True(Colour colour) {
          Board board = new Board();
-         board.boardMap.clear();
+         boardMap.clear();
 
          Position rookPosition = BE2;
 
          BasePiece rook = new Rook(colour);
-         board.boardMap.put(rookPosition, rook);
+         boardMap.put(rookPosition, rook);
 
-         assertTrue(rook.isLegalMove(board.boardMap, rookPosition, BE4));
+         assertTrue(rook.isLegalMove(boardMap, rookPosition, BE4));
      }
 
      @ParameterizedTest
@@ -50,10 +54,10 @@ import static org.junit.jupiter.api.Assertions.*;
          Position startPosition = BE2;
          Position endPosition = BE4;
 
-         board.boardMap.put(startPosition, rook);
-         board.boardMap.put(endPosition, piece);
+         boardMap.put(startPosition, rook);
+         boardMap.put(endPosition, piece);
 
-         assertFalse(rook.isLegalMove(board.boardMap, startPosition, endPosition));
+         assertFalse(rook.isLegalMove(boardMap, startPosition, endPosition));
      }
 
      @ParameterizedTest
@@ -64,16 +68,16 @@ import static org.junit.jupiter.api.Assertions.*;
          Position startPosition = BE2;
          Position endPosition = BE4;
 
-         board.boardMap.put(startPosition, rook);
-         board.boardMap.put(endPosition, piece);
+         boardMap.put(startPosition, rook);
+         boardMap.put(endPosition, piece);
 
-         assertTrue(rook.isLegalMove(board.boardMap, startPosition, endPosition));
+         assertTrue(rook.isLegalMove(boardMap, startPosition, endPosition));
      }
 
      @ParameterizedTest
      @EnumSource(value = Position.class, names = {"BA1", "BH1", "RA1", "RH1", "GA1", "GH1"})
      void check_rookPresentInInitialPosition_True(Position position) {
-         BasePiece piece = board.boardMap.get(position);
+         BasePiece piece = boardMap.get(position);
          assertInstanceOf(Rook.class, piece);
      }
 
@@ -81,15 +85,15 @@ import static org.junit.jupiter.api.Assertions.*;
      @EnumSource(Colour.class)
      void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
          Board board = new Board();
-         board.boardMap.clear();                 //empty board
+         boardMap.clear();                 //empty board
          Position startPosition = BE4;
 
          BasePiece rook = new Rook(colour);
-         board.boardMap.put(startPosition, rook);
+         boardMap.put(startPosition, rook);
 
          Set<Position> expectedRookMoves =
                  ImmutableSet.of(BE1, BE2, BE3, BA4, BB4, BC4, BD4, BF4, BG4, BH4, RD4, RD3, RD2, RD1);
-         Set<Position> actualRookMoves = rook.getHighlightPolygons(board.boardMap, startPosition);
+         Set<Position> actualRookMoves = rook.getHighlightPolygons(boardMap, startPosition);
 
          assertEquals(expectedRookMoves, actualRookMoves);
      }

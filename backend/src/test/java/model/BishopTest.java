@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -17,10 +18,12 @@ import static org.junit.jupiter.api.Assertions.*;
  class BishopTest {
 
     private Board board;
+    private Map<Position, BasePiece> boardMap;
 
     @BeforeEach
     void initBeforeEachBoardTest() {
         board = new Board();
+        boardMap = board.boardMap;
     }
 
     // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
@@ -33,33 +36,31 @@ import static org.junit.jupiter.api.Assertions.*;
     @ParameterizedTest
     @CsvFileSource(files = "src/test/resources/legalBishopMoves.csv")
      void isLegalMove_validMoves_True(String start, String end) {
-        Board board = new Board();
         Position startPosition = Position.valueOf(start);
         Position endPosition = Position.valueOf(end);
 
         BasePiece bishop = new Bishop(startPosition.getColour());
-        board.boardMap.put(startPosition, bishop);
+        boardMap.put(startPosition, bishop);
 
-        assertTrue(bishop.isLegalMove(board.boardMap, startPosition, endPosition));
+        assertTrue(bishop.isLegalMove(boardMap, startPosition, endPosition));
     }
 
     @ParameterizedTest
     @CsvFileSource(files = "src/test/resources/illegalBishopMoves.csv")
      void isLegalMove_invalidMoves_False(String start, String end) {
-        Board board = new Board();
         Position startPosition = Position.valueOf(start);
         Position endPosition = Position.valueOf(end);
 
         BasePiece bishop = new Bishop(startPosition.getColour());
-        board.boardMap.put(startPosition, bishop);
+        boardMap.put(startPosition, bishop);
 
-        assertFalse(bishop.isLegalMove(board.boardMap, startPosition, endPosition));
+        assertFalse(bishop.isLegalMove(boardMap, startPosition, endPosition));
     }
 
     @ParameterizedTest
     @EnumSource(value = Position.class, names = {"BC1", "BF1", "RC1", "RF1", "GC1", "GF1"})
      void check_bishopPresentInInitialPosition_True(Position position) {
-        BasePiece piece = board.boardMap.get(position);
+        BasePiece piece = boardMap.get(position);
         assertInstanceOf(Bishop.class, piece);
     }
 
@@ -69,35 +70,34 @@ import static org.junit.jupiter.api.Assertions.*;
      void isLegalMove_bishopTakesItsColourPiece_False(BasePiece piece) {
         BasePiece bishop = new Bishop(piece.colour);
 
-        board.boardMap.put(BE4, bishop);
-        board.boardMap.put(BD3, piece);
+        boardMap.put(BE4, bishop);
+        boardMap.put(BD3, piece);
 
-        assertFalse(bishop.isLegalMove(board.boardMap, BE4, BD3));
+        assertFalse(bishop.isLegalMove(boardMap, BE4, BD3));
     }
 
     @ParameterizedTest
     @MethodSource("model.DataProvider#pieceProvider")
      void isLegalMove_bishopTakesDifferentColourPiece_True(BasePiece piece) {
         BasePiece bishop = new Bishop(piece.colour.next());
-        board.boardMap.put(BE4, bishop);
+        boardMap.put(BE4, bishop);
 
-        board.boardMap.put(BD3, piece);
-        assertTrue(bishop.isLegalMove(board.boardMap, BE4, BD3));
+        boardMap.put(BD3, piece);
+        assertTrue(bishop.isLegalMove(boardMap, BE4, BD3));
     }
 
     @ParameterizedTest
     @EnumSource(Colour.class)
      void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
-        Board board = new Board();
-        board.boardMap.clear();                 //empty board
+        boardMap.clear();                 //empty board
         Position startPosition = BE4;
 
         BasePiece bishop = new Bishop(colour);
-        board.boardMap.put(startPosition, bishop);
+        boardMap.put(startPosition, bishop);
 
         Set<Position> expectedBishopMoves =
                 ImmutableSet.of(BH1, BG2, BF3, BD3, BC2, BB1, RC4, RB3, RA2, GE4, GF3, GG2, GH1, RE4, RF3, RG2, RH1);
-        Set<Position> actualBishopMoves = bishop.getHighlightPolygons(board.boardMap, startPosition);
+        Set<Position> actualBishopMoves = bishop.getHighlightPolygons(boardMap, startPosition);
 
         assertEquals(expectedBishopMoves, actualBishopMoves);
     }

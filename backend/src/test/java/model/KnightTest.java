@@ -11,18 +11,21 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class KnightTest {
-    // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
+
     private Board board;
+    private Map<Position, BasePiece> boardMap;
 
     @BeforeEach
     void initBeforeEachBoardTest() {
         board = new Board();
+        boardMap = board.boardMap;
     }
 
     @Test
@@ -35,14 +38,14 @@ class KnightTest {
     @EnumSource(Colour.class)
     void isLegalMove_knightMovesToEmptySquare_True(Colour colour) {
         Board board = new Board();
-        board.boardMap.clear();
+        boardMap.clear();
 
         Position knightPosition = BE2;
 
         BasePiece knight = new Knight(colour);
-        board.boardMap.put(knightPosition, knight);
+        boardMap.put(knightPosition, knight);
 
-        assertTrue(knight.isLegalMove(board.boardMap, knightPosition, BF4));
+        assertTrue(knight.isLegalMove(boardMap, knightPosition, BF4));
     }
 
     @ParameterizedTest
@@ -50,21 +53,21 @@ class KnightTest {
     void isLegalMove_knightTakesItsColourPiece_False(BasePiece piece) {
         BasePiece knight = new Knight(piece.colour);
 
-        board.boardMap.put(BE4, knight);
-        board.boardMap.put(BC3, piece);
+        boardMap.put(BE4, knight);
+        boardMap.put(BC3, piece);
 
-        assertFalse(knight.isLegalMove(board.boardMap, BE4, BC3));
+        assertFalse(knight.isLegalMove(boardMap, BE4, BC3));
     }
 
     @ParameterizedTest
     @MethodSource("model.DataProvider#pieceProvider")
     void isLegalMove_knightTakesDifferentColourPiece_True(BasePiece piece) {
         BasePiece knight = new Knight(piece.colour.next());
-        board.boardMap.put(BE4, knight);
+        boardMap.put(BE4, knight);
 
-        board.boardMap.put(BC3, piece);
+        boardMap.put(BC3, piece);
 
-        assertTrue(knight.isLegalMove(board.boardMap, BE4, BC3));
+        assertTrue(knight.isLegalMove(boardMap, BE4, BC3));
     }
 
 
@@ -72,14 +75,14 @@ class KnightTest {
     @EnumSource(Colour.class)
     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour){
         Board board = new Board();
-        board.boardMap.clear();
+        boardMap.clear();
         Position startPosition = BE4;
 
         BasePiece knight = new Knight(colour);
-        board.boardMap.put(startPosition, knight);
+        boardMap.put(startPosition, knight);
 
         Set<Position> expectedKnightMoves = ImmutableSet.of(BG3, BF2, BD2, BC3, GF4, GE3, RB4, RC3, RF4, RE3);
-        Set<Position> actualKnightMoves = knight.getHighlightPolygons(board.boardMap, startPosition);
+        Set<Position> actualKnightMoves = knight.getHighlightPolygons(boardMap, startPosition);
 
         assertEquals(expectedKnightMoves, actualKnightMoves);
     }
