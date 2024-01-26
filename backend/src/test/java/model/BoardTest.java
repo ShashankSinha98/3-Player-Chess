@@ -74,7 +74,7 @@ import static org.junit.jupiter.api.Assertions.*;
         BasePiece blueJester = new Jester(Colour.BLUE);
         board.boardMap.put(BE4, blueJester);
 
-        BasePiece redWall = board.boardMap.get(RH2);
+        BasePiece redWall = new Wall(Colour.RED);
 
         board.boardMap.put(RC3, redWall);
         board.move(BE4, RC3);

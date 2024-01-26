@@ -45,14 +45,15 @@ public abstract class BasePiece {
      * */
 
     public boolean isLegalMove(Map<Position, BasePiece> boardMap, Position start, Position end) {
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
-        if(wallPiecePositions.contains(end)) return false;
-
         BasePiece mover = boardMap.get(start);
         BasePiece target = boardMap.get(end);
         if(mover==null) {
             return false; // No piece present at start pos
         }
+
+        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
+        if(wallPiecePositions.contains(end) && !(mover instanceof Jester)) return false;
+
         Colour moverCol = mover.getColour();
         if(target!= null && moverCol==target.getColour()) {
             return false; // player cannot take its own piece

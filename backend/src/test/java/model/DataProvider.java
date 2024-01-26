@@ -18,7 +18,7 @@ public class DataProvider {
             pieces.add(new Queen(colour));
             pieces.add(new King(colour));
             pieces.add(new Jester(colour));
-            pieces.add(new Wall(colour));
+//            pieces.add(new Wall(colour));
         }
 
         return pieces.stream();

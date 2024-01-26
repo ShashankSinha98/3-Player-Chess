@@ -184,10 +184,10 @@ public class Board {
         if(moverCol!=turn) return false; // piece colour mismatches player colour
         if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
 
-//        boolean isLegalMove = mover.isLegalMove(this.boardMap, start, end);
-//        Log.d(TAG, "isLegalMove: "+isLegalMove);
+        boolean isLegalMove = mover.isLegalMove(this.boardMap, start, end);
+        Log.d(TAG, "isLegalMove: "+isLegalMove);
 
-        if(highlightPolygons.contains(end)) {
+        if(isLegalMove) {
             if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
                 Log.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
                 return false;
