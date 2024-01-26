@@ -239,15 +239,13 @@ public class Board {
 
         Colour moverColour = mover.getColour();
         Set<Position> nonCheckPositions = new HashSet<>();
-        if(isCheck(moverColour, this.boardMap)) {
-            for(Position endPos: highlightPolygons) {
-                if(!isCheckAfterLegalMove(moverColour, this.boardMap, position, endPos)) {
-                    nonCheckPositions.add(endPos);
-                }
+        for(Position endPos: highlightPolygons) {
+            if(!isCheckAfterLegalMove(moverColour, this.boardMap, position, endPos)) {
+                nonCheckPositions.add(endPos);
             }
-            return nonCheckPositions;
         }
-        return highlightPolygons;
+
+        return nonCheckPositions;
     }
 
     /**
