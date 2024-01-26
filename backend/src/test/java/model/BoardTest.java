@@ -10,17 +10,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static common.Position.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class BoardTest {
+ class BoardTest {
 
     private final int TOTAL_SQUARES = 8 * 4 * 3; // col * row * players
     private Board board;
@@ -42,7 +37,7 @@ public class BoardTest {
 
     // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
     @Test
-    public void move_pieceMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupied() throws InvalidPositionException, InvalidMoveException {
+     void move_pieceMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupied() throws InvalidPositionException, InvalidMoveException {
         BasePiece pawn = board.boardMap.get(BE2);
         board.move(BE2, BE4);
         assertNull(board.boardMap.get(BE2));
@@ -51,9 +46,9 @@ public class BoardTest {
     }
 
     @Test
-    public void move_wallMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupiedAndWallMappingUpdate() throws InvalidPositionException, InvalidMoveException {
+     void move_wallMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupiedAndWallMappingUpdate() throws InvalidPositionException, InvalidMoveException {
         BasePiece wall = board.boardMap.get(BH2);
-        assertTrue(wall instanceof Wall);
+        assertInstanceOf(Wall.class, wall);
         assertEquals(Colour.BLUE, wall.getColour());
 
         board.move(BH2, BH4);
@@ -64,18 +59,18 @@ public class BoardTest {
     }
 
     @Test
-    public void move_pawnToOppositeEndRow_pawnUpgradeToQueen() throws InvalidPositionException, InvalidMoveException {
+     void move_pawnToOppositeEndRow_pawnUpgradeToQueen() throws InvalidPositionException, InvalidMoveException {
         BasePiece bluePawn = new Pawn(Colour.BLUE);
         board.boardMap.put(RA2, bluePawn);
         board.boardMap.remove(RA1); // empty RA1 for blue pawn to move
         board.move(RA2, RA1);
 
         BasePiece promotedPiece = board.boardMap.get(RA1);
-        assertTrue(promotedPiece instanceof Queen);
+        assertInstanceOf(Queen.class, promotedPiece);
     }
 
     @Test
-    public void move_jesterTakesWall_jesterWallPositionSwitchAndWallPieceMappingUpdates() throws InvalidPositionException, InvalidMoveException {
+     void move_jesterTakesWall_jesterWallPositionSwitchAndWallPieceMappingUpdates() throws InvalidPositionException, InvalidMoveException {
         BasePiece blueJester = new Jester(Colour.BLUE);
         board.boardMap.put(BE4, blueJester);
 
@@ -89,7 +84,7 @@ public class BoardTest {
     }
 
     @Test
-    public void move_rightCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
+     void move_rightCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
         board.boardMap.remove(BF1);
         board.boardMap.remove(BG1);
 
@@ -102,7 +97,7 @@ public class BoardTest {
     }
 
     @Test
-    public void move_leftCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
+     void move_leftCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
         board.boardMap.remove(BD1);
         board.boardMap.remove(BC1);
         board.boardMap.remove(BB1);
@@ -116,7 +111,7 @@ public class BoardTest {
     }
 
     @Test
-    public void move_bluePieceTakesRedKing_gameOverAndBlueWinner() throws InvalidPositionException, InvalidMoveException {
+     void move_bluePieceTakesRedKing_gameOverAndBlueWinner() throws InvalidPositionException, InvalidMoveException {
         BasePiece blueRook = new Rook(Colour.BLUE);
         board.boardMap.put(RE2, blueRook);
 
@@ -127,20 +122,20 @@ public class BoardTest {
     }
 
     @Test
-    public void getPossibleMoves_emptyPosition_emptyPositionsList() {
-        List<Position> possibleMoves = board.getPossibleMoves(BE4);
+     void getPossibleMoves_emptyPosition_emptyPositionsList() {
+        Set<Position> possibleMoves = board.getPossibleMoves(BE4);
         assertTrue(possibleMoves.isEmpty());
     }
 
     @Test
-    public void getPossibleMoves_rookBehindJesterInitialPosition_emptyPositionsList() {
-        List<Position> possibleMoves = board.getPossibleMoves(BA1);
+     void getPossibleMoves_rookBehindJesterInitialPosition_emptyPositionsList() {
+        Set<Position> possibleMoves = board.getPossibleMoves(BA1);
         assertTrue(possibleMoves.isEmpty());
     }
 
     @Test
-    public void getPossibleMoves_rookBehindWallInitialPosition_nonEmptyPositionsList() {
-        List<Position> possibleMoves = board.getPossibleMoves(BH1);
+     void getPossibleMoves_rookBehindWallInitialPosition_nonEmptyPositionsList() {
+        Set<Position> possibleMoves = board.getPossibleMoves(BH1);
         assertFalse(possibleMoves.isEmpty());
     }
 }

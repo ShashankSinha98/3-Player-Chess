@@ -7,8 +7,8 @@ import utility.Log;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *  Abstract Base class for all chess pieces. All chess pieces must extend this class
@@ -92,7 +92,7 @@ public abstract class BasePiece {
      * @param start: position of piece on board
      * @return List of possible positions a piece is allowed to move
      * */
-    public abstract List<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start);
+    public abstract Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start);
 
     /**
      * @return Colour of the chess piece

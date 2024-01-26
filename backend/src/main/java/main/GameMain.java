@@ -1,6 +1,7 @@
 package main;
 
 import abstraction.IGameInterface;
+import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.InvalidMoveException;
 import common.InvalidPositionException;
@@ -9,9 +10,10 @@ import common.Position;
 import model.Board;
 import utility.BoardAdapter;
 import utility.Log;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static utility.BoardAdapter.calculatePolygonId;
 
@@ -24,7 +26,7 @@ public class GameMain implements IGameInterface {
     private static final String TAG = GameMain.class.getSimpleName();
     private final Board board;
     private Position moveStartPos, moveEndPos;
-    private List<Position> highlightPolygons;
+    private Set<Position> highlightPolygons;
 
     /**
      * GameMain Constructor. Entry point to the backend logic
@@ -34,7 +36,7 @@ public class GameMain implements IGameInterface {
         board = new Board();
         moveStartPos = null;
         moveEndPos = null;
-        highlightPolygons = new ArrayList<>();
+        highlightPolygons = ImmutableSet.of();
     }
 
     /**

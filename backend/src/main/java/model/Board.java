@@ -1,5 +1,6 @@
 package model;
 
+import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.InvalidMoveException;
 import common.InvalidPositionException;
@@ -7,7 +8,6 @@ import common.Position;
 import utility.BoardAdapter;
 import utility.Log;
 
-import java.security.cert.TrustAnchor;
 import java.util.*;
 
 /**
@@ -25,6 +25,7 @@ public class Board {
     private Colour turn;
     private boolean gameOver;
     private String winner;
+    private Set<Position> highlightPolygons;
 
     /**
      * Board constructor. Places pieces on the board and initializes variables
@@ -180,14 +181,13 @@ public class Board {
             return false; // No piece present at start position
         }
         Colour moverCol = mover.getColour();
-
         if(moverCol!=turn) return false; // piece colour mismatches player colour
         if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
-        boolean isLegalMove = mover.isLegalMove(this.boardMap, start, end);
-        Log.d(TAG, "isLegalMove: "+isLegalMove);
 
+//        boolean isLegalMove = mover.isLegalMove(this.boardMap, start, end);
+//        Log.d(TAG, "isLegalMove: "+isLegalMove);
 
-        if(isLegalMove) {
+        if(highlightPolygons.contains(end)) {
             if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
                 Log.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
                 return false;
@@ -199,7 +199,7 @@ public class Board {
             }
         }
 
-        return isLegalMove;
+        return false;
     }
 
     /**
@@ -230,25 +230,24 @@ public class Board {
     /**
      * For the current selected piece, returns the possible moves
      * @param position The current selected piece position
-     * @return list of possible movements
+     * @return Set of possible movements
      * */
-    public List<Position> getPossibleMoves(Position position) {
+    public Set<Position> getPossibleMoves(Position position) {
         BasePiece mover = boardMap.get(position);
-        if(mover == null) return new ArrayList<>();
-        List<Position> possibleMoves = mover.getHighlightPolygons(this.boardMap, position);
+        if(mover == null) return ImmutableSet.of();
+        highlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
 
         Colour moverColour = mover.getColour();
-        List<Position> nonCheckPositions = new ArrayList<>();
+        Set<Position> nonCheckPositions = new HashSet<>();
         if(isCheck(moverColour, this.boardMap)) {
-            for(Position endPos: possibleMoves) {
+            for(Position endPos: highlightPolygons) {
                 if(!isCheckAfterLegalMove(moverColour, this.boardMap, position, endPos)) {
                     nonCheckPositions.add(endPos);
                 }
             }
             return nonCheckPositions;
         }
-
-        return possibleMoves;
+        return highlightPolygons;
     }
 
     /**
@@ -269,7 +268,7 @@ public class Board {
         for(Position position: boardMap.keySet()) {
             BasePiece piece = boardMap.get(position);
             if(piece.getColour()!=colour) {
-                List<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
+                Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                 if(possibleTargetPositions.contains(kingPosition)) {
                     Log.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
                     return true;
@@ -287,7 +286,7 @@ public class Board {
         for(Position position: boardMap.keySet()) {
             BasePiece piece = boardMap.get(position);
             if(piece.getColour()==colour) {
-                List<Position> possibleMoves = piece.getHighlightPolygons(boardMap, position);
+                Set<Position> possibleMoves = piece.getHighlightPolygons(boardMap, position);
                 for(Position endPos: possibleMoves) {
                     if(!isCheckAfterLegalMove(colour, boardMap, position, endPos)) {
                         Log.d(TAG, "Piece "+piece+" can help colour "+colour+" to come out of check: st: "+position+", end: "+endPos);

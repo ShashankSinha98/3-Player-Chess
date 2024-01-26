@@ -5,11 +5,9 @@ import common.Direction;
 import common.InvalidPositionException;
 import common.Position;
 import utility.Log;
-import utility.Util;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,10 +73,10 @@ public class Rook extends BasePiece {
      * Fetch all the possible positions where a piece can move on board
      * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board
-     * @return List of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public List<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
+    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();
@@ -111,7 +109,7 @@ public class Rook extends BasePiece {
             }
         }
 
-        return Util.toList(positionSet);
+        return positionSet;
     }
 
     /**
