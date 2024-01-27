@@ -24,7 +24,6 @@ public class Board {
     
     /** A map from board positions to the pieces at that position **/
     protected Map<Position, BasePiece> boardMap;
-    protected Map<BasePiece, Position> wallPieceMapping;
     private Colour turn;
     private boolean gameOver;
     private String winner;
@@ -35,7 +34,6 @@ public class Board {
      * */
     public Board(){
         boardMap = new HashMap<Position,BasePiece>();
-        wallPieceMapping = new HashMap<>();
         turn = Colour.BLUE;
         gameOver = false;
         winner = null;
@@ -88,7 +86,6 @@ public class Board {
         Position wallStartPosition = Position.get(colour, 1, 7);
         BasePiece wall = new Wall(colour);
         boardMap.put(wallStartPosition, wall);
-        wallPieceMapping.put(wall, wallStartPosition);
     }
 
      /**
@@ -120,19 +117,8 @@ public class Board {
 
             if(mover instanceof Pawn && end.getRow()==0 && end.getColour()!=mover.getColour()){
                 boardMap.put(end, new Queen(mover.getColour()));  //promote pawn
-            }
-            else if (mover instanceof Jester){
-                // switch places
-                boardMap.put(end,mover);
-                boardMap.put(start, taken);
-                if(taken instanceof Wall) {
-                    wallPieceMapping.put(taken, start);
-                }
             } else {
                 boardMap.put(end,mover);  //move piece
-                if(mover instanceof Wall) {
-                    wallPieceMapping.put(mover, end);
-                }
             }
 
             if(mover instanceof King && start.getColumn()==4 && start.getRow()==0) {
@@ -148,11 +134,11 @@ public class Board {
             }
 
             if(taken !=null){
-                if(taken instanceof King) {
-                    gameOver=true;
-                    winner = mover.getColour().toString();
-                } else if(taken instanceof Wall && !(mover instanceof Jester)) {
-                    wallPieceMapping.remove(taken);
+                // jester switch position with other piece
+                if (mover instanceof Jester){
+                    // switch places
+                    boardMap.put(end,mover);
+                    boardMap.put(start, taken);
                 }
             }
 
@@ -261,7 +247,8 @@ public class Board {
 
         for(Position position: boardMap.keySet()) {
             BasePiece piece = boardMap.get(position);
-            if(piece.getColour()!=colour) {
+            // wall and jester piece have no power to take out any piece
+            if(piece.getColour() != colour && !(piece instanceof Jester) && !(piece instanceof Wall)) {
                 Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                 if(possibleTargetPositions.contains(kingPosition)) {
                     Log.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
