@@ -19,29 +19,52 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * This class contains unit tests for the King class.
+ */
  class KingTest {
 
      private Board board;
      private Map<Position, BasePiece> boardMap;
 
+    /**
+     * Initializes a new Board instance before each test.
+     */
      @BeforeEach
      void initBeforeEachBoardTest() {
          board = new Board();
          boardMap = board.boardMap;
      }
 
+    /**
+     * Tests the setupDirections method,
+     * expecting the King movement directions to be non-empty.
+     */
     @Test
      void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece king = new King(Colour.GREEN);
         assertNotEquals(0, king.directions.length);
     }
 
+    /**
+     * Parameterized test to check if the king is present in its initial position,
+     * expecting true.
+     *
+     * @param position Initial position of the king
+     */
     @ParameterizedTest
     @EnumSource(value = Position.class, names = {"BE1", "RE1", "GE1"})
     void check_kingPresentInInitialPosition_True(Position position) {
         BasePiece piece = boardMap.get(position);
         assertInstanceOf(King.class, piece);
     }
+
+    /**
+     * Parameterized test to check if the king is not present in its initial position,
+     * expecting false.
+     *
+     * @param position Initial position of the king
+     */
     @ParameterizedTest
     @EnumSource(value = Position.class, names = {"BD2", "RD2", "GD2"})
      void check_kingPresentInInitialPosition_False(Position position) {
@@ -49,6 +72,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         assertFalse(piece instanceof King);
     }
 
+    /**
+     * Parameterized test for isLegalMove method when king moves to an empty square,
+     * expecting true.
+     *
+     * @param colour Colour of the king
+     */
      @ParameterizedTest
      @EnumSource(Colour.class)
      void isLegalMove_kingMovesToEmptySquare_True(Colour colour) {
@@ -64,6 +93,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertTrue(actualKingMoves.contains(BE3));
      }
 
+    /**
+     * Parameterized test for isLegalMove method when king takes a piece of its own color,
+     * expecting false.
+     *
+     * @param piece Piece to be placed on the board
+     */
      @ParameterizedTest
      @MethodSource("model.DataProvider#pieceProvider")
      void isLegalMove_kingTakesItsColourPiece_False(BasePiece piece) {
@@ -79,6 +114,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertFalse(actualKingMoves.contains(endPosition));
      }
 
+    /**
+     * Parameterized test for isLegalMove method when king takes a piece of a different color,
+     * expecting true.
+     *
+     * @param piece Piece to be placed on the board
+     */
      @ParameterizedTest
      @MethodSource("model.DataProvider#pieceProvider")
      void isLegalMove_kingTakesDifferentColourPiece_True(BasePiece piece) {
@@ -92,6 +133,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, startPosition);
          assertTrue(actualKingMoves.contains(endPosition));
      }
+
+    /**
+     * Parameterized test for getHighlightPolygons method,
+     * expecting valid polygons to be present in the list.
+     *
+     * @param colour Colour of the king
+     */
      @ParameterizedTest
      @EnumSource(Colour.class)
      void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
@@ -109,6 +157,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertEquals(expectedKingMoves, actualKingMoves);
      }
 
+    /**
+     * Test for short castle legal move, expecting true.
+     */
     @Test
     void isLegalMove_shortCastle_True() {
         Board board = new Board();
@@ -126,6 +177,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         assertTrue(actualKingMoves.contains(RG1));
     }
 
+    /**
+     * Test for short castle legal move when the square is occupied, expecting false.
+     */
      @Test
      void isLegalMove_shortCastleOccupiedSquare_False() {
          Board board = new Board();
@@ -146,6 +200,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertFalse(actualKingMoves.contains(RG1));
      }
 
+    /**
+     * Test for long castle legal move, expecting true.
+     */
      @Test
      void isLegalMove_longCastle_True() {
          Board board = new Board();
@@ -163,6 +220,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertTrue(actualKingMoves.contains(RC1));
      }
 
+    /**
+     * Test for long castle legal move when the square is occupied, expecting false.
+     */
      @Test
      void isLegalMove_longCastleOccupiedSquare_False() {
          Board board = new Board();
@@ -183,7 +243,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertFalse(actualKingMoves.contains(RC1));
      }
 
-
+    /**
+     * Parameterized test for toString method,
+     * expecting correct string format for king initialization.
+     * BK: blue King
+     * GK: green King
+     * RK: red King
+     *
+     * @param colour Colour of the king
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
     void toString_initKingAllColours_correctStringFormat(Colour colour) {
