@@ -17,23 +17,38 @@ import java.util.Set;
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class contains unit tests for the Jester class.
+ */
 class JesterTest {
 
     private Board board;
     private Map<Position, BasePiece> boardMap;
 
+    /**
+     * Initializes a new Board instance before each test.
+     */
     @BeforeEach
     void initBeforeEachBoardTest() {
         board = new Board();
         boardMap = board.boardMap;
     }
 
+    /**
+     * Tests the setupDirections method, expecting the piece directions to be non-empty.
+     */
     @Test
     void setupDirections_initPieceDirectionsIsEmpty_False(){
         BasePiece jester = new Jester(Colour.BLUE);
         assertNotEquals(0, jester.directions.length);
     }
 
+    /**
+     * Parameterized test for isLegalMove method when jester moves to an empty square,
+     * expecting true.
+     *
+     * @param colour Colour of the jester
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
     void isLegalMove_jesterMovesToEmptySquare_True(Colour colour) {
@@ -49,6 +64,12 @@ class JesterTest {
         assertTrue(actualJesterMoves.contains(BF4));
     }
 
+    /**
+     * Parameterized test for isLegalMove method when jester takes a piece of its own color,
+     * expecting false.
+     *
+     * @param piece Piece to be placed on the board
+     */
     @ParameterizedTest
     @MethodSource("model.DataProvider#pieceProvider")
     void isLegalMove_jesterTakesItsColourPiece_False(BasePiece piece) {
@@ -61,6 +82,12 @@ class JesterTest {
         assertFalse(actualJesterMoves.contains(BC3));
     }
 
+    /**
+     * Parameterized test for isLegalMove method when jester takes a piece of a different color,
+     * expecting true.
+     *
+     * @param piece Piece to be placed on the board
+     */
     @ParameterizedTest
     @MethodSource("model.DataProvider#pieceProvider")
     void isLegalMove_jesterTakesDifferentColourPiece_True(BasePiece piece) {
@@ -72,6 +99,12 @@ class JesterTest {
     }
 
 
+    /**
+     * Parameterized test for getHighlightPolygons method,
+     * expecting valid polygons to be present in the list of all valid moves.
+     *
+     * @param colour Colour of the jester
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour){
@@ -88,6 +121,15 @@ class JesterTest {
         assertEquals(expectedJesterMoves, actualJesterMoves);
     }
 
+    /**
+     * Parameterized test for toString method,
+     * expecting correct string format for jester initialization.
+     * BJ: blue Jester
+     * GJ: green Jester
+     * RJ: red Jester
+     *
+     * @param colour Colour of the jester
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
     void toString_initJesterAllColours_correctStringFormat(Colour colour) {
