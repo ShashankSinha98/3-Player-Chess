@@ -5,10 +5,8 @@ import common.Direction;
 import common.InvalidPositionException;
 import common.Position;
 import utility.Log;
-import utility.Util;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,14 +34,13 @@ public class Wall extends Rook {
 
     /**
      *  To check whether a move is valid
-     * @param board: Board class instance representing current game board
+     * @param boardMap: Board class instance representing current game board
      * @param start: Start position of move
      * @param end: End position of move
      * @return True if a move is possible from start to end, else False
      * */
     @Override
-    public boolean isLegalMove(Board board, Position start, Position end) {
-        Map<Position, BasePiece> boardMap = board.boardMap;
+    public boolean isLegalMove(Map<Position, BasePiece> boardMap, Position start, Position end) {
         BasePiece mover = this;
         BasePiece target = boardMap.get(end);
         if(target != null) {
@@ -74,13 +71,12 @@ public class Wall extends Rook {
 
     /**
      * Fetch all the possible positions where a piece can move on board
-     * @param board: Board class instance representing current game board
+     * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board
-     * @return List of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public List<Position> getHighlightPolygons(Board board, Position start) {
-        Map<Position, BasePiece> boardMap = board.boardMap;
+    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
         //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();
         BasePiece mover = this;
@@ -95,7 +91,7 @@ public class Wall extends Rook {
             }
         }
 
-        return Util.toList(positionSet);
+        return positionSet;
     }
 
     /**

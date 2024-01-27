@@ -1,5 +1,6 @@
 package model;
 
+import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.InvalidMoveException;
 import common.InvalidPositionException;
@@ -7,10 +8,7 @@ import common.Position;
 import utility.BoardAdapter;
 import utility.Log;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class containing the Board logic. To initialize the board with the pieces.
@@ -27,6 +25,7 @@ public class Board {
     private Colour turn;
     private boolean gameOver;
     private String winner;
+    private Set<Position> highlightPolygons;
 
     /**
      * Board constructor. Places pieces on the board and initializes variables
@@ -152,8 +151,17 @@ public class Board {
                 } else if(taken instanceof Wall && !(mover instanceof Jester)) {
                     wallPieceMapping.remove(taken);
                 }
-
             }
+
+            for(Colour c: Colour.values()) {
+                if(c!=turn) {
+                    if(isCheckMate(c, boardMap)) {
+                        gameOver = true;
+                        winner = mover.getColour().toString();
+                    }
+                }
+            }
+
             turn = Colour.values()[(turn.ordinal()+1)%3];
         } else {
             throw new InvalidMoveException("Illegal Move: "+start+"-"+end);
@@ -173,15 +181,25 @@ public class Board {
             return false; // No piece present at start position
         }
         Colour moverCol = mover.getColour();
-        if(moverCol != turn) {
-            return false; // piece colour mismatches player colour
-        }
-        if(target != null && moverCol==target.getColour()) {
-            return false; // player cannot take its own piece
-        }
-        boolean isLegalMove = mover.isLegalMove(this, start, end);
+        if(moverCol!=turn) return false; // piece colour mismatches player colour
+        if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
+
+        boolean isLegalMove = mover.isLegalMove(this.boardMap, start, end);
         Log.d(TAG, "isLegalMove: "+isLegalMove);
-        return isLegalMove;
+
+        if(isLegalMove) {
+            if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
+                Log.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
+                return false;
+            } else if(isCheckAfterLegalMove(turn, boardMap, start, end)) {
+                Log.d(TAG, "Colour "+moverCol+" will be in check after this move");
+                return false;
+            } else{
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -212,13 +230,22 @@ public class Board {
     /**
      * For the current selected piece, returns the possible moves
      * @param position The current selected piece position
-     * @return list of possible movements
+     * @return Set of possible movements
      * */
-    public List<Position> getPossibleMoves(Position position) {
+    public Set<Position> getPossibleMoves(Position position) {
         BasePiece mover = boardMap.get(position);
-        if(mover == null) return new ArrayList<>();
-        List<Position> possibleMoves = mover.getHighlightPolygons(this, position);
-        return possibleMoves;
+        if(mover == null) return ImmutableSet.of();
+        highlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
+
+        Colour moverColour = mover.getColour();
+        Set<Position> nonCheckPositions = new HashSet<>();
+        for(Position endPos: highlightPolygons) {
+            if(!isCheckAfterLegalMove(moverColour, this.boardMap, position, endPos)) {
+                nonCheckPositions.add(endPos);
+            }
+        }
+
+        return nonCheckPositions;
     }
 
     /**
@@ -230,4 +257,64 @@ public class Board {
         return getPiece(position) != null && getPiece(position).getColour()==turn;
     }
 
+
+    /**     Check / Check-mate logic helper functions **/
+
+    private boolean isCheck(Colour colour, Map<Position, BasePiece> boardMap) {
+        Position kingPosition = getKingPosition(colour, boardMap);
+
+        for(Position position: boardMap.keySet()) {
+            BasePiece piece = boardMap.get(position);
+            if(piece.getColour()!=colour) {
+                Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
+                if(possibleTargetPositions.contains(kingPosition)) {
+                    Log.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isCheckMate(Colour colour, Map<Position, BasePiece> boardMap) {
+        if(!isCheck(colour, boardMap)) {
+            return false;
+        }
+
+        for(Position position: boardMap.keySet()) {
+            BasePiece piece = boardMap.get(position);
+            if(piece.getColour()==colour) {
+                Set<Position> possibleMoves = piece.getHighlightPolygons(boardMap, position);
+                for(Position endPos: possibleMoves) {
+                    if(!isCheckAfterLegalMove(colour, boardMap, position, endPos)) {
+                        Log.d(TAG, "Piece "+piece+" can help colour "+colour+" to come out of check: st: "+position+", end: "+endPos);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isCheckAfterLegalMove(Colour colour, Map<Position, BasePiece> boardMap, Position start, Position end) {
+        Map<Position, BasePiece> copyBoardMap = new HashMap<>(boardMap);
+        BasePiece piece = copyBoardMap.get(start);
+        copyBoardMap.remove(start);
+        copyBoardMap.put(end, piece);
+
+        if(!isCheck(colour, copyBoardMap)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private Position getKingPosition(Colour colour, Map<Position, BasePiece> boardMap) {
+        for(Position position: boardMap.keySet()) {
+            BasePiece piece = boardMap.get(position);
+            if(piece instanceof King && piece.getColour()==colour) return position;
+        }
+        return null;
+    }
 }
