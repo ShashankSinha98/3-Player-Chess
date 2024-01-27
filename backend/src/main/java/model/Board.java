@@ -122,7 +122,7 @@ public class Board {
             }
 
             if(mover instanceof King && start.getColumn()==4 && start.getRow()==0) {
-                if(end.getColumn()==2){//castle left, update rook
+                if(end.getColumn()==2) {//castle left, update rook
                     Position rookPos = Position.get(mover.getColour(),0,0);
                     boardMap.put(Position.get(mover.getColour(),0,3), boardMap.get(rookPos));
                     boardMap.remove(rookPos);
@@ -299,7 +299,9 @@ public class Board {
     private Position getKingPosition(Colour colour, Map<Position, BasePiece> boardMap) {
         for(Position position: boardMap.keySet()) {
             BasePiece piece = boardMap.get(position);
-            if(piece instanceof King && piece.getColour()==colour) return position;
+            if(piece instanceof King && piece.getColour()==colour) {
+                return position;
+            }
         }
         return null;
     }

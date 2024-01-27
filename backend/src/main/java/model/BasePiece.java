@@ -3,9 +3,7 @@ package model;
 import common.Colour;
 import common.Direction;
 import common.Position;
-import utility.Log;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +33,11 @@ public abstract class BasePiece {
      **/
     protected abstract void setupDirections();
 
+    /**
+     * Fetch all the positions of the wall
+     * @param boardMap: Board Map representing current game board
+     * @return map of piece and positions
+     * */
     protected Map<BasePiece, Position> getWallPieceMapping(Map<Position, BasePiece> boardMap) {
         Map<BasePiece, Position> res = new HashMap<>();
         for(Position pos: boardMap.keySet()) {
@@ -51,7 +54,7 @@ public abstract class BasePiece {
      * Fetch all the possible positions where a piece can move on board
      * @param boardMap: Board Map representing current game board
      * @param start: position of piece on board
-     * @return List of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to move
      * */
     public abstract Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start);
 
