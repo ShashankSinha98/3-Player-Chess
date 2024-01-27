@@ -5,10 +5,8 @@ import common.Direction;
 import common.InvalidPositionException;
 import common.Position;
 import utility.Log;
-import utility.Util;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,52 +33,13 @@ public class Wall extends Rook {
     }
 
     /**
-     *  To check whether a move is valid
-     * @param board: Board class instance representing current game board
-     * @param start: Start position of move
-     * @param end: End position of move
-     * @return True if a move is possible from start to end, else False
-     * */
-    @Override
-    public boolean isLegalMove(Board board, Position start, Position end) {
-        Map<Position, BasePiece> boardMap = board.boardMap;
-        BasePiece mover = this;
-        BasePiece target = boardMap.get(end);
-        if(target != null) {
-            return false; // Wall cannot take any piece
-        }
-        Colour moverCol = mover.getColour();
-        if(target != null && moverCol == target.getColour()) {
-            return false; // player cannot take its own piece
-        }
-
-        Direction[][] steps = this.directions;
-        for (Direction[] step : steps) {
-            try {
-                Position tmp = step(mover, step, start);
-                while (end != tmp && boardMap.get(tmp) == null) {
-                    Log.d(TAG, "tmp: " + tmp);
-                    tmp = step(mover, step, tmp, tmp.getColour() != start.getColour());
-                }
-                if (end == tmp) {
-                    return true; // when end position is in range of rook and contains a piece
-                }
-            } catch (InvalidPositionException e) {
-                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
-            }//do nothing, steps went off board.
-        }
-        return false;
-    }
-
-    /**
      * Fetch all the possible positions where a piece can move on board
-     * @param board: Board class instance representing current game board
+     * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board
-     * @return List of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public List<Position> getHighlightPolygons(Board board, Position start) {
-        Map<Position, BasePiece> boardMap = board.boardMap;
+    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
         //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();
         BasePiece mover = this;
@@ -95,7 +54,7 @@ public class Wall extends Rook {
             }
         }
 
-        return Util.toList(positionSet);
+        return positionSet;
     }
 
     /**

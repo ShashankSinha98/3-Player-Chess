@@ -1,9 +1,7 @@
 package abstraction;
 import common.Colour;
-import common.InvalidPositionException;
 import common.OnClickResponse;
 
-import java.util.List;
 import java.util.Map;
 
 public interface IGameInterface {

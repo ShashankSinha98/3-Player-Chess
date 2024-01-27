@@ -5,11 +5,9 @@ import common.Direction;
 import common.InvalidPositionException;
 import common.Position;
 import utility.Log;
-import utility.Util;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -49,42 +47,14 @@ public class Knight extends BasePiece {
     }
 
     /**
-     *  To check whether a move is valid
-     * @param board: Board class instance representing current game board
-     * @param start: Start position of move
-     * @param end: End position of move
-     * @return True if a move is possible from start to end, else False
-     * */
-    @Override
-    public boolean canMove(Board board, Position start, Position end) {
-        Map<Position, BasePiece> boardMap = board.boardMap;
-        BasePiece mover = this;
-
-        Direction[][] steps = this.directions;
-        for (Direction[] step : steps) {
-            try {
-                if (end == step(mover, step, start)) {
-                    return true;
-                }
-            } catch (InvalidPositionException e) {
-                //do nothing, steps went off board.
-                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
-            }
-        }
-        return false;
-    }
-
-    /**
      * Fetch all the possible positions where a piece can move on board
-     * @param board: Board class instance representing current game board
+     * @param boardMap: Board class instance representing current game board
      * @param start: position of piece on board
-     * @return List of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public List<Position> getHighlightPolygons(Board board, Position start) {
-        Map<Position, BasePiece> boardMap = board.boardMap;
-        Collection<Position> wallPiecePositions = board.wallPieceMapping.values();
-
+    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
+        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<Position> positionSet = new HashSet<>();
         BasePiece mover = this;
         Direction[][] steps = this.directions;
@@ -111,7 +81,7 @@ public class Knight extends BasePiece {
             }
         }
 
-        return Util.toList(positionSet);
+        return positionSet;
     }
 
     /**

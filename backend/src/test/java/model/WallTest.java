@@ -1,11 +1,16 @@
 package model;
 
+import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,118 +19,97 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class WallTest {
-    private Board board;
+ class WallTest {
 
-    @BeforeEach
-    void initBeforeEachBoardTest() {
-        board = new Board();
-    }
+     private Board board;
+     private Map<Position, BasePiece> boardMap;
+
+     @BeforeEach
+     void initBeforeEachBoardTest() {
+         board = new Board();
+         boardMap = board.boardMap;
+     }
 
     @Test
-    public void setupDirections_initPieceDirectionsIsEmpty_False() {
+     void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece wall = new Wall(Colour.BLUE);
         assertNotEquals(0, wall.directions.length);
     }
 
-    @Test
-    public void canMove_validMoves_True() {
-        Position[] startPositions = new Position[] {BH2, BE4, GE4};
-        Position[][] endPositions = new Position[][] {{BH3, BH4, RA4, RA3}, {BD4, BE3, BG4, BF4, BH4}, {GB4, GH4, BD3}};
+     @ParameterizedTest
+     @EnumSource(value = Position.class, names = {"BH2", "RH2", "GH2"})
+     void check_wallPresentInInitialPosition_True(Position position) {
+         BasePiece piece = boardMap.get(position);
+         assertInstanceOf(Wall.class, piece);
+     }
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece wall = new Wall(start.getColour());
-            board.boardMap.put(start, wall);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertTrue(wall.canMove(board, start, end));
-            }
-        }
-    }
+     @ParameterizedTest
+     @EnumSource(Colour.class)
+     void isLegalMove_wallMovesToEmptySquare_True(Colour colour) {
+         Board board = new Board();
+         boardMap.clear();
 
-    @Test
-    public void canMove_invalidMoves_False() {
-        Position[] startPositions = new Position[] {GE4, BB3};
-        Position[][] endPositions = new Position[][] {{GF3, BA3, BH2}, {BF2, BA1, GH4, GF4}};
+         Position wallPosition = BE2;
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece wall = new Wall(start.getColour());
-            board.boardMap.put(start, wall);
-            Position[] ends = endPositions[i];
-            for(Position end: ends) {
-                assertFalse(wall.canMove(board, start, end));
-            }
-        }
-    }
+         BasePiece wall = new Wall(colour);
+         boardMap.put(wallPosition, wall);
+         Set<Position> actualWallMoves = wall.getHighlightPolygons(boardMap, wallPosition);
+         assertTrue(actualWallMoves.contains(BE4));
+     }
 
-    @Test
-    public void isLegalMove_wallPresentInInitialPosition_True() {
-        Position[] wallInitialPositions = new Position[] {BH2, RH2, GH2};
-        for(Position position: wallInitialPositions) {
-            BasePiece piece = board.boardMap.get(position);
-            assertInstanceOf(Wall.class, piece);
-        }
-    }
-    @Test
-    public void isLegalMove_wallPresentInInitialPosition_False() {
-        Position[] wallInitialPositions = new Position[] {BA2, RA2, GA2};
-        for(Position position: wallInitialPositions) {
-            BasePiece piece = board.boardMap.get(position);
-            assertFalse(piece instanceof  Wall);
-        }
-    }
+     @ParameterizedTest
+     @MethodSource("model.DataProvider#pieceProvider")
+     void isLegalMove_wallTakesItsColourPiece_False(BasePiece piece) {
+         BasePiece wall = new Wall(piece.colour);
 
-    @Test
-    public void getHighlightPolygons_validPolygons_presentInPolygonList() {
-        Position[] startPositions = new Position[] {BA4, BF4, GD4};
-        Position[][] endPositions = new Position[][] {{BA3, GH4, GH3, BC4, BG4}, {BF3, BC4, RC3, BH4}, {RE3, GC4, GH4, GD3, GA4}};
+         Position startPosition = BE2;
+         Position endPosition = BE4;
 
-        for(int i=0; i<startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece wall = new Wall(start.getColour());
-            board.boardMap.put(start, wall);
-            Position[] ends = endPositions[i];
+         boardMap.put(startPosition, wall);
+         boardMap.put(endPosition, piece);
 
-            List<Position> highlightedPolygons = wall.getHighlightPolygons(board, start);
-            for(Position end: ends) {
-                assertTrue(highlightedPolygons.contains(end));
-            }
-        }
-    }
+         Set<Position> actualWallMoves = wall.getHighlightPolygons(boardMap, startPosition);
+         assertFalse(actualWallMoves.contains(endPosition));
+     }
 
-    @Test
-    public void getHighlightPolygons_invalidPolygons_absentInPolygonList() {
-        Position[] startPositions = new Position[] {RD3, BG3, RE1};
-        Position[][] endPositions = new Position[][] {{GD1, BF3, BA1}, {RA3, BG3, GH4, GC2}, {RA3, BC2, GA4, RD3}};
+     @ParameterizedTest
+     @MethodSource("model.DataProvider#pieceProvider")
+     void isLegalMove_wallTakesDifferentColourPiece_False(BasePiece piece) {
+         BasePiece wall = new Wall(piece.colour.next());
 
-        for (int i = 0; i < startPositions.length; i++) {
-            Board board = new Board();
-            Position start = startPositions[i];
-            BasePiece wall = new Wall(start.getColour());
-            board.boardMap.put(start, wall);
-            Position[] ends = endPositions[i];
+         Position startPosition = BE2;
+         Position endPosition = BE4;
 
-            List<Position> highlightedPolygons = wall.getHighlightPolygons(board, start);
-            for (Position end : ends) {
-                assertFalse(highlightedPolygons.contains(end));
-            }
-        }
-    }
+         boardMap.put(startPosition, wall);
+         boardMap.put(endPosition, piece);
 
-    @Test
-    public void toString_initWallAllColours_correctStringFormat() {
-        BasePiece blueWall = new Wall(Colour.BLUE);
-        assertEquals(blueWall.toString(), "BW");
+         Set<Position> actualWallMoves = wall.getHighlightPolygons(boardMap, startPosition);
+         assertFalse(actualWallMoves.contains(endPosition));
+     }
 
-        BasePiece redWall = new Wall(Colour.RED);
-        assertEquals(redWall.toString(), "RW");
+     @ParameterizedTest
+     @EnumSource(Colour.class)
+     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
+         Board board = new Board();
+         boardMap.clear();                 //empty board
+         Position startPosition = BE4;
 
-        BasePiece greenWall = new Wall(Colour.GREEN);
-        assertEquals(greenWall.toString(), "GW");
+         BasePiece wall = new Wall(colour);
+         boardMap.put(startPosition, wall);
+
+         Set<Position> expectedWallMoves =
+                 ImmutableSet.of(BE1, BE2, BE3, BA4, BB4, BC4, BD4, BF4, BG4, BH4, RD4, RD3, RD2, RD1);
+         Set<Position> actualWallMoves = wall.getHighlightPolygons(boardMap, startPosition);
+
+         assertEquals(expectedWallMoves, actualWallMoves);
+     }
+
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    void toString_initWallAllColours_correctStringFormat(Colour colour) {
+        BasePiece wall = new Wall(colour);
+        String expectedFormat = colour.toString() + "W";
+
+        assertEquals(expectedFormat, wall.toString());
     }
 }
