@@ -15,24 +15,38 @@ import java.util.stream.Stream;
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class contains unit tests for the Bishop class.
+ */
  class BishopTest {
 
     private Board board;
     private Map<Position, BasePiece> boardMap;
 
+   /**
+    * Initializes a new Board instance before each test.
+    */
     @BeforeEach
     void initBeforeEachBoardTest() {
         board = new Board();
         boardMap = board.boardMap;
     }
 
-    // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
+   /**
+    * Tests the setupDirections method, expecting the bishop movement directions to be non-empty.
+    */
     @Test
      void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece bishop = new Bishop(Colour.BLUE);
         assertNotEquals(0, bishop.directions.length);
     }
 
+   /**
+    * Parameterized test for isLegalMove method with valid moves, expecting true.
+    *
+    * @param start Starting position of the bishop
+    * @param end   Ending position of the bishop
+    */
     @ParameterizedTest
     @CsvFileSource(files = "src/test/resources/legalBishopMoves.csv")
      void isLegalMove_validMoves_True(String start, String end) {
@@ -46,6 +60,12 @@ import static org.junit.jupiter.api.Assertions.*;
        assertTrue(actualBishopMoves.contains(endPosition));
     }
 
+    /**
+     * Parameterized test for isLegalMove method with invalid moves, expecting false.
+     *
+     * @param start Starting position of the bishop
+     * @param end   Ending position of the bishop
+     */
     @ParameterizedTest
     @CsvFileSource(files = "src/test/resources/illegalBishopMoves.csv")
      void isLegalMove_invalidMoves_False(String start, String end) {
@@ -59,6 +79,11 @@ import static org.junit.jupiter.api.Assertions.*;
        assertFalse(actualBishopMoves.contains(endPosition));
     }
 
+    /**
+     * Parameterized test to check if the bishop is present in its initial position, expecting true.
+     *
+     * @param position Initial position of the bishop
+     */
     @ParameterizedTest
     @EnumSource(value = Position.class, names = {"BC1", "BF1", "RC1", "RF1", "GC1", "GF1"})
      void check_bishopPresentInInitialPosition_True(Position position) {
@@ -67,6 +92,12 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
 
+    /**
+     * Parameterized test for isLegalMove method when bishop takes a piece of its own color,
+     * expecting false.
+     *
+     * @param piece Piece to be placed on the board
+     */
     @ParameterizedTest
     @MethodSource("model.DataProvider#pieceProvider")
      void isLegalMove_bishopTakesItsColourPiece_False(BasePiece piece) {
@@ -79,6 +110,12 @@ import static org.junit.jupiter.api.Assertions.*;
        assertFalse(actualBishopMoves.contains(BD3));
     }
 
+    /**
+     * Parameterized test for isLegalMove method when bishop takes a piece of a different color,
+     * expecting true.
+     *
+     * @param piece Piece to be placed on the board
+     */
     @ParameterizedTest
     @MethodSource("model.DataProvider#pieceProvider")
      void isLegalMove_bishopTakesDifferentColourPiece_True(BasePiece piece) {
@@ -90,6 +127,12 @@ import static org.junit.jupiter.api.Assertions.*;
        assertTrue(actualBishopMoves.contains(BD3));
     }
 
+    /**
+     * Parameterized test for getHighlightPolygons method,
+     * expecting valid polygons to be present in the list.
+     *
+     * @param colour Colour of the bishop
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
      void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
@@ -106,6 +149,14 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(expectedBishopMoves, actualBishopMoves);
     }
 
+    /**
+     * Parameterized test for toString method,
+     * expecting correct string format for bishop initialization.
+     * BB: blue Bishop
+     * GB: green Bishop
+     * RB: red Bishop
+     * @param colour Colour of the bishop
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
      void toString_initBishopAllColours_correctStringFormat(Colour colour) {
