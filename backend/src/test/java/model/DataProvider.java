@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class DataProvider {
+
+    /** Method Source for some JUnit-Tests to test the interactions with different pieces
+     *
+     * @return stream of pieces except the wall
+     */
     static Stream<BasePiece> pieceProvider() {
         List<BasePiece> pieces = new ArrayList<>();
 
