@@ -33,43 +33,6 @@ public class Wall extends Rook {
     }
 
     /**
-     *  To check whether a move is valid
-     * @param boardMap: Board class instance representing current game board
-     * @param start: Start position of move
-     * @param end: End position of move
-     * @return True if a move is possible from start to end, else False
-     * */
-    @Override
-    public boolean isLegalMove(Map<Position, BasePiece> boardMap, Position start, Position end) {
-        BasePiece mover = this;
-        BasePiece target = boardMap.get(end);
-        if(target != null) {
-            return false; // Wall cannot take any piece
-        }
-        Colour moverCol = mover.getColour();
-        if(target != null && moverCol == target.getColour()) {
-            return false; // player cannot take its own piece
-        }
-
-        Direction[][] steps = this.directions;
-        for (Direction[] step : steps) {
-            try {
-                Position tmp = step(mover, step, start);
-                while (end != tmp && boardMap.get(tmp) == null) {
-                    Log.d(TAG, "tmp: " + tmp);
-                    tmp = step(mover, step, tmp, tmp.getColour() != start.getColour());
-                }
-                if (end == tmp) {
-                    return true; // when end position is in range of rook and contains a piece
-                }
-            } catch (InvalidPositionException e) {
-                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
-            }//do nothing, steps went off board.
-        }
-        return false;
-    }
-
-    /**
      * Fetch all the possible positions where a piece can move on board
      * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board

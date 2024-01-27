@@ -37,15 +37,16 @@ import static org.junit.jupiter.api.Assertions.*;
      void isLegalMove_pawnMoveForwardToEmptySquare_True() {
          BasePiece pawn = new Pawn(Colour.BLUE);
          boardMap.put(BE4, pawn);
-
-         assertTrue(pawn.isLegalMove(boardMap, BE4, RD4));
+         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, BE4);
+         assertTrue(actualPawnMoves.contains(RD4));
      }
 
     @ParameterizedTest
     @EnumSource(Colour.class)
      void isLegalMove_pawnAbsentFromStartPosition_False(Colour colour) {
         BasePiece pawn = new Pawn(colour);
-        assertFalse(pawn.isLegalMove(boardMap, BE4, BD3));
+        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, BE4);
+        assertFalse(actualPawnMoves.contains(BD3));
     }
 
     @ParameterizedTest
@@ -58,8 +59,8 @@ import static org.junit.jupiter.api.Assertions.*;
         boardMap.put(startPosition, pawn);
 
         boardMap.put(endPosition, piece);
-
-        assertFalse(pawn.isLegalMove(boardMap, BE4, RD4));
+        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
+        assertFalse(actualPawnMoves.contains(endPosition));
     }
 
     @ParameterizedTest
@@ -75,8 +76,8 @@ import static org.junit.jupiter.api.Assertions.*;
         boardMap.put(startPosition, pawn);
 
         boardMap.put(endPosition, piece);
-
-        assertTrue(pawn.isLegalMove(boardMap, startPosition, endPosition));
+        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
+        assertTrue(actualPawnMoves.contains(endPosition));
     }
 
      @ParameterizedTest
@@ -91,8 +92,8 @@ import static org.junit.jupiter.api.Assertions.*;
         boardMap.put(startPosition, pawn);
 
         boardMap.put(endPosition, piece);
-
-        assertFalse(pawn.isLegalMove(boardMap, startPosition, endPosition));
+         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
+         assertFalse(actualPawnMoves.contains(endPosition));
     }
 
      @Test

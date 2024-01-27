@@ -4,7 +4,12 @@ import common.InvalidPositionException;
 import model.BasePiece;
 import common.Position;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *  Class BoardAdapter to convert information for web app representable form

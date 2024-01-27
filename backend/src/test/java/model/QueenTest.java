@@ -49,8 +49,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
          BasePiece queen = new Queen(colour);
          boardMap.put(queenPosition, queen);
-
-         assertTrue(queen.isLegalMove(boardMap, queenPosition, GF3));
+         Set<Position> actualQueenMoves = queen.getHighlightPolygons(boardMap, queenPosition);
+         assertTrue(actualQueenMoves.contains(GF3));
      }
 
      @ParameterizedTest
@@ -63,8 +63,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
          boardMap.put(startPosition, queen);
          boardMap.put(endPosition, piece);
-
-         assertFalse(queen.isLegalMove(boardMap, startPosition, endPosition));
+         Set<Position> actualQueenMoves = queen.getHighlightPolygons(boardMap, startPosition);
+         assertFalse(actualQueenMoves.contains(endPosition));
      }
 
      @ParameterizedTest
@@ -77,8 +77,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
          boardMap.put(startPosition, queen);
          boardMap.put(endPosition, piece);
-
-         assertTrue(queen.isLegalMove(boardMap, startPosition, endPosition));
+         Set<Position> actualQueenMoves = queen.getHighlightPolygons(boardMap, startPosition);
+         assertTrue(actualQueenMoves.contains(endPosition));
      }
 
      @ParameterizedTest

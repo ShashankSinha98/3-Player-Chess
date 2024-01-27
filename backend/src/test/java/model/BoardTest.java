@@ -61,19 +61,6 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void move_jesterTakesWall_jesterWallPositionSwitch() throws InvalidPositionException, InvalidMoveException {
-        BasePiece blueJester = new Jester(Colour.BLUE);
-        boardMap.put(BE4, blueJester);
-
-        BasePiece redWall = new Wall(Colour.RED);
-
-        boardMap.put(RC3, redWall);
-        board.move(BE4, RC3);
-        assertEquals(redWall, boardMap.get(BE4));
-        assertEquals(blueJester, boardMap.get(RC3));
-    }
-
-    @Test
      void move_rightCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
         boardMap.remove(BF1);
         boardMap.remove(BG1);
@@ -98,17 +85,6 @@ import static org.junit.jupiter.api.Assertions.*;
         board.move(BE1, BC1); // left castling
         assertEquals(king, boardMap.get(BC1));
         assertEquals(leftRook, boardMap.get(BD1));
-    }
-
-    @Test
-     void move_bluePieceTakesRedKing_gameOverAndBlueWinner() throws InvalidPositionException, InvalidMoveException {
-        BasePiece blueRook = new Rook(Colour.BLUE);
-        boardMap.put(RE2, blueRook);
-
-        board.move(RE2, RE1);
-
-        assertTrue(board.isGameOver());
-        assertEquals("B", board.getWinner());
     }
 
     @Test

@@ -42,39 +42,6 @@ public class Pawn extends BasePiece {
     }
 
     /**
-     *  To check whether a move is valid
-     * @param boardMap: Board Map instance representing current game board
-     * @param start: Start position of move
-     * @param end: End position of move
-     * @return True if a move is possible from start to end, else False
-     * */
-    @Override
-    public boolean canMove(Map<Position, BasePiece> boardMap, Position start, Position end) {
-        BasePiece mover = this;
-        BasePiece target = boardMap.get(end);
-        Colour moverCol = mover.getColour();
-
-        Direction[][] steps = this.directions;
-        for(int i = 0; i<steps.length; i++){
-            try{
-                if(end == step(mover,steps[i],start) && (
-                                (target==null && i==0) // 1 step forward, not taking
-                                || (target==null && i==1 // 2 steps forward,
-                                    && start.getColour()==moverCol && start.getRow()==1 //must be in initial position
-                                    && boardMap.get(Position.get(moverCol,2,start.getColumn()))==null)//and can't jump a piece
-                                || (target!=null && i>1)//or taking diagonally
-                        )
-                )
-                    return true;
-            }catch(InvalidPositionException e) {
-                //do nothing, steps went off board.
-                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
-            }
-        }
-        return false;
-    }
-
-    /**
      * Fetch all the possible positions where a piece can move on board
      * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board

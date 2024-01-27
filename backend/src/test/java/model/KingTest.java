@@ -60,7 +60,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          BasePiece king = new King(colour);
          boardMap.put(kingPosition, king);
 
-         assertTrue(king.isLegalMove(boardMap, kingPosition, BE3));
+         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, kingPosition);
+         assertTrue(actualKingMoves.contains(BE3));
      }
 
      @ParameterizedTest
@@ -74,7 +75,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          boardMap.put(startPosition, king);
          boardMap.put(endPosition, piece);
 
-         assertFalse(king.isLegalMove(boardMap, startPosition, endPosition));
+         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, startPosition);
+         assertFalse(actualKingMoves.contains(endPosition));
      }
 
      @ParameterizedTest
@@ -87,8 +89,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
          boardMap.put(startPosition, king);
          boardMap.put(endPosition, piece);
-
-         assertTrue(king.isLegalMove(boardMap, startPosition, endPosition));
+         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, startPosition);
+         assertTrue(actualKingMoves.contains(endPosition));
      }
      @ParameterizedTest
      @EnumSource(Colour.class)
@@ -120,8 +122,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
         boardMap.put(kingPosition, king);
         boardMap.put(rookPosition, rook);
-
-        assertTrue(king.isLegalMove(boardMap, kingPosition, RG1));
+        Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, kingPosition);
+        assertTrue(actualKingMoves.contains(RG1));
     }
 
      @Test
@@ -140,8 +142,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          boardMap.put(kingPosition, king);
          boardMap.put(rookPosition, rook);
          boardMap.put(knightPosition, knight);
-
-         assertFalse(king.isLegalMove(boardMap, kingPosition, RG1));
+         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, kingPosition);
+         assertFalse(actualKingMoves.contains(RG1));
      }
 
      @Test
@@ -157,8 +159,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
          boardMap.put(kingPosition, king);
          boardMap.put(rookPosition, rook);
-
-         assertTrue(king.isLegalMove(boardMap, kingPosition, RC1));
+         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, kingPosition);
+         assertTrue(actualKingMoves.contains(RC1));
      }
 
      @Test
@@ -177,8 +179,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          boardMap.put(kingPosition, king);
          boardMap.put(rookPosition, rook);
          boardMap.put(knightPosition, knight);
-
-         assertFalse(king.isLegalMove(boardMap, kingPosition, RC1));
+         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, kingPosition);
+         assertFalse(actualKingMoves.contains(RC1));
      }
 
 

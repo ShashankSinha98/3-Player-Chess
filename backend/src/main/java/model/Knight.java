@@ -47,31 +47,6 @@ public class Knight extends BasePiece {
     }
 
     /**
-     *  To check whether a move is valid
-     * @param boardMap: Board Map instance representing current game board
-     * @param start: Start position of move
-     * @param end: End position of move
-     * @return True if a move is possible from start to end, else False
-     * */
-    @Override
-    public boolean canMove(Map<Position, BasePiece> boardMap, Position start, Position end) {
-        BasePiece mover = this;
-
-        Direction[][] steps = this.directions;
-        for (Direction[] step : steps) {
-            try {
-                if (end == step(mover, step, start)) {
-                    return true;
-                }
-            } catch (InvalidPositionException e) {
-                //do nothing, steps went off board.
-                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
-            }
-        }
-        return false;
-    }
-
-    /**
      * Fetch all the possible positions where a piece can move on board
      * @param boardMap: Board class instance representing current game board
      * @param start: position of piece on board

@@ -8,7 +8,10 @@ import common.Position;
 import utility.BoardAdapter;
 import utility.Log;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Class containing the Board logic. To initialize the board with the pieces.
@@ -24,7 +27,7 @@ public class Board {
     private Colour turn;
     private boolean gameOver;
     private String winner;
-    private Set<Position> highlightPolygons;
+    private Set<Position> highlightPolygons = new HashSet<>();
 
     /**
      * Board constructor. Places pieces on the board and initializes variables
@@ -119,7 +122,7 @@ public class Board {
             }
 
             if(mover instanceof King && start.getColumn()==4 && start.getRow()==0) {
-                if(end.getColumn()==2){//castle left, update rook
+                if(end.getColumn()==2) {//castle left, update rook
                     Position rookPos = Position.get(mover.getColour(),0,0);
                     boardMap.put(Position.get(mover.getColour(),0,3), boardMap.get(rookPos));
                     boardMap.remove(rookPos);
@@ -162,18 +165,14 @@ public class Board {
      * */
     public boolean isLegalMove(Position start, Position end) {
         BasePiece mover = getPiece(start);
-        BasePiece target = getPiece(end);
         if(mover == null) {
             return false; // No piece present at start position
         }
         Colour moverCol = mover.getColour();
-        if(moverCol!=turn) return false; // piece colour mismatches player colour
-        if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
-
-        boolean isLegalMove = mover.isLegalMove(this.boardMap, start, end);
-        Log.d(TAG, "isLegalMove: "+isLegalMove);
-
-        if(isLegalMove) {
+        if(highlightPolygons.isEmpty()) {
+            highlightPolygons = mover.getHighlightPolygons(this.boardMap, start);
+        }
+        if(highlightPolygons.contains(end)) {
             if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
                 Log.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
                 return false;
@@ -300,7 +299,9 @@ public class Board {
     private Position getKingPosition(Colour colour, Map<Position, BasePiece> boardMap) {
         for(Position position: boardMap.keySet()) {
             BasePiece piece = boardMap.get(position);
-            if(piece instanceof King && piece.getColour()==colour) return position;
+            if(piece instanceof King && piece.getColour()==colour) {
+                return position;
+            }
         }
         return null;
     }
