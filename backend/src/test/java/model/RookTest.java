@@ -42,8 +42,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
          BasePiece rook = new Rook(colour);
          boardMap.put(rookPosition, rook);
-
-         assertTrue(rook.isLegalMove(boardMap, rookPosition, BE4));
+         Set<Position> actualRookMoves = rook.getHighlightPolygons(boardMap, rookPosition);
+         assertTrue(actualRookMoves.contains(BE4));
      }
 
      @ParameterizedTest
@@ -56,8 +56,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
          boardMap.put(startPosition, rook);
          boardMap.put(endPosition, piece);
-
-         assertFalse(rook.isLegalMove(boardMap, startPosition, endPosition));
+         Set<Position> actualRookMoves = rook.getHighlightPolygons(boardMap, startPosition);
+         assertFalse(actualRookMoves.contains(endPosition));
      }
 
      @ParameterizedTest
@@ -70,8 +70,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
          boardMap.put(startPosition, rook);
          boardMap.put(endPosition, piece);
-
-         assertTrue(rook.isLegalMove(boardMap, startPosition, endPosition));
+         Set<Position> actualRookMoves = rook.getHighlightPolygons(boardMap, startPosition);
+         assertTrue(actualRookMoves.contains(endPosition));
      }
 
      @ParameterizedTest

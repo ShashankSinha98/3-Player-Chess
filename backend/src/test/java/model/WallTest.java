@@ -53,8 +53,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
          BasePiece wall = new Wall(colour);
          boardMap.put(wallPosition, wall);
-
-         assertTrue(wall.isLegalMove(boardMap, wallPosition, BE4));
+         Set<Position> actualWallMoves = wall.getHighlightPolygons(boardMap, wallPosition);
+         assertTrue(actualWallMoves.contains(BE4));
      }
 
      @ParameterizedTest
@@ -68,7 +68,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          boardMap.put(startPosition, wall);
          boardMap.put(endPosition, piece);
 
-         assertFalse(wall.isLegalMove(boardMap, startPosition, endPosition));
+         Set<Position> actualWallMoves = wall.getHighlightPolygons(boardMap, startPosition);
+         assertFalse(actualWallMoves.contains(endPosition));
      }
 
      @ParameterizedTest
@@ -82,7 +83,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          boardMap.put(startPosition, wall);
          boardMap.put(endPosition, piece);
 
-         assertFalse(wall.isLegalMove(boardMap, startPosition, endPosition));
+         Set<Position> actualWallMoves = wall.getHighlightPolygons(boardMap, startPosition);
+         assertFalse(actualWallMoves.contains(endPosition));
      }
 
      @ParameterizedTest

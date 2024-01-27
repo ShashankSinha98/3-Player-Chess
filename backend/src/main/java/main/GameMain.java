@@ -106,6 +106,4 @@ public class GameMain implements IGameInterface {
         return board.getTurn();
     }
 
-    public static void main(String[] args) { }
-
 }

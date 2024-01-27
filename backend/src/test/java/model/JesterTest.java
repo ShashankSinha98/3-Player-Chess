@@ -45,7 +45,8 @@ class JesterTest {
         BasePiece jester = new Jester(colour);
         boardMap.put(jesterPosition, jester);
 
-        assertTrue(jester.isLegalMove(boardMap, jesterPosition, BF4));
+        Set<Position> actualJesterMoves = jester.getHighlightPolygons(boardMap, jesterPosition);
+        assertTrue(actualJesterMoves.contains(BF4));
     }
 
     @ParameterizedTest
@@ -56,7 +57,8 @@ class JesterTest {
         boardMap.put(BE4, jester);
         boardMap.put(BC3, piece);
 
-        assertFalse(jester.isLegalMove(boardMap, BE4, BC3));
+        Set<Position> actualJesterMoves = jester.getHighlightPolygons(boardMap, BE4);
+        assertFalse(actualJesterMoves.contains(BC3));
     }
 
     @ParameterizedTest
@@ -65,8 +67,8 @@ class JesterTest {
         BasePiece jester = new Jester(piece.colour.next());
         boardMap.put(BE4, jester);
         boardMap.put(BC3, piece);
-
-        assertTrue(jester.isLegalMove(boardMap, BE4, BC3));
+        Set<Position> actualJesterMoves = jester.getHighlightPolygons(boardMap, BE4);
+        assertTrue(actualJesterMoves.contains(BC3));
     }
 
 

@@ -27,7 +27,7 @@ public class Board {
     private Colour turn;
     private boolean gameOver;
     private String winner;
-    private Set<Position> firstClickHighlightPolygons;
+    private Set<Position> highlightPolygons = new HashSet<>();
 
     /**
      * Board constructor. Places pieces on the board and initializes variables
@@ -169,7 +169,10 @@ public class Board {
             return false; // No piece present at start position
         }
         Colour moverCol = mover.getColour();
-        if(firstClickHighlightPolygons.contains(end)) {
+        if(highlightPolygons.isEmpty()) {
+            highlightPolygons = mover.getHighlightPolygons(this.boardMap, start);
+        }
+        if(highlightPolygons.contains(end)) {
             if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
                 Log.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
                 return false;
@@ -217,11 +220,11 @@ public class Board {
     public Set<Position> getPossibleMoves(Position position) {
         BasePiece mover = boardMap.get(position);
         if(mover == null) return ImmutableSet.of();
-        firstClickHighlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
+        highlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
 
         Colour moverColour = mover.getColour();
         Set<Position> nonCheckPositions = new HashSet<>();
-        for(Position endPos: firstClickHighlightPolygons) {
+        for(Position endPos: highlightPolygons) {
             if(!isCheckAfterLegalMove(moverColour, this.boardMap, position, endPos)) {
                 nonCheckPositions.add(endPos);
             }

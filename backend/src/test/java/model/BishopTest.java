@@ -42,7 +42,8 @@ import static org.junit.jupiter.api.Assertions.*;
         BasePiece bishop = new Bishop(startPosition.getColour());
         boardMap.put(startPosition, bishop);
 
-        assertTrue(bishop.isLegalMove(boardMap, startPosition, endPosition));
+       Set<Position> actualBishopMoves = bishop.getHighlightPolygons(boardMap, startPosition);
+       assertTrue(actualBishopMoves.contains(endPosition));
     }
 
     @ParameterizedTest
@@ -54,7 +55,8 @@ import static org.junit.jupiter.api.Assertions.*;
         BasePiece bishop = new Bishop(startPosition.getColour());
         boardMap.put(startPosition, bishop);
 
-        assertFalse(bishop.isLegalMove(boardMap, startPosition, endPosition));
+       Set<Position> actualBishopMoves = bishop.getHighlightPolygons(boardMap, startPosition);
+       assertFalse(actualBishopMoves.contains(endPosition));
     }
 
     @ParameterizedTest
@@ -73,7 +75,8 @@ import static org.junit.jupiter.api.Assertions.*;
         boardMap.put(BE4, bishop);
         boardMap.put(BD3, piece);
 
-        assertFalse(bishop.isLegalMove(boardMap, BE4, BD3));
+       Set<Position> actualBishopMoves = bishop.getHighlightPolygons(boardMap, BE4);
+       assertFalse(actualBishopMoves.contains(BD3));
     }
 
     @ParameterizedTest
@@ -83,7 +86,8 @@ import static org.junit.jupiter.api.Assertions.*;
         boardMap.put(BE4, bishop);
 
         boardMap.put(BD3, piece);
-        assertTrue(bishop.isLegalMove(boardMap, BE4, BD3));
+       Set<Position> actualBishopMoves = bishop.getHighlightPolygons(boardMap, BE4);
+       assertTrue(actualBishopMoves.contains(BD3));
     }
 
     @ParameterizedTest

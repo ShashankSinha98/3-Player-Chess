@@ -44,8 +44,8 @@ class KnightTest {
 
         BasePiece knight = new Knight(colour);
         boardMap.put(knightPosition, knight);
-
-        assertTrue(knight.isLegalMove(boardMap, knightPosition, BF4));
+        Set<Position> actualKnightMoves = knight.getHighlightPolygons(boardMap, knightPosition);
+        assertTrue(actualKnightMoves.contains(BF4));
     }
 
     @ParameterizedTest
@@ -55,8 +55,8 @@ class KnightTest {
 
         boardMap.put(BE4, knight);
         boardMap.put(BC3, piece);
-
-        assertFalse(knight.isLegalMove(boardMap, BE4, BC3));
+        Set<Position> actualKnightMoves = knight.getHighlightPolygons(boardMap, BE4);
+        assertFalse(actualKnightMoves.contains(BC3));
     }
 
     @ParameterizedTest
@@ -66,8 +66,8 @@ class KnightTest {
         boardMap.put(BE4, knight);
 
         boardMap.put(BC3, piece);
-
-        assertTrue(knight.isLegalMove(boardMap, BE4, BC3));
+        Set<Position> actualKnightMoves = knight.getHighlightPolygons(boardMap, BE4);
+        assertTrue(actualKnightMoves.contains(BC3));
     }
 
 
