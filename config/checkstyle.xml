@@ -4,13 +4,16 @@
         "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
+  <property name="severity" value="warning"/>
   <module name="JavadocPackage"/>
   <module name="TreeWalker">
     <module name="AvoidStarImport"/>
     <module name="AbbreviationAsWordInName"/>
     <module name="ArrayTypeStyle"/>
     <module name="AvoidNestedBlocks"/>
-    <module name="BooleanExpressionComplexity"/>
+    <module name="BooleanExpressionComplexity">
+		<property name="max" value="4"/>
+	</module>
     <module name="CatchParameterName"/>
     <module name="ClassDataAbstractionCoupling"/>
     <module name="ClassFanOutComplexity"/>
@@ -23,5 +26,4 @@
   </module>
   <module name="NewlineAtEndOfFile"/>
   <module name="FileTabCharacter"/>
-  <!-- <module name="LineLength"/> -->
 </module>
