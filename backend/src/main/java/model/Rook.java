@@ -39,35 +39,6 @@ public class Rook extends BasePiece {
         this.directions = new Direction[][] {{Direction.BACKWARD},{Direction.LEFT},{Direction.RIGHT},{Direction.FORWARD}};
     }
 
-    /**
-     *  To check whether a move is valid
-     * @param boardMap: Board Map instance representing current game board
-     * @param start: Start position of move
-     * @param end: End position of move
-     * @return True if a move is possible from start to end, else False
-     * */
-    @Override
-    public boolean canMove(Map<Position, BasePiece> boardMap, Position start, Position end) {
-        BasePiece mover = this;
-
-        Direction[][] steps = this.directions;
-        for (Direction[] step : steps) {
-            try {
-                Position tmp = step(mover, step, start);
-                while (end != tmp &&
-                        (boardMap.get(tmp) == null) || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour())) {
-                    Log.d(TAG, "tmp: " + tmp);
-                    tmp = step(mover, step, tmp, tmp.getColour() != start.getColour());
-                }
-                if (end == tmp) {
-                    return true; // when end position is in range of rook and contains a piece
-                }
-            } catch (InvalidPositionException e) {
-                Log.e(TAG, "InvalidPositionException: " + e.getMessage());
-            }//do nothing, steps went off board.
-        }
-        return false;
-    }
 
     /**
      * Fetch all the possible positions where a piece can move on board

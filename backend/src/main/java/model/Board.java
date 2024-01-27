@@ -8,7 +8,10 @@ import common.Position;
 import utility.BoardAdapter;
 import utility.Log;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Class containing the Board logic. To initialize the board with the pieces.
@@ -25,7 +28,7 @@ public class Board {
     private Colour turn;
     private boolean gameOver;
     private String winner;
-    private Set<Position> highlightPolygons;
+    private Set<Position> firstClickHighlightPolygons;
 
     /**
      * Board constructor. Places pieces on the board and initializes variables
@@ -176,18 +179,11 @@ public class Board {
      * */
     public boolean isLegalMove(Position start, Position end) {
         BasePiece mover = getPiece(start);
-        BasePiece target = getPiece(end);
         if(mover == null) {
             return false; // No piece present at start position
         }
         Colour moverCol = mover.getColour();
-        if(moverCol!=turn) return false; // piece colour mismatches player colour
-        if(target!= null && moverCol==target.getColour())return false; // player cannot take i'ts own piece
-
-        boolean isLegalMove = mover.isLegalMove(this.boardMap, start, end);
-        Log.d(TAG, "isLegalMove: "+isLegalMove);
-
-        if(isLegalMove) {
+        if(firstClickHighlightPolygons.contains(end)) {
             if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
                 Log.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
                 return false;
@@ -235,11 +231,11 @@ public class Board {
     public Set<Position> getPossibleMoves(Position position) {
         BasePiece mover = boardMap.get(position);
         if(mover == null) return ImmutableSet.of();
-        highlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
+        firstClickHighlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
 
         Colour moverColour = mover.getColour();
         Set<Position> nonCheckPositions = new HashSet<>();
-        for(Position endPos: highlightPolygons) {
+        for(Position endPos: firstClickHighlightPolygons) {
             if(!isCheckAfterLegalMove(moverColour, this.boardMap, position, endPos)) {
                 nonCheckPositions.add(endPos);
             }

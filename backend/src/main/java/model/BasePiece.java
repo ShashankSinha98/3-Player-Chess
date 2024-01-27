@@ -35,36 +35,6 @@ public abstract class BasePiece {
      **/
     protected abstract void setupDirections();
 
-    /**
-     *  To check whether a move is valid. It contains some basic checks which is done
-     *  for all chess pieces
-     * @param boardMap: Board Map instance representing current game board
-     * @param start: Start position of move
-     * @param end: End position of move
-     * @return True if a move is possible from start to end, else False
-     * */
-
-    public boolean isLegalMove(Map<Position, BasePiece> boardMap, Position start, Position end) {
-        BasePiece mover = boardMap.get(start);
-        BasePiece target = boardMap.get(end);
-        if(mover==null) {
-            return false; // No piece present at start pos
-        }
-
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
-        if(wallPiecePositions.contains(end) && !(mover instanceof Jester)) return false;
-
-        Colour moverCol = mover.getColour();
-        if(target!= null && moverCol==target.getColour()) {
-            return false; // player cannot take its own piece
-        }
-
-        boolean canPieceMove = mover.canMove(boardMap, start, end);
-        Log.d(TAG, "canPieceMove: "+canPieceMove);
-
-        return canPieceMove;
-    }
-
     protected Map<BasePiece, Position> getWallPieceMapping(Map<Position, BasePiece> boardMap) {
         Map<BasePiece, Position> res = new HashMap<>();
         for(Position pos: boardMap.keySet()) {
@@ -76,16 +46,6 @@ public abstract class BasePiece {
 
         return res;
     }
-
-    /**
-     *  To check whether a piece can make a move from start to end.
-     *  It needs to be implemented by all chess pieces and check the move according to their logic
-     * @param boardMap: Board Map instance representing current game board
-     * @param start: Start position of move
-     * @param end: End position of move
-     * @return True if a move is possible from start to end, else False
-     * */
-    protected abstract boolean canMove(Map<Position, BasePiece> boardMap, Position start, Position end);
 
     /**
      * Fetch all the possible positions where a piece can move on board
