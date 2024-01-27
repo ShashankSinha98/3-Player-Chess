@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void move_wallMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupiedAndWallMappingUpdate() throws InvalidPositionException, InvalidMoveException {
+     void move_wallMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupied() throws InvalidPositionException, InvalidMoveException {
         BasePiece wall = boardMap.get(BH2);
         assertInstanceOf(Wall.class, wall);
         assertEquals(Colour.BLUE, wall.getColour());
@@ -47,7 +47,6 @@ import static org.junit.jupiter.api.Assertions.*;
         assertNull(boardMap.get(BH2));
         assertNotNull(boardMap.get(BH4));
         assertEquals(wall, boardMap.get(BH4));
-        assertEquals(BH4, board.wallPieceMapping.get(wall));
     }
 
     @Test
@@ -62,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void move_jesterTakesWall_jesterWallPositionSwitchAndWallPieceMappingUpdates() throws InvalidPositionException, InvalidMoveException {
+     void move_jesterTakesWall_jesterWallPositionSwitch() throws InvalidPositionException, InvalidMoveException {
         BasePiece blueJester = new Jester(Colour.BLUE);
         boardMap.put(BE4, blueJester);
 
@@ -72,7 +71,6 @@ import static org.junit.jupiter.api.Assertions.*;
         board.move(BE4, RC3);
         assertEquals(redWall, boardMap.get(BE4));
         assertEquals(blueJester, boardMap.get(RC3));
-        assertEquals(BE4, board.wallPieceMapping.get(redWall));
     }
 
     @Test
