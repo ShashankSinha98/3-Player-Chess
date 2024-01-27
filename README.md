@@ -5,7 +5,6 @@ Three Player chess game  using a Spring Boot web application
 The project consists of 3 different Modules:
 1. webapp: This module contains the Spring web application
 2. backend: This module contains the entire game logic for three player chess
-3. jchess: This module contains the remaining two player chess application with Swing GUI
 
 ## Install
 Clone the repository
@@ -17,4 +16,12 @@ Run the web application:
 ```sh
 gradlew bootRun
   ```
+
+## Deployment
+The web application is available under https://threeplayerchess.onrender.com.
+
+For the deployment there is a Dockerfile in the project directory.
+This was used to create a Docker image and push it to DockerHub.
+A web service was then created with Render (https://render.com/), which works with the DockerHub image.
+
     
