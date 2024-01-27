@@ -16,18 +16,30 @@ import java.util.Set;
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class contains unit tests for the Board class.
+ */
  class BoardTest {
 
     private Board board;
     private Map<Position, BasePiece> boardMap;
 
+   /**
+    * Initializes a new Board instance before each test.
+    */
     @BeforeEach
     void initBeforeEachBoardTest() {
        board = new Board();
        boardMap = board.boardMap;
     }
 
-    // Naming Convention- MethodName_StateUnderTest_ExpectedBehavior
+   /**
+    * Tests the move method for moving a piece to an empty polygon,
+    * expecting the start position to be empty and the end position to be occupied by the piece.
+    *
+    * @throws InvalidPositionException If an invalid position is encountered.
+    * @throws InvalidMoveException     If an invalid move is attempted.
+    */
     @Test
      void move_pieceMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupied() throws InvalidPositionException, InvalidMoveException {
         BasePiece pawn = boardMap.get(BE2);
@@ -37,6 +49,13 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(pawn, boardMap.get(BE4));
     }
 
+   /**
+    * Tests the move method for moving a wall to an empty polygon,
+    * expecting the start position to be empty and the end position to be occupied by the wall.
+    *
+    * @throws InvalidPositionException If an invalid position is encountered.
+    * @throws InvalidMoveException     If an invalid move is attempted.
+    */
     @Test
      void move_wallMoveToEmptyPolygon_startPositionEmptyAndEndPositionOccupied() throws InvalidPositionException, InvalidMoveException {
         BasePiece wall = boardMap.get(BH2);
@@ -49,6 +68,13 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(wall, boardMap.get(BH4));
     }
 
+   /**
+    * Tests the move method for moving a pawn to the opposite end row,
+    * expecting the pawn promoting to a queen.
+    *
+    * @throws InvalidPositionException If an invalid position is encountered.
+    * @throws InvalidMoveException     If an invalid move is attempted.
+    */
     @Test
      void move_pawnToOppositeEndRow_pawnUpgradeToQueen() throws InvalidPositionException, InvalidMoveException {
         BasePiece bluePawn = new Pawn(Colour.BLUE);
@@ -60,8 +86,15 @@ import static org.junit.jupiter.api.Assertions.*;
         assertInstanceOf(Queen.class, promotedPiece);
     }
 
+   /**
+    * Tests the move method for short castling legal move,
+    * expecting castling to occur.
+    *
+    * @throws InvalidPositionException If an invalid position is encountered.
+    * @throws InvalidMoveException     If an invalid move is attempted.
+    */
     @Test
-     void move_rightCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
+     void move_shortCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
         boardMap.remove(BF1);
         boardMap.remove(BG1);
 
@@ -73,8 +106,15 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(rightRook, boardMap.get(BF1));
     }
 
+   /**
+    * Tests the move method for long castling legal move,
+    * expecting castling to occur.
+    *
+    * @throws InvalidPositionException If an invalid position is encountered.
+    * @throws InvalidMoveException     If an invalid move is attempted.
+    */
     @Test
-     void move_leftCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
+     void move_longCastlingLegalMove_castlingHappen() throws InvalidPositionException, InvalidMoveException {
         boardMap.remove(BD1);
         boardMap.remove(BC1);
         boardMap.remove(BB1);
@@ -87,18 +127,30 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(leftRook, boardMap.get(BD1));
     }
 
+   /**
+    * Tests the getPossibleMoves method for an empty position,
+    * expecting an empty positions list.
+    */
     @Test
      void getPossibleMoves_emptyPosition_emptyPositionsList() {
         Set<Position> possibleMoves = board.getPossibleMoves(BE4);
         assertTrue(possibleMoves.isEmpty());
     }
 
+   /**
+    * Tests the getPossibleMoves method for a rook positioned behind a jester initially,
+    * expecting an empty positions list.
+    */
     @Test
      void getPossibleMoves_rookBehindJesterInitialPosition_emptyPositionsList() {
         Set<Position> possibleMoves = board.getPossibleMoves(BA1);
         assertTrue(possibleMoves.isEmpty());
     }
 
+   /**
+    * Tests the getPossibleMoves method for a rook positioned behind a wall initially,
+    * expecting a non-empty positions list.
+    */
     @Test
      void getPossibleMoves_rookBehindWallInitialPosition_nonEmptyPositionsList() {
         Set<Position> possibleMoves = board.getPossibleMoves(BH1);
