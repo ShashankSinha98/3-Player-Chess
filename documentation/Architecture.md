@@ -12,11 +12,16 @@ graphical use interface, Javascript along with html and css is used.
 * A new piece "WALL" - moves similar to rook but can neither take opponent piece nor be taken down. 
 
 For every action in the web application, a post request is made. 
+
+### Use Case Diagram
+![Use Case Diagram](images/usecaseDiagram.JPG)
+
 ### Backend Class Diagram
-![Class Diagram](images/ClassDiagram.svg)
+![Class Diagram](images/ClassDiagram.jpg)
 
 ### Backend Sequence Diagram
-![Class Diagram](images/newGameSequenceDiagram.svg)
+![Sequence Diagram](images/newGameSequenceDiagram.svg)
 
-### Web Sequence Diagram
+### Client Server Communication
+![Client Server Communication](images/ClientServerCommunication.JPG)
 

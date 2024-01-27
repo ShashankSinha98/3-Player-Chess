@@ -7,6 +7,7 @@ import common.InvalidPositionException;
 import common.Position;
 import utility.BoardAdapter;
 import utility.Log;
+import utility.PieceFactory;
 
 import java.util.Map;
 import java.util.Set;
@@ -54,37 +55,40 @@ public class Board {
     private void placeChessPieces(Colour colour) throws InvalidPositionException {
         // place ROOK
         Position[] rookStartPositions = new Position[] {Position.get(colour,0,0), Position.get(colour,0,7)};
-        boardMap.put(rookStartPositions[0], new Rook(colour)); boardMap.put(rookStartPositions[1], new Rook(colour));
+        boardMap.put(rookStartPositions[0], PieceFactory.createPiece("Rook", colour));
+        boardMap.put(rookStartPositions[1], PieceFactory.createPiece("Rook", colour));
 
         // place KNIGHT
         Position[] knightStartPositions = new Position[] {Position.get(colour,0,1), Position.get(colour,0,6)};
-        boardMap.put(knightStartPositions[0], new Knight(colour)); boardMap.put(knightStartPositions[1], new Knight(colour));
+        boardMap.put(knightStartPositions[0], PieceFactory.createPiece("Knight",colour));
+        boardMap.put(knightStartPositions[1], PieceFactory.createPiece("Knight",colour));
 
         // place BISHOP
         Position[] bishopStartPositions = new Position[] {Position.get(colour,0,2), Position.get(colour,0,5)};
-        boardMap.put(bishopStartPositions[0], new Bishop(colour)); boardMap.put(bishopStartPositions[1], new Bishop(colour));
+        boardMap.put(bishopStartPositions[0], PieceFactory.createPiece("Bishop",colour));
+        boardMap.put(bishopStartPositions[1], PieceFactory.createPiece("Bishop",colour));
 
         // place Queen
         Position queenStartingPosition = Position.get(colour,0,3);
-        boardMap.put(queenStartingPosition, new Queen(colour));
+        boardMap.put(queenStartingPosition, PieceFactory.createPiece("Queen",colour));
 
         // place KING
         Position kingStartingPosition = Position.get(colour,0,4);
-        boardMap.put(kingStartingPosition, new King(colour));
+        boardMap.put(kingStartingPosition, PieceFactory.createPiece("King",colour));
 
         // place PAWN
         for(int i = 1; i<7; i++){
             Position ithPawnPosition = Position.get(colour,1,i);
-            boardMap.put(ithPawnPosition, new Pawn(colour));
+            boardMap.put(ithPawnPosition, PieceFactory.createPiece("Pawn",colour));
         }
 
         // place JESTER
         Position jesterStartPosition = Position.get(colour,1,0);
-        boardMap.put(jesterStartPosition, new Jester(colour));
+        boardMap.put(jesterStartPosition, PieceFactory.createPiece("Jester",colour));
 
         // place WALL
         Position wallStartPosition = Position.get(colour, 1, 7);
-        BasePiece wall = new Wall(colour);
+        BasePiece wall = PieceFactory.createPiece("Wall",colour);
         boardMap.put(wallStartPosition, wall);
     }
 
@@ -219,7 +223,9 @@ public class Board {
      * */
     public Set<Position> getPossibleMoves(Position position) {
         BasePiece mover = boardMap.get(position);
-        if(mover == null) return ImmutableSet.of();
+        if(mover == null) {
+            return ImmutableSet.of();
+        }
         highlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
 
         Colour moverColour = mover.getColour();
