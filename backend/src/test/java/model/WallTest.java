@@ -19,23 +19,40 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Test class for the {@link Wall} class.
+ * Contains various tests to verify the behavior of the Wall piece in the game.
+ */
  class WallTest {
 
      private Board board;
      private Map<Position, BasePiece> boardMap;
 
+    /**
+     * Initializes a new Board instance before each test.
+     */
      @BeforeEach
      void initBeforeEachBoardTest() {
          board = new Board();
          boardMap = board.boardMap;
      }
 
+    /**
+     * Tests the setupDirections method,
+     * expecting the wall movement directions to be non-empty.
+     */
     @Test
      void setupDirections_initPieceDirectionsIsEmpty_False() {
         BasePiece wall = new Wall(Colour.BLUE);
         assertNotEquals(0, wall.directions.length);
     }
 
+    /**
+     * Parameterized test for checking if the wall is present in its initial position,
+     * expecting true.
+     *
+     * @param position Initial position of the wall
+     */
      @ParameterizedTest
      @EnumSource(value = Position.class, names = {"BH2", "RH2", "GH2"})
      void check_wallPresentInInitialPosition_True(Position position) {
@@ -43,6 +60,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertInstanceOf(Wall.class, piece);
      }
 
+    /**
+     * Parameterized test for isLegalMove method when the wall moves to an empty square,
+     * expecting true.
+     *
+     * @param colour Colour of the wall
+     */
      @ParameterizedTest
      @EnumSource(Colour.class)
      void isLegalMove_wallMovesToEmptySquare_True(Colour colour) {
@@ -57,6 +80,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertTrue(actualWallMoves.contains(BE4));
      }
 
+    /**
+     * Parameterized test for isLegalMove method
+     * when the wall takes a piece of its own colour,
+     * expecting false.
+     *
+     * @param piece Piece to be placed on the board
+     */
      @ParameterizedTest
      @MethodSource("model.DataProvider#pieceProvider")
      void isLegalMove_wallTakesItsColourPiece_False(BasePiece piece) {
@@ -72,6 +102,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertFalse(actualWallMoves.contains(endPosition));
      }
 
+    /**
+     * Parameterized test for isLegalMove method
+     * when the wall takes a piece of a different colour,
+     * expecting false.
+     *
+     * @param piece Piece to be placed on the board
+     */
      @ParameterizedTest
      @MethodSource("model.DataProvider#pieceProvider")
      void isLegalMove_wallTakesDifferentColourPiece_False(BasePiece piece) {
@@ -87,6 +124,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertFalse(actualWallMoves.contains(endPosition));
      }
 
+    /**
+     * Parameterized test for getHighlightPolygons method,
+     * expecting valid polygons to be present in the list.
+     *
+     * @param colour Colour of the wall
+     */
      @ParameterizedTest
      @EnumSource(Colour.class)
      void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
@@ -104,6 +147,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          assertEquals(expectedWallMoves, actualWallMoves);
      }
 
+    /**
+     * Parameterized test for toString method,
+     * expecting correct string format for wall initialization.
+     * BW: blue Wall
+     * GW: green Wall
+     * RW: red Wall
+     *
+     * @param colour Colour of the wall
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
     void toString_initWallAllColours_correctStringFormat(Colour colour) {
