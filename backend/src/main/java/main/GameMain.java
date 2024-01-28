@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableSet;
 import common.Colour;
 import common.InvalidMoveException;
 import common.InvalidPositionException;
-import common.OnClickResponse;
+import common.GameState;
 import common.Position;
 import model.Board;
 import utility.BoardAdapter;
@@ -52,10 +52,10 @@ public class GameMain implements IGameInterface {
      * Responsible for sending mouse click events to backend and apply game logic over it to display
      * updated board layout to player.
      * @param  polygonLabel The unique label of the polygon which is clicked by player
-     * @return OnClickResponse which contains current game board layout and list of polygons to highlight
+     * @return GameState which contains current game board layout and list of polygons to highlight
      **/
     @Override
-    public OnClickResponse onClick(String polygonLabel) {
+    public GameState onClick(String polygonLabel) {
         try {
             // polygonPos must be in range [0, 95]
             Log.d(TAG, ">>> onClick called: polygonLabel: "+polygonLabel);
@@ -88,7 +88,7 @@ public class GameMain implements IGameInterface {
             highlightPolygons = null;
         }
         List<String> highlightPolygonsList = BoardAdapter.convertHighlightPolygonsToViewBoard(highlightPolygons);
-        OnClickResponse clickResponse = new OnClickResponse(getBoard(), highlightPolygonsList);
+        GameState clickResponse = new GameState(getBoard(), highlightPolygonsList);
         if(board.isGameOver()) {
             String winner = board.getWinner();
             Log.d(TAG, "Winner: "+winner);

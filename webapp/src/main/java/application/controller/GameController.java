@@ -2,7 +2,7 @@ package application.controller;
 
 import abstraction.IGameInterface;
 import common.InvalidPositionException;
-import common.OnClickResponse;
+import common.GameState;
 import main.GameMain;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +32,7 @@ public class GameController {
      * Method to notify click events to the backend
      **/
     @PostMapping("/onClick")
-    public OnClickResponse handleMove(@RequestBody String polygonText) throws InvalidPositionException {
+    public GameState handleMove(@RequestBody String polygonText) throws InvalidPositionException {
         System.out.println("Polygon: " + polygonText);
         return game.onClick(polygonText);
     }
