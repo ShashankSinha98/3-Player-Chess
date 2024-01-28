@@ -67,12 +67,13 @@ public class Pawn extends BasePiece {
                 BasePiece target = boardMap.get(end);
                 Log.d(TAG, "end: "+end+", step: "+Arrays.toString(step));
                 try {
-                    if ((target == null && i == 0) // 1 step forward, not taking
-                            || (target == null && i == 1 // 2 steps forward,
+                    boolean isOneStepForwardAndNotTakingPieceCase = (target == null && i == 0); // 1 step forward, not taking
+                    boolean isTwoStepForwardAndNotTakingPieceCase = (target == null && i == 1 // 2 steps forward,
                             && start.getColour() == moverCol && start.getRow() == 1 //must be in initial position
-                            && boardMap.get(Position.get(moverCol, 2, start.getColumn())) == null)//and can't jump a piece
-                            || (target != null && target.getColour() != moverCol && i > 1) //or taking diagonally
-                    ) {
+                            && boardMap.get(Position.get(moverCol, 2, start.getColumn())) == null); //and can't jump a piece;
+                    boolean isDiagonalMoveAndTakingPieceCase = (target != null && target.getColour() != moverCol && i > 1); //or taking diagonally
+
+                    if (isOneStepForwardAndNotTakingPieceCase || isTwoStepForwardAndNotTakingPieceCase || isDiagonalMoveAndTakingPieceCase) {
                         Log.d(TAG, "position: " + end);
                         positionSet.add(end);
                     }
