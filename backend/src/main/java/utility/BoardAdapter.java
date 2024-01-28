@@ -68,8 +68,10 @@ public class BoardAdapter {
         char secondChar = Character.toLowerCase(polygon.charAt(1));
         int number = polygon.charAt(2)-'0';
         Log.d("BoardAdapter", "firstChar: "+firstChar+", secondChar: "+secondChar+", number: "+number);
-        if((firstChar != 'g' && firstChar != 'r' && firstChar != 'b') ||
-                (secondChar < 'a' || secondChar > 'h') || (number < 1 || number > 4)) {
+        boolean isFirstCharInvalid = (firstChar != 'g' && firstChar != 'r' && firstChar != 'b');
+        boolean isSecondCharInvalid = (secondChar < 'a' || secondChar > 'h');
+        boolean isNumberOutOfRange = (number < 1 || number > 4);
+        if(isFirstCharInvalid || isSecondCharInvalid || isNumberOutOfRange) {
             throw new InvalidPositionException("Invalid String position: "+polygon);
         }
 
