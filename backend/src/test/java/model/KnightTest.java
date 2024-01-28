@@ -17,23 +17,39 @@ import java.util.Set;
 import static common.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class contains unit tests for the Knight class.
+ */
 class KnightTest {
 
     private Board board;
     private Map<Position, BasePiece> boardMap;
 
+    /**
+     * Initializes a new Board instance before each test.
+     */
     @BeforeEach
     void initBeforeEachBoardTest() {
         board = new Board();
         boardMap = board.boardMap;
     }
 
+    /**
+     * Tests the setupDirections method,
+     * expecting the Knight movement directions to be non-empty.
+     */
     @Test
     void setupDirections_initPieceDirectionsIsEmpty_False(){
         BasePiece knight = new Knight(Colour.BLUE);
         assertNotEquals(0, knight.directions.length);
     }
 
+    /**
+     * Parameterized test for isLegalMove method when knight moves to an empty square,
+     * expecting true.
+     *
+     * @param colour Colour of the knight
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
     void isLegalMove_knightMovesToEmptySquare_True(Colour colour) {
@@ -48,6 +64,12 @@ class KnightTest {
         assertTrue(actualKnightMoves.contains(BF4));
     }
 
+    /**
+     * Parameterized test for isLegalMove method when knight takes a piece of its own color,
+     * expecting false.
+     *
+     * @param piece Piece to be placed on the board
+     */
     @ParameterizedTest
     @MethodSource("model.DataProvider#pieceProvider")
     void isLegalMove_knightTakesItsColourPiece_False(BasePiece piece) {
@@ -59,6 +81,12 @@ class KnightTest {
         assertFalse(actualKnightMoves.contains(BC3));
     }
 
+    /**
+     * Parameterized test for isLegalMove method when knight takes a piece of a different color,
+     * expecting true.
+     *
+     * @param piece Piece to be placed on the board
+     */
     @ParameterizedTest
     @MethodSource("model.DataProvider#pieceProvider")
     void isLegalMove_knightTakesDifferentColourPiece_True(BasePiece piece) {
@@ -70,7 +98,12 @@ class KnightTest {
         assertTrue(actualKnightMoves.contains(BC3));
     }
 
-
+    /**
+     * Parameterized test for getHighlightPolygons method,
+     * expecting valid polygons to be present in the list.
+     *
+     * @param colour Colour of the knight
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour){
@@ -87,6 +120,15 @@ class KnightTest {
         assertEquals(expectedKnightMoves, actualKnightMoves);
     }
 
+    /**
+     * Parameterized test for toString method,
+     * expecting correct string format for knight initialization.
+     * BN: blue Knight
+     * GN: green Knight
+     * RN: red Knight
+     *
+     * @param colour Colour of the knight
+     */
     @ParameterizedTest
     @EnumSource(Colour.class)
     void toString_initKnightAllColours_correctStringFormat(Colour colour) {
