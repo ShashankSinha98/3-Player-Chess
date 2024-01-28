@@ -10,7 +10,17 @@ import model.Queen;
 import model.Rook;
 import model.Wall;
 
+/**
+ * PieceFactory - helper class to create objects chess pieces
+ **/
 public class PieceFactory {
+
+    /**
+     * createPiece - based on the type and colour, creates a chess piece
+     * @param colour - piece colour
+     * @param type - piece name e.g. king
+     * @return BasePiece
+     **/
     public static BasePiece createPiece(String type, Colour colour) {
         switch (type.toLowerCase()) {
             case "bishop":

@@ -1,6 +1,6 @@
 @startuml
 participant GameMain
-participant OnClickResponse
+participant GameState
 ->GameMain: OnClick
 activate GameMain
 alt first click
@@ -30,13 +30,6 @@ else second click
 GameMain->Board: move
 activate Board
 Board->Board: isLegalMove
-Board->BasePiece: isLegalMove
-activate BasePiece
-BasePiece->BasePiece: getWallPieceMapping
-BasePiece->BasePiece: canMove
-note right: checks for \neach direction
-Board<--BasePiece: return true/false
-deactivate BasePiece
 Board->Board: isCheck
 activate Board
 Board->BasePiece: getHighlightPolygons
@@ -55,7 +48,6 @@ Board->Board: isCheckAfterLegalMove
 note right: internally use isCheck\n returns nothing
 Board->Board: isCheckMate
 deactivate Board
-
 end
 GameMain->BoardAdapter: convertHighlightPolygonsToViewBoard
 GameMain<--BoardAdapter: List<String> highlight Polygons
@@ -64,12 +56,10 @@ GameMain->Board: isGameOver
 activate Board
 GameMain<--Board: game status
 deactivate Board
-GameMain->OnClickResponse: setGameOver
-activate OnClickResponse
-deactivate OnClickResponse
+GameMain->GameState: setGameOver
+activate GameState
+deactivate GameState
 else Not yet
 end
 <--GameMain: click Response
-
-
 @enduml

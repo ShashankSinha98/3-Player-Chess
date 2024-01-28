@@ -1,7 +1,7 @@
 package main;
 
 import common.Colour;
-import common.OnClickResponse;
+import common.GameState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
     */
     @Test
      void onClick_selectEmptyPolygon_noHighlight() {
-        OnClickResponse response = gameMain.onClick("Bc3");
+        GameState response = gameMain.onClick("Bc3");
         assertEquals(0, response.getHighlightedPolygons().size());
     }
 
@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
     */
     @Test
      void onClick_selectBluePawnPolygon_highlightListNonEmpty() {
-        OnClickResponse response = gameMain.onClick("Ba2");
+        GameState response = gameMain.onClick("Ba2");
         assertFalse(response.getHighlightedPolygons().isEmpty());
     }
 
@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.*;
     */
     @Test
      void onClick_selectNonTurnRedPawnPolygon_noHighlight() {
-        OnClickResponse response = gameMain.onClick("Ra2");
+        GameState response = gameMain.onClick("Ra2");
         assertEquals(0, response.getHighlightedPolygons().size());
     }
 
@@ -59,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
      void onClick_moveBluePawn_noHighlight() {
         gameMain.onClick("Bb2");
-        OnClickResponse response = gameMain.onClick("Bb4");
+        GameState response = gameMain.onClick("Bb4");
         assertEquals(0, response.getHighlightedPolygons().size());
     }
 
@@ -73,7 +73,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @ValueSource(strings = {"Kb2", "", "123", "Ri33", "RBB"})
      void onClick_invalidPolygonLabel_noHighlightNoBoardChange(String polygonLabel) {
         Map<String, String> oldBoard = gameMain.getBoard();
-        OnClickResponse response = gameMain.onClick(polygonLabel);
+        GameState response = gameMain.onClick(polygonLabel);
         assertEquals(0, response.getHighlightedPolygons().size());
         assertEquals(oldBoard, gameMain.getBoard());
     }
@@ -85,7 +85,7 @@ import static org.junit.jupiter.api.Assertions.*;
      void onClick_invalidMove_noHighlightNoBoardChange() {
         Map<String, String> oldBoard = gameMain.getBoard();
         gameMain.onClick("Ba2");
-        OnClickResponse response = gameMain.onClick("Ba4");
+        GameState response = gameMain.onClick("Ba4");
         assertEquals(0, response.getHighlightedPolygons().size());
         assertEquals(oldBoard, gameMain.getBoard());
     }

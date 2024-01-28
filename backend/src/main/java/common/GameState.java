@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class OnClickResponse to communicate with the webapp.
+ * Class GameState to communicate with the webapp.
  * All the info regarding highlighted polygons, winner is
  * accessed with this method
  */
-public class OnClickResponse {
+public class GameState {
 
     private final List<String> highlightedPolygons;
     private final Map<String, String> board;
@@ -16,9 +16,9 @@ public class OnClickResponse {
     private String winner;
 
     /**
-     * OnClickResponse constructor
+     * GameState constructor
      */
-    public OnClickResponse(Map<String, String> board, List<String> highlightedPolygons) {
+    public GameState(Map<String, String> board, List<String> highlightedPolygons) {
         this.board = board;
         this.highlightedPolygons = highlightedPolygons;
     }
@@ -70,7 +70,7 @@ public class OnClickResponse {
      **/
     @Override
     public String toString() {
-        return "OnClickResponse{" +
+        return "GameState{" +
                 "highlightedPolygons=" + highlightedPolygons +
                 ", board=" + board +
                 '}';
