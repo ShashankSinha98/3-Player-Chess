@@ -27,6 +27,7 @@ public class GameMain implements IGameInterface {
     private final Board board;
     private Position moveStartPos, moveEndPos;
     private Set<Position> highlightPolygons;
+    private Settings settings;
 
     /**
      * GameMain Constructor. Entry point to the backend logic
@@ -106,4 +107,11 @@ public class GameMain implements IGameInterface {
         return board.getTurn();
     }
 
+    /**
+     *
+     * @param settings Settings of the Game including the player names
+     */
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
 }
