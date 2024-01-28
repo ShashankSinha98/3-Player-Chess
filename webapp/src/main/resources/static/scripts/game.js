@@ -8,7 +8,9 @@ const pieceMap = {
     'B': '♗',
     'Q': '♕',
     'K': '♔',
-    'P': '♙'
+    'P': '♙',
+    'J': '⎈',
+    'W': '▩'
 };
 
 /**
@@ -28,9 +30,14 @@ let theme = 'arialTheme'
  * @param color color of the current player as single character (R, G, B)
  */
 function updateCurrenPlayer(color){
-    console.log("Current player: " + color);
-    const p = document.getElementById('playerdisplay');
-    p.textContent = colorMap[color]
+    const colourName = colorMap[color];
+    const playerName = localStorage.getItem(colourName);
+
+    const p_name = document.getElementById('pl-name');
+    p_name.textContent = playerName;
+
+    const p_colour = document.getElementById('pl-colour');
+    p_colour.style.color = colourName;
 }
 
 /**
@@ -47,14 +54,14 @@ function updateTheme(name){
 }
 
 /**
- * highlights a specific set of squares
- * @param data set of squares as JSON array
+ * highlights a specific set of polygons
+ * @param data set of polygons as JSON array
  */
 function displayPossibleMoves(data){
-    console.log('Highlighted Squares: ' + data);
+    console.log('Highlighted Polygons: ' + data);
     removeHighlighting();
-    data.forEach(function (squareId) {
-        const polygon = document.getElementById(squareId);
+    data.forEach(function (polygonId) {
+        const polygon = document.getElementById(polygonId);
         if(polygon != null){
             polygon.classList.add('highlight')
         }
@@ -63,7 +70,7 @@ function displayPossibleMoves(data){
 }
 
 /**
- * removes the highlighting of all squares
+ * removes the highlighting of all polygons
  */
 function removeHighlighting(){
     const polygons = document.querySelectorAll('polygon');
@@ -74,38 +81,76 @@ function removeHighlighting(){
  * updates the chessboard with the new state
  * @param data new board state with the updated piece positions, e.g. {Ba1: "BR", Ba2: "BP", ...}
  */
-function updateBoard(data) {
+function updateBoard(response) {
     clearBoard();
-    console.log('New Board Configuration:', data);
+    console.log('New Board Configuration:', response);
+    let board = response['board'];
+    let highlightedPolygons = response['highlightedPolygons'];
+    let winner = response['winner'];
+    if(response['gameOver']){
+        showGameOverPopup(response['winner']);
+    }
 
-    for (const squareId in data) {
+    updatePieces(board);
+    displayPossibleMoves(highlightedPolygons);
+}
 
-        const value = data[squareId];
+function updatePieces(board) {
+    for (const polygonId in board) {
+        const value = board[polygonId];
         const pieceColor = value[0];
         const pieceToken = value[1];
 
-        displayPiece(squareId, pieceToken, pieceColor);
+        displayPiece(polygonId, pieceToken, pieceColor);
 
     }
 }
 
 /**
  * displays the piece as a textElement inside svg
- * @param squareId Id of the square, e.g. Ba1, Ba2, ...
+ * @param polygonId Id of the polygon, e.g. Ba1, Ba2, ...
  * @param pieceToken token of the piece, e.g. R, N, B, K, Q, P
  * @param pieceColor color as single character, e.g. R, G, B
  */
-function displayPiece(squareId, pieceToken, pieceColor) {
-    //console.log(squareId);
-    const square = document.getElementById(squareId);
-    //console.log(square);
-    const points = square.points;
+function displayPiece(polygonId, pieceToken, pieceColor) {
+    const polygon = document.getElementById(polygonId);
+    const existingText = polygon.nextElementSibling; // Assuming the existing text is the immediate next sibling
 
-    let x = (points.getItem(0).x + points.getItem(2).x)/2;
-    let y = (points.getItem(0).y + points.getItem(2).y)/2;
+    const points = polygon.points;
+    let x = (points.getItem(0).x + points.getItem(2).x) / 2;
+    let y = (points.getItem(0).y + points.getItem(2).y) / 2;
 
-    const textElement = getPieceText(x, y, pieceColor, pieceToken );
-    square.parentNode.insertBefore(textElement, square.nextSibling);
+    const textElement = getPieceText(x, y, pieceColor, pieceToken);
+
+    // Check if there is existing text, and insert the new text after it
+    if (existingText) {
+        polygon.parentNode.insertBefore(textElement, existingText.nextSibling);
+    }
+    else {
+        // If there's no existing text, just insert the new text after the polygon
+        polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
+    }
+}
+
+/**
+ * creates a new svg text element displaying the polygon name
+ * @param polygonId the id of the polygon for which label to be added
+ */
+function insertLabels(polygonId) {
+        const polygon = document.getElementById(polygonId);
+        const points = polygon.points;
+        let x = (points.getItem(0).x + points.getItem(2).x) / 2;
+        let y = (points.getItem(0).y + points.getItem(2).y) / 2;
+        const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textElement.setAttribute('x', x);
+        textElement.setAttribute('y', y);
+        textElement.setAttribute("text-anchor", "middle");
+        textElement.setAttribute("dominant-baseline", "middle");
+        textElement.setAttribute('fill', 'rgba(255,255,255,0.8');
+        textElement.setAttribute('font-size', '14');
+        textElement.setAttribute('font-weight', 'bold');
+        textElement.textContent = polygonId.toUpperCase();
+        polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
 }
 
 /**
@@ -123,11 +168,9 @@ function getPieceText(x, y, color, pieceToken) {
     textElement.setAttribute("text-anchor", "middle");
     textElement.setAttribute("dominant-baseline", "middle");
     textElement.setAttribute('fill', colorMap[color]);
-    textElement.setAttribute('font-size', '48');
+    textElement.setAttribute('font-size', '50');
     textElement.setAttribute('font-weight', 'bold');
-    //textElement.setAttribute('font-family', 'FreeSerif');
     textElement.textContent = pieceMap[pieceToken];
-    //textElement.classList.add('theme');
     textElement.setAttribute('class', theme);
 
     return textElement;
@@ -139,7 +182,9 @@ function getPieceText(x, y, color, pieceToken) {
 function clearBoard() {
     const textElements = document.querySelectorAll('text');
     textElements.forEach((textElement) => {
-        textElement.remove();
+        if (textElement.classList.contains(theme)) {
+            textElement.remove();
+        }
     });
 }
 
@@ -154,69 +199,82 @@ function bodyLoaded(){
     const polygons = document.querySelectorAll('polygon');
 
     polygons.forEach(function (polygon) {
+        insertLabels(polygon.id)
         polygon.addEventListener('click', function () {
             const polygonId = polygon.id;
-            sendSquareClicked(polygonId);
-
-            requestHighlightedSquares(polygonId);
+            sendPolygonClicked(polygonId);
             requestCurrentPlayer();
         });
     });
 }
 
 /**
- * post the id of the clicked Square to the server on /move endpoint
- * @param polygonId id of the clicked square, e.g. Ra1, Gb3, ...
+ * post the id of the clicked Polygon to the server on /onClick endpoint
+ * @param polygonId id of the clicked polygon, e.g. Ra1, Gb3, ...
  */
-function sendSquareClicked(polygonId){
-    fetch('/move', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'text/plain',
-        },
-        body: polygonId,
-    }).then(response => response.json())
-        .then(data => updateBoard(data))
-        .catch(error => console.error('Error while sending the request:', error));
+function sendPolygonClicked(polygonId){
+    const request = new XMLHttpRequest();
+    request.open("POST", "/onClick", false);
+    request.send(polygonId);
+
+    if (request.status === 200) {
+        const data = JSON.parse(request.response);
+        updateBoard(data);
+    }
 }
 
 /**
  * requests all possible Moves of a piece and highlights them on the board
- * @param polygonId id of the square on which the piece is located
+ * @param polygonId id of the polygon on which the piece is located
  */
-function requestHighlightedSquares(polygonId){
-    fetch('/allMoves', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'text/plain',
-        },
-        body: polygonId,
-    }).then(response => response.json())
-        .then(data => displayPossibleMoves(data))
-        .catch(error => console.error('Error while sending the request:', error));
+function requestHighlightedPolygons(polygonId){
+    const request = new XMLHttpRequest();
+    request.open("GET", "/allMoves", false);
+    request.send(polygonId);
+
+    if (request.status === 200) {
+        const data = JSON.parse(request.response);
+        displayPossibleMoves(data);
+    }
 }
 
 /**
  * requests the new board state and displays it
  */
 function requestUpdatedBoard(){
-    fetch('/board', {
-        method: 'GET',
-    }).then(response => response.json())
-        .then(data => updateBoard(data))
-        .catch(error => console.error('Error while sending the request:', error));
+    console.log("Request Current Board");
+    const request = new XMLHttpRequest();
+    request.open("GET", "/board", false);
+    request.send(null);
+
+    if (request.status === 200) {
+        const data = JSON.parse(request.response);
+        updatePieces(data);
+    }
 }
 
 /**
  * requests the current player and displays it
  */
 function requestCurrentPlayer(){
-    fetch('/currentPlayer', {
-        method: 'GET',
-        headers: {
-            Accept: "text/plain"
-        }
-    }).then(reponse => reponse.text())
-        .then(data => updateCurrenPlayer(data))
-        .catch(error => console.error('Error while sending the request:', error));
+    const request = new XMLHttpRequest();
+    request.open("GET", "/currentPlayer", false);
+    request.send(null);
+
+    if (request.status === 200) {
+        const player = request.response;
+        updateCurrenPlayer(player);
+    }
+}
+
+function showGameOverPopup(winner) {
+    const colourName = colorMap[winner];
+    const playerName = localStorage.getItem(colourName);
+    document.getElementById('popup').style.display = 'block';
+    const winnerText = playerName + " (" + colourName + ") has won the Game!"
+    document.getElementById('winner').innerText = winnerText;
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
 }

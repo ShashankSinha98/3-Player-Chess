@@ -1,5 +1,9 @@
 package common;
 
+/**
+ * Class containing the polygons positions enums of the chess board
+ * also, methods to access the properties.
+ **/
 public enum Position{
  
   BA1(Colour.BLUE,0,0), BA2(Colour.BLUE,1,0), BA3(Colour.BLUE,2,0), BA4(Colour.BLUE,3,0),
@@ -33,10 +37,35 @@ public enum Position{
   private final int row; //0-3
   private final int column; //0-7
 
-  private Position(Colour colour, int row, int column){
+  /**
+   * Position enum constructor
+   **/
+  Position(Colour colour, int row, int column){
     this.colour = colour; this.row = row; this.column = column;
   }
 
+  /**
+   * Method to get the colour
+   * @return Colour
+   **/
+  public Colour getColour(){return colour;}
+
+  /**
+   * Method to get the Row number
+   * @return int row number
+   **/
+  public int getRow(){return row;}
+
+  /**
+   * Method to get the column number
+   * @return int column number
+   **/
+  public int getColumn(){return column;}
+
+  /**
+   * Method to get the string representation of the enum
+   * @return string representation of the polygon ID
+   **/
   @Override
   public String toString() {
     return colour.toString()+getColumnChar(column)+(row+1);
@@ -46,7 +75,7 @@ public enum Position{
    * Gets the position corresponding to the specified colour, row and column.
    * @return the position of the specified colour, row and column
    * @throws InvalidPositionException if outside the bounds of the board.
-   * **/
+   **/
   public static Position get(Colour colour, int row, int column) throws InvalidPositionException {
     int index= row+4*column;
     if(index>=0 && index<32){
@@ -61,22 +90,58 @@ public enum Position{
 
   /**
    * Gets the position corresponding to the specified colour, row and column.
-   * @return the position of the specified square Index
+   * @return the position of the specified polygon Index
    * @throws InvalidPositionException if outside the bounds of the board.
-   * **/
-  public static Position get(int squareIndex) throws InvalidPositionException {
-      if(squareIndex >=0 && squareIndex <=95) {
-        return Position.values()[squareIndex];
+   **/
+  public static Position get(int polygonIndex) throws InvalidPositionException {
+      if(polygonIndex >=0 && polygonIndex <=95) {
+        return Position.values()[polygonIndex];
       }
     throw new InvalidPositionException("No such position.");
   }
 
-  public int getValue() {
-    return this.row + (4 * this.column);
+  /**
+   * Get the position of next neighbour after a step
+   * @param direction direction input to get its neighbour
+   * @return Position the position of the specified polygon Index
+   * @throws InvalidPositionException if outside the bounds of the board.
+   **/
+  public Position neighbour(Direction direction) throws InvalidPositionException {
+    switch(direction){
+      case FORWARD:
+        if(row<3) {
+          return get(colour, row+1, column);
+        }
+        if(column<4) {
+          return get(Colour.values()[(colour.ordinal()+1)%3], 3, 7-column);
+        }
+        return get(Colour.values()[(colour.ordinal()+2)%3],3,7-column);
+      case BACKWARD:
+        if(row==0) {
+          throw new InvalidPositionException("Moved off board");
+        }
+        return get(colour,row-1,column);
+      case LEFT:
+        if(column==0) {
+          throw new InvalidPositionException("Moved off board");
+        }
+        return get(colour,row,column-1);
+      case RIGHT:
+        if(column==7) {
+          throw new InvalidPositionException("Moved off board");
+        }
+        return get(colour,row,column+1);
+    }
+    throw new InvalidPositionException("Unreachable code?");
   }
 
-  private char getColumnChar(int col) {
-    switch (col) {
+  /**
+   * Given the column input, fetch the character linked
+   * @param column direction input to get its neighbour
+   * @return char
+   **/
+  private char getColumnChar(int column) {
+    switch (column) {
         case 0: return 'a';
         case 1: return 'b';
         case 2: return 'c';
