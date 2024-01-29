@@ -8,17 +8,21 @@
 <h1>Welcome to 3 player chess!</h1>
 <div id="newgame">
     <form id="playerForm" action="/newGame" method="post" onsubmit="window.location.href = '/game.html';">
-        <label for="pl1">Blue Player</label>
-        <input id="pl1" name="bluePlayerName" type="text" placeholder="Player 1" oninput="checkInputs()">
-        <span id="blueKing">&#9812;</span><br>
-
-        <label for="pl2">Green Player</label>
-        <input id="pl2" name="greenPlayerName" type="text" placeholder="Player 2" oninput="checkInputs()">
-        <span id="greenKing">&#9812;</span><br>
-
-        <label for="pl3">Red Player</label>
-        <input id="pl3" name="redPlayerName" type="text" placeholder="Player 3" oninput="checkInputs()">
-        <span id="redKing">&#9812;</span><br>
+        <div>
+            <label for="pl1">Blue Player</label>
+            <input id="pl1" name="bluePlayerName" type="text" placeholder="Player 1" oninput="checkInputs()">
+            <span id="blueKing">&#9812;</span><br>
+        </div>
+        <div>
+            <label for="pl2">Green Player</label>
+            <input id="pl2" name="greenPlayerName" type="text" placeholder="Player 2" oninput="checkInputs()">
+            <span id="greenKing">&#9812;</span><br>
+        </div>
+        <div>
+            <label for="pl3">Red Player</label>
+            <input id="pl3" name="redPlayerName" type="text" placeholder="Player 3" oninput="checkInputs()">
+            <span id="redKing">&#9812;</span><br>
+        </div>
     </form>
     <input id="submit" type="button" value="New Game" disabled onclick="newGame()">
 </div>
