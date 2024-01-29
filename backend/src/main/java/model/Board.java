@@ -27,7 +27,7 @@ public class Board {
     protected Map<Position, BasePiece> boardMap;
     private Colour turn;
     private boolean gameOver;
-    private String winner;
+    private Colour winner;
     private Set<Position> highlightPolygons = new HashSet<>();
 
     /**
@@ -104,7 +104,7 @@ public class Board {
      * To fetch the winner
      * @return String of Winner name
      * */
-    public String getWinner() {
+    public Colour getWinner() {
         return winner;
     }
 
@@ -150,7 +150,7 @@ public class Board {
                 if(c!=turn) {
                     if(isCheckMate(c, boardMap)) {
                         gameOver = true;
-                        winner = mover.getColour().toString();
+                        winner = mover.getColour();
                     }
                 }
             }

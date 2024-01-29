@@ -23,7 +23,11 @@ import static org.junit.jupiter.api.Assertions.*;
     */
     @BeforeEach
     void initBeforeEachBoardTest() {
-        gameMain = new GameMain();
+        gameMain = new GameBuilder()
+                .setBluePlayerName("A")
+                .setGreenPlayerName("B")
+                .setRedPlayerName("C")
+                .build();
     }
 
    /**
@@ -95,7 +99,7 @@ import static org.junit.jupiter.api.Assertions.*;
     */
     @Test
      void getTurn_getTurnOnGameStart_blueTurn() {
-        assertEquals(Colour.BLUE, gameMain.getTurn());
+        assertEquals(Colour.BLUE, gameMain.getTurn().getKey());
     }
 
    /**
@@ -105,7 +109,7 @@ import static org.junit.jupiter.api.Assertions.*;
      void getTurn_getTurnAfterOneValidMove_greenTurn() {
         gameMain.onClick("Bb2");
         gameMain.onClick("Bb4");
-        assertEquals(Colour.GREEN, gameMain.getTurn());
+        assertEquals(Colour.GREEN, gameMain.getTurn().getKey());
     }
 
    /**
@@ -117,7 +121,7 @@ import static org.junit.jupiter.api.Assertions.*;
         gameMain.onClick("Bb4");
         gameMain.onClick("Gb2");
         gameMain.onClick("Gb4");
-        assertEquals(Colour.RED, gameMain.getTurn());
+        assertEquals(Colour.RED, gameMain.getTurn().getKey());
     }
 
    /**
@@ -131,7 +135,7 @@ import static org.junit.jupiter.api.Assertions.*;
         gameMain.onClick("Gb4");
         gameMain.onClick("Rb2");
         gameMain.onClick("Rb4");
-        assertEquals(Colour.BLUE, gameMain.getTurn());
+        assertEquals(Colour.BLUE, gameMain.getTurn().getKey());
     }
 
 }

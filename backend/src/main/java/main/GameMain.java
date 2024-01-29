@@ -92,9 +92,10 @@ public class GameMain implements IGameInterface {
         List<String> highlightPolygonsList = BoardAdapter.convertHighlightPolygonsToViewBoard(highlightPolygons);
         GameState clickResponse = new GameState(getBoard(), highlightPolygonsList);
         if(board.isGameOver()) {
-            String winner = board.getWinner();
-            Log.d(TAG, "Winner: "+winner);
-            clickResponse.setGameOver(winner);
+            Colour winningColour = board.getWinner();
+            Map.Entry<Colour, String> winningPlayer = settings.getPlayerName(winningColour);
+            Log.d(TAG, "Winner: " + winningColour);
+            clickResponse.setGameOver(winningPlayer);
         }
         Log.d(TAG, "ClickResponse: "+clickResponse);
         return clickResponse;

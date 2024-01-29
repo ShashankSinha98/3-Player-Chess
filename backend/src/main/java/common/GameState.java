@@ -13,7 +13,7 @@ public class GameState {
     private final List<String> highlightedPolygons;
     private final Map<String, String> board;
     private boolean isGameOver;
-    private String winner;
+    private Map.Entry<Colour, String> winner;
 
     /**
      * GameState constructor
@@ -43,7 +43,7 @@ public class GameState {
      * Method to share the winner info to the web app
      * @param winner is set
      */
-    public void setGameOver(String winner) {
+    public void setGameOver(Map.Entry<Colour, String> winner) {
         this.isGameOver = true;
         this.winner = winner;
     }
@@ -60,7 +60,7 @@ public class GameState {
      * method to get the winner.
      * @return String winner
      **/
-    public String getWinner() {
+    public Map.Entry<Colour, String> getWinner() {
         return this.winner;
     }
 

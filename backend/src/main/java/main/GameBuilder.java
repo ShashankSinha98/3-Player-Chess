@@ -6,7 +6,7 @@ import utility.Settings;
  * GameBuilder used to build a new GameMain instance
  */
 public class GameBuilder {
-    private Settings settings = new Settings();
+    private final Settings settings = new Settings();
 
     /**
      * set the name of the blue player

@@ -17,7 +17,7 @@ public class Settings {
      * The keys are of type {@link Colour}, representing the player colours,
      * and the values are of type {@link String}, representing the player names.
      */
-    private Map<Colour, String> playerNamesMap;
+    private final Map<Colour, String> playerNamesMap;
 
     public Settings() {
         playerNamesMap = new HashMap<>();

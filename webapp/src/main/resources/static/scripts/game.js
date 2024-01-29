@@ -27,7 +27,7 @@ let theme = 'arialTheme'
 
 /**
  * displays the current player inside p element with the id "playerdisplay"
- * @param color color of the current player as single character (R, G, B)
+ * @param player json representing the colour and the name of the player, e.g. {'BLUE':'Example'}
  */
 function updateCurrenPlayer(player){
     console.log(player);
@@ -81,14 +81,14 @@ function removeHighlighting(){
 
 /**
  * updates the chessboard with the new state
- * @param data new board state with the updated piece positions, e.g. {Ba1: "BR", Ba2: "BP", ...}
+ * @param response new board state with the updated piece positions, e.g. {Ba1: "BR", Ba2: "BP", ...}
  */
 function updateBoard(response) {
     clearBoard();
     console.log('New Board Configuration:', response);
     let board = response['board'];
     let highlightedPolygons = response['highlightedPolygons'];
-    let winner = response['winner'];
+
     if(response['gameOver']){
         showGameOverPopup(response['winner']);
     }
@@ -273,8 +273,7 @@ function showGameOverPopup(winner) {
     const colourName = colorMap[winner];
     const playerName = localStorage.getItem(colourName);
     document.getElementById('popup').style.display = 'block';
-    const winnerText = playerName + " (" + colourName + ") has won the Game!"
-    document.getElementById('winner').innerText = winnerText;
+    document.getElementById('winner').innerText = playerName + " (" + colourName + ") has won the Game!";
 }
 
 function closePopup() {
