@@ -28,7 +28,7 @@ jobs:
           java-version: '8'
 
       - name: Build and run tests for backend
-        run: ./gradlew :backend:test
+        run: ./gradlew jacocoTestReport
 
       - name: Upload Test report
         uses: actions/upload-artifact@v3
@@ -36,3 +36,10 @@ jobs:
           name: test-report
           path: |
             backend/build/reports/tests
+
+      - name: Upload Coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: |
+            backend/build/reports/jacoco
