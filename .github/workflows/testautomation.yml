@@ -12,7 +12,6 @@ on:
     branches:
       - develop
       - main
-      - feature/ci-coverage-integration
 
 jobs:
   testautomation:
