@@ -34,7 +34,7 @@ public class Board {
      * Board constructor. Places pieces on the board and initializes variables
      * */
     public Board(){
-        boardMap = new HashMap<Position,BasePiece>();
+        boardMap = new HashMap<>();
         turn = Colour.BLUE;
         gameOver = false;
         winner = null;
@@ -295,11 +295,7 @@ public class Board {
         copyBoardMap.remove(start);
         copyBoardMap.put(end, piece);
 
-        if(!isCheck(colour, copyBoardMap)) {
-            return false;
-        }
-
-        return true;
+        return isCheck(colour, copyBoardMap);
     }
 
     private Position getKingPosition(Colour colour, Map<Position, BasePiece> boardMap) {

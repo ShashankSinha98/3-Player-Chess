@@ -2,7 +2,6 @@ package application.controller;
 
 import abstraction.IGameInterface;
 import common.Colour;
-import common.InvalidPositionException;
 import common.GameState;
 import main.GameBuilder;
 import org.springframework.web.bind.annotation.*;
