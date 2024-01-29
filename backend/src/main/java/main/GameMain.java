@@ -10,6 +10,7 @@ import common.Position;
 import model.Board;
 import utility.BoardAdapter;
 import utility.Log;
+import utility.Settings;
 
 import java.util.List;
 import java.util.Map;

@@ -1,5 +1,7 @@
 package main;
 
+import utility.Settings;
+
 /**
  * GameBuilder used to build a new GameMain instance
  */
