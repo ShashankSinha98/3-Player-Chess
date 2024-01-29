@@ -100,11 +100,11 @@ public class GameMain implements IGameInterface {
     }
 
     /**
-     * @return returns which colour turn it is currently
-     * */
+     * @return returns which colour turn it is currently and the player's name
+     */
     @Override
-    public Colour getTurn() {
-        return board.getTurn();
+    public Map.Entry<Colour, String> getTurn() {
+        return this.settings.getPlayerName(this.board.getTurn());
     }
 
     /**

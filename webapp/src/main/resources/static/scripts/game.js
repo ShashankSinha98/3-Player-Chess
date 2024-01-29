@@ -29,15 +29,17 @@ let theme = 'arialTheme'
  * displays the current player inside p element with the id "playerdisplay"
  * @param color color of the current player as single character (R, G, B)
  */
-function updateCurrenPlayer(color){
-    const colourName = colorMap[color];
-    const playerName = localStorage.getItem(colourName);
+function updateCurrenPlayer(player){
+    console.log(player);
+    let playerColour = Object.keys(player)[0];
+    let playerName = player[playerColour];
+
 
     const p_name = document.getElementById('pl-name');
     p_name.textContent = playerName;
 
     const p_colour = document.getElementById('pl-colour');
-    p_colour.style.color = colourName;
+    p_colour.style.color = playerColour;
 }
 
 /**
@@ -262,8 +264,8 @@ function requestCurrentPlayer(){
     request.send(null);
 
     if (request.status === 200) {
-        const player = request.response;
-        updateCurrenPlayer(player);
+        const data = JSON.parse(request.response);
+        updateCurrenPlayer(data);
     }
 }
 

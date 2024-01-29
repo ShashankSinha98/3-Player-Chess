@@ -1,6 +1,7 @@
 package application.controller;
 
 import abstraction.IGameInterface;
+import common.Colour;
 import common.InvalidPositionException;
 import common.GameState;
 import main.GameBuilder;
@@ -51,9 +52,10 @@ public class GameController {
      * Method to fetch the current player information from backend
      **/
     @GetMapping("/currentPlayer")
-    public String handlePlayerTurn(){
+    public Map.Entry<Colour, String> handlePlayerTurn(){
         System.out.println("Requesting current player");
-        return game.getTurn().toString();
+
+        return game.getTurn();
     }
 
     /**

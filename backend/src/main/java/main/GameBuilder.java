@@ -1,19 +1,23 @@
 package main;
 
+/**
+ * GameBuilder used to build a new GameMain instance
+ */
 public class GameBuilder {
     private Settings settings = new Settings();
+
     public GameBuilder setBluePlayerName(String name){
         settings.setBluePlayerName(name);
         return this;
     }
 
     public GameBuilder setGreenPlayerName(String name){
-        settings.setBluePlayerName(name);
+        settings.setGreenPlayerName(name);
         return this;
     }
 
     public GameBuilder setRedPlayerName(String name){
-        settings.setBluePlayerName(name);
+        settings.setRedPlayerName(name);
         return this;
     }
 

@@ -23,5 +23,5 @@ public interface IGameInterface {
     /**
      * @return returns which colour turn it is currently
      * */
-    Colour getTurn();
+    Map.Entry<Colour, String> getTurn();
 }
