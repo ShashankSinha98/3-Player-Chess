@@ -3,11 +3,9 @@ package application.controller;
 import abstraction.IGameInterface;
 import common.InvalidPositionException;
 import common.GameState;
+import main.GameBuilder;
 import main.GameMain;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -21,11 +19,23 @@ public class GameController {
 
     /**
      * Method to create new game instance
-     **/
-    @GetMapping("/newGame")
-    public void handleNewGame(){
+     *
+     * @param bluePlayerName name of the blue player
+     * @param greenPlayerName name of the green player
+     * @param redPlayerName name of the red player
+     */
+    @PostMapping("/newGame")
+    public void handleNewGame(@RequestParam("bluePlayerName") String bluePlayerName,
+                              @RequestParam("greenPlayerName") String greenPlayerName,
+                              @RequestParam("redPlayerName") String redPlayerName){
+
         System.out.println("New Game");
-        this.game = new GameMain();
+        System.out.println(bluePlayerName);
+        this.game = new GameBuilder()
+                .setBluePlayerName(bluePlayerName)
+                .setGreenPlayerName(greenPlayerName)
+                .setRedPlayerName(redPlayerName)
+                .build();
     }
 
     /**
