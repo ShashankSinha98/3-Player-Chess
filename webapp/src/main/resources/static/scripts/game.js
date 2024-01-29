@@ -269,11 +269,17 @@ function requestCurrentPlayer(){
     }
 }
 
+/**
+ * Displays the Game over popup with the winning player and the corresponding colour
+ *
+ * @param winner winner of the game
+ */
 function showGameOverPopup(winner) {
-    const colourName = colorMap[winner];
-    const playerName = localStorage.getItem(colourName);
+    let winningColour = Object.keys(winner)[0];
+    let winnerName = winner[winningColour];
+
     document.getElementById('popup').style.display = 'block';
-    document.getElementById('winner').innerText = playerName + " (" + colourName + ") has won the Game!";
+    document.getElementById('winner').innerText = winnerName + " (" + winningColour + ") has won the Game!";
 }
 
 function closePopup() {
