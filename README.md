@@ -1,4 +1,4 @@
-# Coding-Ninjas-Chess
+# 3-Player-Chess
 Three Player chess game  using a Spring Boot web application
 
 ## Project Structure
